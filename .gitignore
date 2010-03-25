@@ -1,0 +1,11 @@
+build/
+docs/
+.kdev4/
+Doxyfile~
+*.kdev4
+*.user
+*.*~
+.DS_Store
+.Trash
+.com.apple.*
+*.orig
