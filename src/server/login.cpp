@@ -17,9 +17,13 @@ class LoginScreen: public WApplication {
 	WLineEdit *username;
 	WLineEdit *password;
 	WPushButton *login;
+	WLabel *errorMessage;
 	boost::signals2::signal<void (string,string)> *sig;
+	boost::signals2::signal<void (string,string)> *response;
+
     LoginScreen( const WEnvironment& env);
 	void loginPressed();
+	void serverResponse();
 	boost::signals2::signal<void (string,string)>* getSignal();
     ~LoginScreen(){}
 };
@@ -30,6 +34,7 @@ LoginScreen::LoginScreen(const WEnvironment& env) : WApplication(env)
 	password = new WLineEdit( WString(""));
 	login = new WPushButton( WString("LOGIN"));
 	sig = new  boost::signals2::signal<void (string,string)>();
+	errorMessage = new WLabel( WString("") );
 
 	password->setEchoMode(WLineEdit::EchoMode::Password);
 	login->clicked().connect(SLOT(this, LoginScreen::loginPressed));
@@ -39,6 +44,8 @@ LoginScreen::LoginScreen(const WEnvironment& env) : WApplication(env)
 	root()->addWidget(new WBreak());
 	root()->addWidget(new WLabel( WString("Enter Password:")));
 	root()->addWidget( password );
+	root()->addWidget(new WBreak());
+	root()->addWidget(errorMessage);
 	root()->addWidget(new WBreak());
 	root()->addWidget(login);
 }
@@ -62,11 +69,16 @@ void LoginScreen::loginPressed() {
 		}
 	}
 
-	if( isValid ) (*sig)(user,pass);
-	else {
-		username->setEnabled(false);
-		password->setEnabled(false);
+	if( isValid ) {
+		errorMessage->setText( WString(""));
+		(*sig)(user,pass);
 	}
+	else {
+		errorMessage->setText( WString("username and password must only contain alpha-numeric characters"));
+	}
+}
+
+void LoginScreen::serverResponse() {
 }
 
 boost::signals2::signal<void (string,string)>* LoginScreen::getSignal() {
