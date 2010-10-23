@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 project("Arbiter")
 
+set(CMAKE_CXX_FLAGS -std=c++0x)
+
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 SET(Boost_USE_MULTITHREAD ON)
 SET(Boost_USE_STATIC_LIBS ON)
