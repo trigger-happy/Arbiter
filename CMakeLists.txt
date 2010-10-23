@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.6)
 project("Arbiter")
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
-
 SET(Boost_USE_MULTITHREAD ON)
 SET(Boost_USE_STATIC_LIBS ON)
 #SET(Boost_ADDITIONAL_VERSIONS "1.43.0")
@@ -26,6 +25,9 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR})
+set(LIB_PATH ${PROJECT_SOURCE_DIR}/lib)
+
+add_subdirectory(lib)
 
 add_subdirectory(src)
 add_subdirectory(test)
