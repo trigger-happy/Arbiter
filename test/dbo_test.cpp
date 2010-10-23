@@ -2,7 +2,7 @@
 #include <boost/test/minimal.hpp>
 #include <Wt/Dbo/backend/Sqlite3>
 #include <Wt/Dbo/Dbo>
-#include "../src/common/datatypes.h"
+#include "../src/common/datatypes_orm.h"
 
 using namespace Wt::Dbo;
 using namespace std;
