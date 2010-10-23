@@ -1,4 +1,5 @@
 build/
+buildVC/
 docs/
 .kdev4/
 Doxyfile~
