@@ -9,12 +9,12 @@
 #include "Server.h"
 
 // Boost
-#include<boost/thread/thread.hpp>
-
+#include <boost/thread/thread.hpp>
+#include <boost/bind/bind.hpp>
 using namespace boost;
 
 // C++
-#include <iostream>
+#include<iostream>
 using namespace std;
 
 Server::Server() {
@@ -27,9 +27,8 @@ Server::~Server() {
 void
 Server::init() {
 
-
+	cout << "enter init" << endl;
 	// initialize objects
-	
 	
 	
 	/*
@@ -37,7 +36,9 @@ Server::init() {
 		start the thread.
 	
 	*/
-	thread(run_thread);
+	thread my_thread(run_thread);
+	
+	my_thread.join();
 }
 
 void

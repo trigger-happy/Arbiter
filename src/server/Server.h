@@ -9,9 +9,10 @@ class Server {
 		
 		void init();
 		
-		void run_thread();
+		static void run_thread();
 		
-}
+};
+
 
 
 #endif // SERVER_H
