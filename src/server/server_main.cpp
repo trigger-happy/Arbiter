@@ -4,13 +4,17 @@
 #include<iostream>
 
 
+
 using namespace std;
 
 
-int main(int argc, char **argv) {
-	Server *server = new Server();
-	
-	server->init();
+static Server my_server;
 
+
+
+int main(int argc, char **argv) {
+	my_server.init();
+	
+	
 	return 0;
 }

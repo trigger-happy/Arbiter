@@ -50,3 +50,21 @@ Server::run_thread() {
 	}
 	return;
 }
+
+void
+Server::connectLogin() {
+	// get the instance of the LoginScreen class
+	// connect onLogin function
+		
+	return;
+}
+
+void
+Server::onLogin(std::string username, std::string password) {
+	// check with database if the information exists
+	// if the login is incorrect, then do not allow the user
+	// to enter -- rather, send a message that would
+	// display a message stating what they have to do.
+	
+	return;
+}
