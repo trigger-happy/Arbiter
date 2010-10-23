@@ -4,7 +4,7 @@ add_subdirectory(contestant)
 add_subdirectory(scoreboard)
 add_subdirectory(judge)
 
-set(SERVER_SRC hello.cpp)
+set(SERVER_SRC login.cpp)
 
 add_executable(server ${SERVER_SRC})
 link_directories(${Boost_LIBRARY_DIRS})
