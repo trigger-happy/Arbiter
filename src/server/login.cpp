@@ -7,6 +7,7 @@
 #include <Wt/WPushButton>
 #include <boost/signals2.hpp>
 #include <string>
+#include <cctype>
 
 using namespace Wt;
 using namespace std;
@@ -46,7 +47,26 @@ void LoginScreen::loginPressed() {
 	string user = username->text().toUTF8();
 	string pass = password->text().toUTF8();
 
-	(*sig)(user,pass);
+	bool isValid = true;
+	for( int i = 0; i < user.length(); i++ ) {
+		if(!isalnum(user[i])) {
+			isValid = false;
+			break;
+		}
+	}
+
+	for( int i = 0; i < pass.length(); i++ ) {
+		if(!isalnum(pass[i])) {
+			isValid = false;
+			break;
+		}
+	}
+
+	if( isValid ) (*sig)(user,pass);
+	else {
+		username->setEnabled(false);
+		password->setEnabled(false);
+	}
 }
 
 boost::signals2::signal<void (string,string)>* LoginScreen::getSignal() {
