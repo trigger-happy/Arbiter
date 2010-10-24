@@ -1,4 +1,5 @@
 build/
+buildVC/
 docs/
 own_docs/
 .kdev4/
