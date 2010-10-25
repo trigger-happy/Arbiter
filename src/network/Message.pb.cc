@@ -181,7 +181,7 @@ void protobuf_AddDesc_Message_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\rMessage.proto\"\300\003\n\016NetworkMessage\022)\n\004ty"
     "pe\030\001 \002(\0162\033.NetworkMessage.MessageType\022\014\n"
-    "\004text\030\002 \001(\t\022\031\n\021requested_item_id\030\003 \001(\r\022\034"
+    "\004text\030\002 \001(\014\022\031\n\021requested_item_id\030\003 \001(\r\022\034"
     "\n\trun_order\030\004 \001(\0132\t.RunOrder\022 \n\013problem_"
     "set\030\005 \001(\0132\013.ProblemSet\022\036\n\nrun_result\030\006 \001"
     "(\0132\n.RunResult\022\033\n\010language\030\007 \001(\0132\t.Langu"
@@ -191,15 +191,15 @@ void protobuf_AddDesc_Message_2eproto() {
     "\tRUN_ORDER\020\006\022\027\n\023PROBLEM_SET_REQUEST\020\007\022\017\n"
     "\013PROBLEM_SET\020\010\022\016\n\nRUN_RESULT\020\t\022\024\n\020LANGUA"
     "GE_REQUEST\020\n\022\014\n\010LANGUAGE\020\013\"\204\001\n\010RunOrder\022"
-    "\022\n\nproblem_id\030\001 \002(\r\022\024\n\014problem_hash\030\002 \002("
-    "\t\022\023\n\013language_id\030\003 \002(\r\022\025\n\rlanguage_hash\030"
-    "\004 \002(\t\022\016\n\006run_id\030\005 \002(\r\022\022\n\nattachment\030\006 \002("
-    "\014\"J\n\nProblemSet\022\022\n\nproblem_id\030\001 \002(\t\022\024\n\014p"
-    "roblem_hash\030\002 \002(\t\022\022\n\nattachment\030\003 \002(\014\"g\n"
+    "\022\n\nproblem_id\030\001 \002(\014\022\024\n\014problem_hash\030\002 \002("
+    "\014\022\023\n\013language_id\030\003 \002(\r\022\025\n\rlanguage_hash\030"
+    "\004 \002(\014\022\016\n\006run_id\030\005 \002(\r\022\022\n\nattachment\030\006 \002("
+    "\014\"J\n\nProblemSet\022\022\n\nproblem_id\030\001 \002(\014\022\024\n\014p"
+    "roblem_hash\030\002 \002(\014\022\022\n\nattachment\030\003 \002(\014\"g\n"
     "\tRunResult\022\016\n\006run_id\030\001 \002(\r\022\016\n\006result\030\002 \002"
     "(\r\022\023\n\013team_stdout\030\003 \001(\t\022\023\n\013team_stderr\030\004"
     " \001(\t\022\020\n\010run_time\030\005 \001(\004\"J\n\010Language\022\023\n\013la"
-    "nguage_id\030\001 \002(\r\022\025\n\rlanguage_hash\030\002 \002(\t\022\022"
+    "nguage_id\030\001 \002(\r\022\025\n\rlanguage_hash\030\002 \002(\014\022\022"
     "\n\nattachment\030\003 \002(\014", 858);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Message.proto", &protobuf_RegisterTypes);
@@ -396,16 +396,13 @@ bool NetworkMessage::MergePartialFromCodedStream(
         break;
       }
       
-      // optional string text = 2;
+      // optional bytes text = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_text:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_text()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->text().data(), this->text().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -509,12 +506,9 @@ void NetworkMessage::SerializeWithCachedSizes(
       1, this->type(), output);
   }
   
-  // optional string text = 2;
+  // optional bytes text = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->text().data(), this->text().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->text(), output);
   }
   
@@ -561,13 +555,10 @@ void NetworkMessage::SerializeWithCachedSizes(
       1, this->type(), target);
   }
   
-  // optional string text = 2;
+  // optional bytes text = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->text().data(), this->text().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->text(), target);
   }
   
@@ -621,10 +612,10 @@ int NetworkMessage::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
     }
     
-    // optional string text = 2;
+    // optional bytes text = 2;
     if (has_text()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->text());
     }
     
@@ -771,6 +762,7 @@ void NetworkMessage::Swap(NetworkMessage* other) {
 
 // ===================================================================
 
+const ::std::string RunOrder::_default_problem_id_;
 const ::std::string RunOrder::_default_problem_hash_;
 const ::std::string RunOrder::_default_language_hash_;
 const ::std::string RunOrder::_default_attachment_;
@@ -799,7 +791,7 @@ RunOrder::RunOrder(const RunOrder& from)
 
 void RunOrder::SharedCtor() {
   _cached_size_ = 0;
-  problem_id_ = 0u;
+  problem_id_ = const_cast< ::std::string*>(&_default_problem_id_);
   problem_hash_ = const_cast< ::std::string*>(&_default_problem_hash_);
   language_id_ = 0u;
   language_hash_ = const_cast< ::std::string*>(&_default_language_hash_);
@@ -813,6 +805,9 @@ RunOrder::~RunOrder() {
 }
 
 void RunOrder::SharedDtor() {
+  if (problem_id_ != &_default_problem_id_) {
+    delete problem_id_;
+  }
   if (problem_hash_ != &_default_problem_hash_) {
     delete problem_hash_;
   }
@@ -848,7 +843,11 @@ RunOrder* RunOrder::New() const {
 
 void RunOrder::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    problem_id_ = 0u;
+    if (_has_bit(0)) {
+      if (problem_id_ != &_default_problem_id_) {
+        problem_id_->clear();
+      }
+    }
     if (_has_bit(1)) {
       if (problem_hash_ != &_default_problem_hash_) {
         problem_hash_->clear();
@@ -877,14 +876,12 @@ bool RunOrder::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 problem_id = 1;
+      // required bytes problem_id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &problem_id_)));
-          _set_bit(0);
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_problem_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -892,16 +889,13 @@ bool RunOrder::MergePartialFromCodedStream(
         break;
       }
       
-      // required string problem_hash = 2;
+      // required bytes problem_hash = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_problem_hash:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_problem_hash()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->problem_hash().data(), this->problem_hash().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -925,16 +919,13 @@ bool RunOrder::MergePartialFromCodedStream(
         break;
       }
       
-      // required string language_hash = 4;
+      // required bytes language_hash = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_language_hash:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_language_hash()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->language_hash().data(), this->language_hash().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -990,17 +981,15 @@ bool RunOrder::MergePartialFromCodedStream(
 
 void RunOrder::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 problem_id = 1;
+  // required bytes problem_id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->problem_id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->problem_id(), output);
   }
   
-  // required string problem_hash = 2;
+  // required bytes problem_hash = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->problem_hash().data(), this->problem_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->problem_hash(), output);
   }
   
@@ -1009,12 +998,9 @@ void RunOrder::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->language_id(), output);
   }
   
-  // required string language_hash = 4;
+  // required bytes language_hash = 4;
   if (_has_bit(3)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->language_hash().data(), this->language_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       4, this->language_hash(), output);
   }
   
@@ -1037,18 +1023,17 @@ void RunOrder::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* RunOrder::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 problem_id = 1;
+  // required bytes problem_id = 1;
   if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->problem_id(), target);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->problem_id(), target);
   }
   
-  // required string problem_hash = 2;
+  // required bytes problem_hash = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->problem_hash().data(), this->problem_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->problem_hash(), target);
   }
   
@@ -1057,13 +1042,10 @@ void RunOrder::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->language_id(), target);
   }
   
-  // required string language_hash = 4;
+  // required bytes language_hash = 4;
   if (_has_bit(3)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->language_hash().data(), this->language_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         4, this->language_hash(), target);
   }
   
@@ -1090,17 +1072,17 @@ int RunOrder::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 problem_id = 1;
+    // required bytes problem_id = 1;
     if (has_problem_id()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->problem_id());
     }
     
-    // required string problem_hash = 2;
+    // required bytes problem_hash = 2;
     if (has_problem_hash()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->problem_hash());
     }
     
@@ -1111,10 +1093,10 @@ int RunOrder::ByteSize() const {
           this->language_id());
     }
     
-    // required string language_hash = 4;
+    // required bytes language_hash = 4;
     if (has_language_hash()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->language_hash());
     }
     
@@ -1321,15 +1303,12 @@ bool ProblemSet::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required string problem_id = 1;
+      // required bytes problem_id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_problem_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->problem_id().data(), this->problem_id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -1337,16 +1316,13 @@ bool ProblemSet::MergePartialFromCodedStream(
         break;
       }
       
-      // required string problem_hash = 2;
+      // required bytes problem_hash = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_problem_hash:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_problem_hash()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->problem_hash().data(), this->problem_hash().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -1386,21 +1362,15 @@ bool ProblemSet::MergePartialFromCodedStream(
 
 void ProblemSet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required string problem_id = 1;
+  // required bytes problem_id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->problem_id().data(), this->problem_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->problem_id(), output);
   }
   
-  // required string problem_hash = 2;
+  // required bytes problem_hash = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->problem_hash().data(), this->problem_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->problem_hash(), output);
   }
   
@@ -1418,23 +1388,17 @@ void ProblemSet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ProblemSet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required string problem_id = 1;
+  // required bytes problem_id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->problem_id().data(), this->problem_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->problem_id(), target);
   }
   
-  // required string problem_hash = 2;
+  // required bytes problem_hash = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->problem_hash().data(), this->problem_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->problem_hash(), target);
   }
   
@@ -1456,17 +1420,17 @@ int ProblemSet::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required string problem_id = 1;
+    // required bytes problem_id = 1;
     if (has_problem_id()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->problem_id());
     }
     
-    // required string problem_hash = 2;
+    // required bytes problem_hash = 2;
     if (has_problem_hash()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->problem_hash());
     }
     
@@ -2065,16 +2029,13 @@ bool Language::MergePartialFromCodedStream(
         break;
       }
       
-      // required string language_hash = 2;
+      // required bytes language_hash = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_language_hash:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_language_hash()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->language_hash().data(), this->language_hash().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2119,12 +2080,9 @@ void Language::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->language_id(), output);
   }
   
-  // required string language_hash = 2;
+  // required bytes language_hash = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->language_hash().data(), this->language_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->language_hash(), output);
   }
   
@@ -2147,13 +2105,10 @@ void Language::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->language_id(), target);
   }
   
-  // required string language_hash = 2;
+  // required bytes language_hash = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->language_hash().data(), this->language_hash().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->language_hash(), target);
   }
   
@@ -2182,10 +2137,10 @@ int Language::ByteSize() const {
           this->language_id());
     }
     
-    // required string language_hash = 2;
+    // required bytes language_hash = 2;
     if (has_language_hash()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->language_hash());
     }
     

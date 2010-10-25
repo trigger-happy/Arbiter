@@ -12,27 +12,25 @@ ServerNetwork::ServerNetwork(boost::asio::io_service& io_service, uint16_t port,
 
 ServerNetwork::~ServerNetwork()
 {
-  if(acceptor_.is_open()) {
-    acceptor_.close();
-  }
+  listeners_.clear();
 }
 
 void ServerNetwork::handleAccept(const boost::system::error_code& e, boost::shared_ptr< RunnerConnection > conn)
 {
   if(!e) {
     conn->start();
-    boost::ptr_vector<ServerNetworkListener>::iterator iter;
+    std::vector<ServerNetworkListener*>::iterator iter;
     for(iter = listeners_.begin(); iter != listeners_.end(); iter++) {
-      iter->runnerConnected(conn);
+      (*iter)->runnerConnected(conn);
     }
     
     boost::shared_ptr<RunnerConnection> new_conn(new RunnerConnection(acceptor_.get_io_service(), secret_, pingTime_));
     acceptor_.async_accept(new_conn->socket(), boost::bind(&ServerNetwork::handleAccept, this, boost::asio::placeholders::error, new_conn));
   }
   else {
-    boost::ptr_vector<ServerNetworkListener>::iterator iter;
+    std::vector<ServerNetworkListener*>::iterator iter;
     for(iter = listeners_.begin(); iter != listeners_.end(); iter++) {
-      iter->disconnected();
+      (*iter)->disconnected();
     }
   }
 }
