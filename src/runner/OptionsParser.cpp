@@ -1,7 +1,4 @@
-//I hope this works well enough
-// - Dylan Valerio
-
-#include "OptionsHandler.h"
+#include "OptionsParser.h"
 
 using namespace std;
 using namespace boost::program_options;
@@ -179,16 +176,3 @@ string OptionsParser::getInput(){
   return m_input;
 }
 
-/*main method for testing this class. Sets default values according to some config file*/
-int main(int argc, char* argv[]){
-  try{
-    OptionsParser* handler = new OptionsParser();
-    handler->setOptions(argc,argv);
-    cout << endl;
-    handler->printOptions();
-  }catch(std::exception& e){
-    cout << e.what() << endl;
-    return 1;
-  }
-  return 0;
-}

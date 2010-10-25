@@ -1,8 +1,5 @@
-//I hope this works
-// - Dylan Valerio
-
-#ifndef _DEADBEEFPOPTIONS_H__
-#define _DEADBEEFPOPTIONS_H__
+#ifndef RUNNER_OPTIONSPARSER_H__
+#define RUNNER_OPTIONSPARSER_H__
 
 #include <boost/program_options.hpp>
 
@@ -12,6 +9,9 @@
 
 #include <string>
 
+/**
+  * Parses command-line options.
+  */
 class OptionsParser {
   //flag for verbose mode
   bool m_verbose;
@@ -49,9 +49,7 @@ class OptionsParser {
     OptionsParser();
 
     //Copy Constructor
-    OptionsParser(const OptionsParser &options_h);
-
-    //Dtors
+	OptionsParser(const OptionsParser &options_h);
     
     //sets/gets the verbose address
     void setVerbose(const bool &verbose);
