@@ -33,7 +33,7 @@ public:
   }
   
   template <typename Handler>
-  void async_write(const Message& message, Handler handler)
+  void async_write(const NetworkMessage& message, Handler handler)
   {
     // Serialize the data first so we know how large it is.
     message.SerializeToString(&outbound_data_);
@@ -60,12 +60,12 @@ public:
   }
   
   template <typename Handler>
-  void async_read(Message& message, Handler handler)
+  void async_read(NetworkMessage& message, Handler handler)
   {
     // Issue a read operation to read exactly the number of bytes in a header.
     void (Connection::*f)(
 	const boost::system::error_code&,
-	Message&, boost::tuple<Handler>)
+	NetworkMessage&, boost::tuple<Handler>)
       = &Connection::handle_read_header<Handler>;
     boost::asio::async_read(socket_, boost::asio::buffer(inbound_header_),
 	boost::bind(f,
@@ -75,7 +75,7 @@ public:
   
   template <typename Handler>
   void handle_read_header(const boost::system::error_code& e,
-      Message& message, boost::tuple<Handler> handler)
+      NetworkMessage& message, boost::tuple<Handler> handler)
   {
     if (e)
     {
@@ -98,7 +98,7 @@ public:
       inbound_data_.resize(inbound_data_size);
       void (Connection::*f)(
 	  const boost::system::error_code&,
-	  Message&, boost::tuple<Handler>)
+	  NetworkMessage&, boost::tuple<Handler>)
 	= &Connection::handle_read_data<Handler>;
       boost::asio::async_read(socket_, boost::asio::buffer(inbound_data_),
 	boost::bind(f, this,
@@ -108,7 +108,7 @@ public:
   
   template <typename Handler>
   void handle_read_data(const boost::system::error_code& e,
-      Message& message, boost::tuple<Handler> handler)
+      NetworkMessage& message, boost::tuple<Handler> handler)
   {
     if (e)
     {

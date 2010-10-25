@@ -12,10 +12,10 @@
 
 namespace {
 
-const ::google::protobuf::Descriptor* Message_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* NetworkMessage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  Message_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* Message_MessageType_descriptor_ = NULL;
+  NetworkMessage_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* NetworkMessage_MessageType_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* RunOrder_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RunOrder_reflection_ = NULL;
@@ -38,32 +38,34 @@ void protobuf_AssignDesc_Message_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "Message.proto");
   GOOGLE_CHECK(file != NULL);
-  Message_descriptor_ = file->message_type(0);
-  static const int Message_offsets_[7] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, text_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, requested_item_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, run_order_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, problem_set_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, run_result_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, language_),
+  NetworkMessage_descriptor_ = file->message_type(0);
+  static const int NetworkMessage_offsets_[7] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, type_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, text_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, requested_item_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, run_order_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, problem_set_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, run_result_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, language_),
   };
-  Message_reflection_ =
+  NetworkMessage_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      Message_descriptor_,
-      Message::default_instance_,
-      Message_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, _unknown_fields_),
+      NetworkMessage_descriptor_,
+      NetworkMessage::default_instance_,
+      NetworkMessage_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkMessage, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Message));
-  Message_MessageType_descriptor_ = Message_descriptor_->enum_type(0);
+      sizeof(NetworkMessage));
+  NetworkMessage_MessageType_descriptor_ = NetworkMessage_descriptor_->enum_type(0);
   RunOrder_descriptor_ = file->message_type(1);
-  static const int RunOrder_offsets_[4] = {
+  static const int RunOrder_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunOrder, problem_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunOrder, problem_hash_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunOrder, language_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunOrder, language_hash_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunOrder, run_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunOrder, attachment_),
   };
@@ -79,8 +81,9 @@ void protobuf_AssignDesc_Message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RunOrder));
   ProblemSet_descriptor_ = file->message_type(2);
-  static const int ProblemSet_offsets_[2] = {
+  static const int ProblemSet_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ProblemSet, problem_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ProblemSet, problem_hash_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ProblemSet, attachment_),
   };
   ProblemSet_reflection_ =
@@ -95,11 +98,12 @@ void protobuf_AssignDesc_Message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ProblemSet));
   RunResult_descriptor_ = file->message_type(3);
-  static const int RunResult_offsets_[4] = {
+  static const int RunResult_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunResult, run_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunResult, result_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunResult, stdout_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunResult, stderr_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunResult, team_stdout_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunResult, team_stderr_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RunResult, run_time_),
   };
   RunResult_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -113,8 +117,9 @@ void protobuf_AssignDesc_Message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RunResult));
   Language_descriptor_ = file->message_type(4);
-  static const int Language_offsets_[2] = {
+  static const int Language_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Language, language_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Language, language_hash_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Language, attachment_),
   };
   Language_reflection_ =
@@ -141,7 +146,7 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Message_descriptor_, &Message::default_instance());
+    NetworkMessage_descriptor_, &NetworkMessage::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     RunOrder_descriptor_, &RunOrder::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -155,8 +160,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_Message_2eproto() {
-  delete Message::default_instance_;
-  delete Message_reflection_;
+  delete NetworkMessage::default_instance_;
+  delete NetworkMessage_reflection_;
   delete RunOrder::default_instance_;
   delete RunOrder_reflection_;
   delete ProblemSet::default_instance_;
@@ -174,33 +179,36 @@ void protobuf_AddDesc_Message_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\rMessage.proto\"\262\003\n\007Message\022\"\n\004type\030\001 \002("
-    "\0162\024.Message.MessageType\022\014\n\004text\030\002 \001(\t\022\031\n"
-    "\021requested_item_id\030\003 \001(\r\022\034\n\trun_order\030\004 "
-    "\001(\0132\t.RunOrder\022 \n\013problem_set\030\005 \001(\0132\013.Pr"
-    "oblemSet\022\036\n\nrun_result\030\006 \001(\0132\n.RunResult"
-    "\022\033\n\010language\030\007 \001(\0132\t.Language\"\334\001\n\013Messag"
-    "eType\022\013\n\007CONNECT\020\000\022\r\n\tCHALLENGE\020\001\022\026\n\022CHA"
-    "LLENGE_RESPONSE\020\002\022\017\n\013ACKNOWLEDGE\020\003\022\010\n\004PI"
-    "NG\020\004\022\021\n\rPING_RESPONSE\020\005\022\r\n\tRUN_ORDER\020\006\022\027"
-    "\n\023PROBLEM_SET_REQUEST\020\007\022\017\n\013PROBLEM_SET\020\010"
-    "\022\016\n\nRUN_RESULT\020\t\022\024\n\020LANGUAGE_REQUEST\020\n\022\014"
-    "\n\010LANGUAGE\020\013\"W\n\010RunOrder\022\022\n\nproblem_id\030\001"
-    " \002(\r\022\023\n\013language_id\030\002 \002(\r\022\016\n\006run_id\030\003 \002("
-    "\r\022\022\n\nattachment\030\004 \002(\014\"4\n\nProblemSet\022\022\n\np"
-    "roblem_id\030\001 \002(\r\022\022\n\nattachment\030\002 \002(\014\"K\n\tR"
-    "unResult\022\016\n\006run_id\030\001 \002(\r\022\016\n\006result\030\002 \002(\r"
-    "\022\016\n\006stdout\030\003 \001(\t\022\016\n\006stderr\030\004 \001(\t\"3\n\010Lang"
-    "uage\022\023\n\013language_id\030\001 \002(\r\022\022\n\nattachment\030"
-    "\002 \002(\014", 725);
+    "\n\rMessage.proto\"\300\003\n\016NetworkMessage\022)\n\004ty"
+    "pe\030\001 \002(\0162\033.NetworkMessage.MessageType\022\014\n"
+    "\004text\030\002 \001(\t\022\031\n\021requested_item_id\030\003 \001(\r\022\034"
+    "\n\trun_order\030\004 \001(\0132\t.RunOrder\022 \n\013problem_"
+    "set\030\005 \001(\0132\013.ProblemSet\022\036\n\nrun_result\030\006 \001"
+    "(\0132\n.RunResult\022\033\n\010language\030\007 \001(\0132\t.Langu"
+    "age\"\334\001\n\013MessageType\022\013\n\007CONNECT\020\000\022\r\n\tCHAL"
+    "LENGE\020\001\022\026\n\022CHALLENGE_RESPONSE\020\002\022\017\n\013ACKNO"
+    "WLEDGE\020\003\022\010\n\004PING\020\004\022\021\n\rPING_RESPONSE\020\005\022\r\n"
+    "\tRUN_ORDER\020\006\022\027\n\023PROBLEM_SET_REQUEST\020\007\022\017\n"
+    "\013PROBLEM_SET\020\010\022\016\n\nRUN_RESULT\020\t\022\024\n\020LANGUA"
+    "GE_REQUEST\020\n\022\014\n\010LANGUAGE\020\013\"\204\001\n\010RunOrder\022"
+    "\022\n\nproblem_id\030\001 \002(\r\022\024\n\014problem_hash\030\002 \002("
+    "\t\022\023\n\013language_id\030\003 \002(\r\022\025\n\rlanguage_hash\030"
+    "\004 \002(\t\022\016\n\006run_id\030\005 \002(\r\022\022\n\nattachment\030\006 \002("
+    "\014\"J\n\nProblemSet\022\022\n\nproblem_id\030\001 \002(\t\022\024\n\014p"
+    "roblem_hash\030\002 \002(\t\022\022\n\nattachment\030\003 \002(\014\"g\n"
+    "\tRunResult\022\016\n\006run_id\030\001 \002(\r\022\016\n\006result\030\002 \002"
+    "(\r\022\023\n\013team_stdout\030\003 \001(\t\022\023\n\013team_stderr\030\004"
+    " \001(\t\022\020\n\010run_time\030\005 \001(\004\"J\n\010Language\022\023\n\013la"
+    "nguage_id\030\001 \002(\r\022\025\n\rlanguage_hash\030\002 \002(\t\022\022"
+    "\n\nattachment\030\003 \002(\014", 858);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Message.proto", &protobuf_RegisterTypes);
-  Message::default_instance_ = new Message();
+  NetworkMessage::default_instance_ = new NetworkMessage();
   RunOrder::default_instance_ = new RunOrder();
   ProblemSet::default_instance_ = new ProblemSet();
   RunResult::default_instance_ = new RunResult();
   Language::default_instance_ = new Language();
-  Message::default_instance_->InitAsDefaultInstance();
+  NetworkMessage::default_instance_->InitAsDefaultInstance();
   RunOrder::default_instance_->InitAsDefaultInstance();
   ProblemSet::default_instance_->InitAsDefaultInstance();
   RunResult::default_instance_->InitAsDefaultInstance();
@@ -218,11 +226,11 @@ struct StaticDescriptorInitializer_Message_2eproto {
 
 // ===================================================================
 
-const ::google::protobuf::EnumDescriptor* Message_MessageType_descriptor() {
+const ::google::protobuf::EnumDescriptor* NetworkMessage_MessageType_descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return Message_MessageType_descriptor_;
+  return NetworkMessage_MessageType_descriptor_;
 }
-bool Message_MessageType_IsValid(int value) {
+bool NetworkMessage_MessageType_IsValid(int value) {
   switch(value) {
     case 0:
     case 1:
@@ -243,52 +251,52 @@ bool Message_MessageType_IsValid(int value) {
 }
 
 #ifndef _MSC_VER
-const Message_MessageType Message::CONNECT;
-const Message_MessageType Message::CHALLENGE;
-const Message_MessageType Message::CHALLENGE_RESPONSE;
-const Message_MessageType Message::ACKNOWLEDGE;
-const Message_MessageType Message::PING;
-const Message_MessageType Message::PING_RESPONSE;
-const Message_MessageType Message::RUN_ORDER;
-const Message_MessageType Message::PROBLEM_SET_REQUEST;
-const Message_MessageType Message::PROBLEM_SET;
-const Message_MessageType Message::RUN_RESULT;
-const Message_MessageType Message::LANGUAGE_REQUEST;
-const Message_MessageType Message::LANGUAGE;
-const Message_MessageType Message::MessageType_MIN;
-const Message_MessageType Message::MessageType_MAX;
-const int Message::MessageType_ARRAYSIZE;
+const NetworkMessage_MessageType NetworkMessage::CONNECT;
+const NetworkMessage_MessageType NetworkMessage::CHALLENGE;
+const NetworkMessage_MessageType NetworkMessage::CHALLENGE_RESPONSE;
+const NetworkMessage_MessageType NetworkMessage::ACKNOWLEDGE;
+const NetworkMessage_MessageType NetworkMessage::PING;
+const NetworkMessage_MessageType NetworkMessage::PING_RESPONSE;
+const NetworkMessage_MessageType NetworkMessage::RUN_ORDER;
+const NetworkMessage_MessageType NetworkMessage::PROBLEM_SET_REQUEST;
+const NetworkMessage_MessageType NetworkMessage::PROBLEM_SET;
+const NetworkMessage_MessageType NetworkMessage::RUN_RESULT;
+const NetworkMessage_MessageType NetworkMessage::LANGUAGE_REQUEST;
+const NetworkMessage_MessageType NetworkMessage::LANGUAGE;
+const NetworkMessage_MessageType NetworkMessage::MessageType_MIN;
+const NetworkMessage_MessageType NetworkMessage::MessageType_MAX;
+const int NetworkMessage::MessageType_ARRAYSIZE;
 #endif  // _MSC_VER
-const ::std::string Message::_default_text_;
+const ::std::string NetworkMessage::_default_text_;
 #ifndef _MSC_VER
-const int Message::kTypeFieldNumber;
-const int Message::kTextFieldNumber;
-const int Message::kRequestedItemIdFieldNumber;
-const int Message::kRunOrderFieldNumber;
-const int Message::kProblemSetFieldNumber;
-const int Message::kRunResultFieldNumber;
-const int Message::kLanguageFieldNumber;
+const int NetworkMessage::kTypeFieldNumber;
+const int NetworkMessage::kTextFieldNumber;
+const int NetworkMessage::kRequestedItemIdFieldNumber;
+const int NetworkMessage::kRunOrderFieldNumber;
+const int NetworkMessage::kProblemSetFieldNumber;
+const int NetworkMessage::kRunResultFieldNumber;
+const int NetworkMessage::kLanguageFieldNumber;
 #endif  // !_MSC_VER
 
-Message::Message()
+NetworkMessage::NetworkMessage()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void Message::InitAsDefaultInstance() {
+void NetworkMessage::InitAsDefaultInstance() {
   run_order_ = const_cast< ::RunOrder*>(&::RunOrder::default_instance());
   problem_set_ = const_cast< ::ProblemSet*>(&::ProblemSet::default_instance());
   run_result_ = const_cast< ::RunResult*>(&::RunResult::default_instance());
   language_ = const_cast< ::Language*>(&::Language::default_instance());
 }
 
-Message::Message(const Message& from)
+NetworkMessage::NetworkMessage(const NetworkMessage& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void Message::SharedCtor() {
+void NetworkMessage::SharedCtor() {
   _cached_size_ = 0;
   type_ = 0;
   text_ = const_cast< ::std::string*>(&_default_text_);
@@ -300,11 +308,11 @@ void Message::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-Message::~Message() {
+NetworkMessage::~NetworkMessage() {
   SharedDtor();
 }
 
-void Message::SharedDtor() {
+void NetworkMessage::SharedDtor() {
   if (text_ != &_default_text_) {
     delete text_;
   }
@@ -316,27 +324,27 @@ void Message::SharedDtor() {
   }
 }
 
-void Message::SetCachedSize(int size) const {
+void NetworkMessage::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Message::descriptor() {
+const ::google::protobuf::Descriptor* NetworkMessage::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return Message_descriptor_;
+  return NetworkMessage_descriptor_;
 }
 
-const Message& Message::default_instance() {
+const NetworkMessage& NetworkMessage::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_Message_2eproto();  return *default_instance_;
 }
 
-Message* Message::default_instance_ = NULL;
+NetworkMessage* NetworkMessage::default_instance_ = NULL;
 
-Message* Message::New() const {
-  return new Message;
+NetworkMessage* NetworkMessage::New() const {
+  return new NetworkMessage;
 }
 
-void Message::Clear() {
+void NetworkMessage::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 0;
     if (_has_bit(1)) {
@@ -362,13 +370,13 @@ void Message::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool Message::MergePartialFromCodedStream(
+bool NetworkMessage::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .Message.MessageType type = 1;
+      // required .NetworkMessage.MessageType type = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -376,8 +384,8 @@ bool Message::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::Message_MessageType_IsValid(value)) {
-            set_type(static_cast< ::Message_MessageType >(value));
+          if (::NetworkMessage_MessageType_IsValid(value)) {
+            set_type(static_cast< ::NetworkMessage_MessageType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
@@ -493,9 +501,9 @@ bool Message::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void Message::SerializeWithCachedSizes(
+void NetworkMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .Message.MessageType type = 1;
+  // required .NetworkMessage.MessageType type = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
@@ -545,9 +553,9 @@ void Message::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* Message::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* NetworkMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .Message.MessageType type = 1;
+  // required .NetworkMessage.MessageType type = 1;
   if (_has_bit(0)) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
@@ -603,11 +611,11 @@ void Message::SerializeWithCachedSizes(
   return target;
 }
 
-int Message::ByteSize() const {
+int NetworkMessage::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .Message.MessageType type = 1;
+    // required .NetworkMessage.MessageType type = 1;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
@@ -667,10 +675,10 @@ int Message::ByteSize() const {
   return total_size;
 }
 
-void Message::MergeFrom(const ::google::protobuf::Message& from) {
+void NetworkMessage::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const Message* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Message*>(
+  const NetworkMessage* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const NetworkMessage*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -679,7 +687,7 @@ void Message::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void Message::MergeFrom(const Message& from) {
+void NetworkMessage::MergeFrom(const NetworkMessage& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
@@ -707,19 +715,19 @@ void Message::MergeFrom(const Message& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void Message::CopyFrom(const ::google::protobuf::Message& from) {
+void NetworkMessage::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Message::CopyFrom(const Message& from) {
+void NetworkMessage::CopyFrom(const NetworkMessage& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Message::IsInitialized() const {
+bool NetworkMessage::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   if (has_run_order()) {
@@ -737,7 +745,7 @@ bool Message::IsInitialized() const {
   return true;
 }
 
-void Message::Swap(Message* other) {
+void NetworkMessage::Swap(NetworkMessage* other) {
   if (other != this) {
     std::swap(type_, other->type_);
     std::swap(text_, other->text_);
@@ -752,21 +760,25 @@ void Message::Swap(Message* other) {
   }
 }
 
-::google::protobuf::Metadata Message::GetMetadata() const {
+::google::protobuf::Metadata NetworkMessage::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Message_descriptor_;
-  metadata.reflection = Message_reflection_;
+  metadata.descriptor = NetworkMessage_descriptor_;
+  metadata.reflection = NetworkMessage_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
+const ::std::string RunOrder::_default_problem_hash_;
+const ::std::string RunOrder::_default_language_hash_;
 const ::std::string RunOrder::_default_attachment_;
 #ifndef _MSC_VER
 const int RunOrder::kProblemIdFieldNumber;
+const int RunOrder::kProblemHashFieldNumber;
 const int RunOrder::kLanguageIdFieldNumber;
+const int RunOrder::kLanguageHashFieldNumber;
 const int RunOrder::kRunIdFieldNumber;
 const int RunOrder::kAttachmentFieldNumber;
 #endif  // !_MSC_VER
@@ -788,7 +800,9 @@ RunOrder::RunOrder(const RunOrder& from)
 void RunOrder::SharedCtor() {
   _cached_size_ = 0;
   problem_id_ = 0u;
+  problem_hash_ = const_cast< ::std::string*>(&_default_problem_hash_);
   language_id_ = 0u;
+  language_hash_ = const_cast< ::std::string*>(&_default_language_hash_);
   run_id_ = 0u;
   attachment_ = const_cast< ::std::string*>(&_default_attachment_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -799,6 +813,12 @@ RunOrder::~RunOrder() {
 }
 
 void RunOrder::SharedDtor() {
+  if (problem_hash_ != &_default_problem_hash_) {
+    delete problem_hash_;
+  }
+  if (language_hash_ != &_default_language_hash_) {
+    delete language_hash_;
+  }
   if (attachment_ != &_default_attachment_) {
     delete attachment_;
   }
@@ -829,9 +849,19 @@ RunOrder* RunOrder::New() const {
 void RunOrder::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     problem_id_ = 0u;
+    if (_has_bit(1)) {
+      if (problem_hash_ != &_default_problem_hash_) {
+        problem_hash_->clear();
+      }
+    }
     language_id_ = 0u;
-    run_id_ = 0u;
     if (_has_bit(3)) {
+      if (language_hash_ != &_default_language_hash_) {
+        language_hash_->clear();
+      }
+    }
+    run_id_ = 0u;
+    if (_has_bit(5)) {
       if (attachment_ != &_default_attachment_) {
         attachment_->clear();
       }
@@ -858,44 +888,78 @@ bool RunOrder::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_language_id;
+        if (input->ExpectTag(18)) goto parse_problem_hash;
         break;
       }
       
-      // required uint32 language_id = 2;
+      // required string problem_hash = 2;
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_problem_hash:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_problem_hash()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->problem_hash().data(), this->problem_hash().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_language_id;
+        break;
+      }
+      
+      // required uint32 language_id = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_language_id:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &language_id_)));
-          _set_bit(1);
+          _set_bit(2);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_run_id;
+        if (input->ExpectTag(34)) goto parse_language_hash;
         break;
       }
       
-      // required uint32 run_id = 3;
-      case 3: {
+      // required string language_hash = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_language_hash:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_language_hash()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->language_hash().data(), this->language_hash().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_run_id;
+        break;
+      }
+      
+      // required uint32 run_id = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_run_id:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &run_id_)));
-          _set_bit(2);
+          _set_bit(4);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_attachment;
+        if (input->ExpectTag(50)) goto parse_attachment;
         break;
       }
       
-      // required bytes attachment = 4;
-      case 4: {
+      // required bytes attachment = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_attachment:
@@ -931,20 +995,38 @@ void RunOrder::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->problem_id(), output);
   }
   
-  // required uint32 language_id = 2;
+  // required string problem_hash = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->language_id(), output);
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->problem_hash().data(), this->problem_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->problem_hash(), output);
   }
   
-  // required uint32 run_id = 3;
+  // required uint32 language_id = 3;
   if (_has_bit(2)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->run_id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->language_id(), output);
   }
   
-  // required bytes attachment = 4;
+  // required string language_hash = 4;
   if (_has_bit(3)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->language_hash().data(), this->language_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->language_hash(), output);
+  }
+  
+  // required uint32 run_id = 5;
+  if (_has_bit(4)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->run_id(), output);
+  }
+  
+  // required bytes attachment = 6;
+  if (_has_bit(5)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      4, this->attachment(), output);
+      6, this->attachment(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -960,21 +1042,41 @@ void RunOrder::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->problem_id(), target);
   }
   
-  // required uint32 language_id = 2;
+  // required string problem_hash = 2;
   if (_has_bit(1)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->language_id(), target);
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->problem_hash().data(), this->problem_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->problem_hash(), target);
   }
   
-  // required uint32 run_id = 3;
+  // required uint32 language_id = 3;
   if (_has_bit(2)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->run_id(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->language_id(), target);
   }
   
-  // required bytes attachment = 4;
+  // required string language_hash = 4;
   if (_has_bit(3)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->language_hash().data(), this->language_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->language_hash(), target);
+  }
+  
+  // required uint32 run_id = 5;
+  if (_has_bit(4)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->run_id(), target);
+  }
+  
+  // required bytes attachment = 6;
+  if (_has_bit(5)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        4, this->attachment(), target);
+        6, this->attachment(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -995,21 +1097,35 @@ int RunOrder::ByteSize() const {
           this->problem_id());
     }
     
-    // required uint32 language_id = 2;
+    // required string problem_hash = 2;
+    if (has_problem_hash()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->problem_hash());
+    }
+    
+    // required uint32 language_id = 3;
     if (has_language_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->language_id());
     }
     
-    // required uint32 run_id = 3;
+    // required string language_hash = 4;
+    if (has_language_hash()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->language_hash());
+    }
+    
+    // required uint32 run_id = 5;
     if (has_run_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->run_id());
     }
     
-    // required bytes attachment = 4;
+    // required bytes attachment = 6;
     if (has_attachment()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -1047,12 +1163,18 @@ void RunOrder::MergeFrom(const RunOrder& from) {
       set_problem_id(from.problem_id());
     }
     if (from._has_bit(1)) {
-      set_language_id(from.language_id());
+      set_problem_hash(from.problem_hash());
     }
     if (from._has_bit(2)) {
-      set_run_id(from.run_id());
+      set_language_id(from.language_id());
     }
     if (from._has_bit(3)) {
+      set_language_hash(from.language_hash());
+    }
+    if (from._has_bit(4)) {
+      set_run_id(from.run_id());
+    }
+    if (from._has_bit(5)) {
       set_attachment(from.attachment());
     }
   }
@@ -1072,7 +1194,7 @@ void RunOrder::CopyFrom(const RunOrder& from) {
 }
 
 bool RunOrder::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
   
   return true;
 }
@@ -1080,7 +1202,9 @@ bool RunOrder::IsInitialized() const {
 void RunOrder::Swap(RunOrder* other) {
   if (other != this) {
     std::swap(problem_id_, other->problem_id_);
+    std::swap(problem_hash_, other->problem_hash_);
     std::swap(language_id_, other->language_id_);
+    std::swap(language_hash_, other->language_hash_);
     std::swap(run_id_, other->run_id_);
     std::swap(attachment_, other->attachment_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -1100,9 +1224,12 @@ void RunOrder::Swap(RunOrder* other) {
 
 // ===================================================================
 
+const ::std::string ProblemSet::_default_problem_id_;
+const ::std::string ProblemSet::_default_problem_hash_;
 const ::std::string ProblemSet::_default_attachment_;
 #ifndef _MSC_VER
 const int ProblemSet::kProblemIdFieldNumber;
+const int ProblemSet::kProblemHashFieldNumber;
 const int ProblemSet::kAttachmentFieldNumber;
 #endif  // !_MSC_VER
 
@@ -1122,7 +1249,8 @@ ProblemSet::ProblemSet(const ProblemSet& from)
 
 void ProblemSet::SharedCtor() {
   _cached_size_ = 0;
-  problem_id_ = 0u;
+  problem_id_ = const_cast< ::std::string*>(&_default_problem_id_);
+  problem_hash_ = const_cast< ::std::string*>(&_default_problem_hash_);
   attachment_ = const_cast< ::std::string*>(&_default_attachment_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1132,6 +1260,12 @@ ProblemSet::~ProblemSet() {
 }
 
 void ProblemSet::SharedDtor() {
+  if (problem_id_ != &_default_problem_id_) {
+    delete problem_id_;
+  }
+  if (problem_hash_ != &_default_problem_hash_) {
+    delete problem_hash_;
+  }
   if (attachment_ != &_default_attachment_) {
     delete attachment_;
   }
@@ -1161,8 +1295,17 @@ ProblemSet* ProblemSet::New() const {
 
 void ProblemSet::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    problem_id_ = 0u;
+    if (_has_bit(0)) {
+      if (problem_id_ != &_default_problem_id_) {
+        problem_id_->clear();
+      }
+    }
     if (_has_bit(1)) {
+      if (problem_hash_ != &_default_problem_hash_) {
+        problem_hash_->clear();
+      }
+    }
+    if (_has_bit(2)) {
       if (attachment_ != &_default_attachment_) {
         attachment_->clear();
       }
@@ -1178,23 +1321,41 @@ bool ProblemSet::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 problem_id = 1;
+      // required string problem_id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &problem_id_)));
-          _set_bit(0);
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_problem_id()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->problem_id().data(), this->problem_id().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_attachment;
+        if (input->ExpectTag(18)) goto parse_problem_hash;
         break;
       }
       
-      // required bytes attachment = 2;
+      // required string problem_hash = 2;
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_problem_hash:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_problem_hash()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->problem_hash().data(), this->problem_hash().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_attachment;
+        break;
+      }
+      
+      // required bytes attachment = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_attachment:
@@ -1225,15 +1386,28 @@ bool ProblemSet::MergePartialFromCodedStream(
 
 void ProblemSet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 problem_id = 1;
+  // required string problem_id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->problem_id(), output);
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->problem_id().data(), this->problem_id().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->problem_id(), output);
   }
   
-  // required bytes attachment = 2;
+  // required string problem_hash = 2;
   if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->problem_hash().data(), this->problem_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->problem_hash(), output);
+  }
+  
+  // required bytes attachment = 3;
+  if (_has_bit(2)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->attachment(), output);
+      3, this->attachment(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1244,16 +1418,31 @@ void ProblemSet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ProblemSet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 problem_id = 1;
+  // required string problem_id = 1;
   if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->problem_id(), target);
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->problem_id().data(), this->problem_id().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->problem_id(), target);
   }
   
-  // required bytes attachment = 2;
+  // required string problem_hash = 2;
   if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->problem_hash().data(), this->problem_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->problem_hash(), target);
+  }
+  
+  // required bytes attachment = 3;
+  if (_has_bit(2)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->attachment(), target);
+        3, this->attachment(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1267,14 +1456,21 @@ int ProblemSet::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 problem_id = 1;
+    // required string problem_id = 1;
     if (has_problem_id()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        ::google::protobuf::internal::WireFormatLite::StringSize(
           this->problem_id());
     }
     
-    // required bytes attachment = 2;
+    // required string problem_hash = 2;
+    if (has_problem_hash()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->problem_hash());
+    }
+    
+    // required bytes attachment = 3;
     if (has_attachment()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -1312,6 +1508,9 @@ void ProblemSet::MergeFrom(const ProblemSet& from) {
       set_problem_id(from.problem_id());
     }
     if (from._has_bit(1)) {
+      set_problem_hash(from.problem_hash());
+    }
+    if (from._has_bit(2)) {
       set_attachment(from.attachment());
     }
   }
@@ -1331,7 +1530,7 @@ void ProblemSet::CopyFrom(const ProblemSet& from) {
 }
 
 bool ProblemSet::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
   return true;
 }
@@ -1339,6 +1538,7 @@ bool ProblemSet::IsInitialized() const {
 void ProblemSet::Swap(ProblemSet* other) {
   if (other != this) {
     std::swap(problem_id_, other->problem_id_);
+    std::swap(problem_hash_, other->problem_hash_);
     std::swap(attachment_, other->attachment_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -1357,13 +1557,14 @@ void ProblemSet::Swap(ProblemSet* other) {
 
 // ===================================================================
 
-const ::std::string RunResult::_default_stdout_;
-const ::std::string RunResult::_default_stderr_;
+const ::std::string RunResult::_default_team_stdout_;
+const ::std::string RunResult::_default_team_stderr_;
 #ifndef _MSC_VER
 const int RunResult::kRunIdFieldNumber;
 const int RunResult::kResultFieldNumber;
-const int RunResult::kStdoutFieldNumber;
-const int RunResult::kStderrFieldNumber;
+const int RunResult::kTeamStdoutFieldNumber;
+const int RunResult::kTeamStderrFieldNumber;
+const int RunResult::kRunTimeFieldNumber;
 #endif  // !_MSC_VER
 
 RunResult::RunResult()
@@ -1384,8 +1585,9 @@ void RunResult::SharedCtor() {
   _cached_size_ = 0;
   run_id_ = 0u;
   result_ = 0u;
-  stdout_ = const_cast< ::std::string*>(&_default_stdout_);
-  stderr_ = const_cast< ::std::string*>(&_default_stderr_);
+  team_stdout_ = const_cast< ::std::string*>(&_default_team_stdout_);
+  team_stderr_ = const_cast< ::std::string*>(&_default_team_stderr_);
+  run_time_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1394,11 +1596,11 @@ RunResult::~RunResult() {
 }
 
 void RunResult::SharedDtor() {
-  if (stdout_ != &_default_stdout_) {
-    delete stdout_;
+  if (team_stdout_ != &_default_team_stdout_) {
+    delete team_stdout_;
   }
-  if (stderr_ != &_default_stderr_) {
-    delete stderr_;
+  if (team_stderr_ != &_default_team_stderr_) {
+    delete team_stderr_;
   }
   if (this != default_instance_) {
   }
@@ -1429,15 +1631,16 @@ void RunResult::Clear() {
     run_id_ = 0u;
     result_ = 0u;
     if (_has_bit(2)) {
-      if (stdout_ != &_default_stdout_) {
-        stdout_->clear();
+      if (team_stdout_ != &_default_team_stdout_) {
+        team_stdout_->clear();
       }
     }
     if (_has_bit(3)) {
-      if (stderr_ != &_default_stderr_) {
-        stderr_->clear();
+      if (team_stderr_ != &_default_team_stderr_) {
+        team_stderr_->clear();
       }
     }
+    run_time_ = GOOGLE_ULONGLONG(0);
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -1476,37 +1679,53 @@ bool RunResult::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_stdout;
+        if (input->ExpectTag(26)) goto parse_team_stdout;
         break;
       }
       
-      // optional string stdout = 3;
+      // optional string team_stdout = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_stdout:
+         parse_team_stdout:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_stdout()));
+                input, this->mutable_team_stdout()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->stdout().data(), this->stdout().length(),
+            this->team_stdout().data(), this->team_stdout().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_stderr;
+        if (input->ExpectTag(34)) goto parse_team_stderr;
         break;
       }
       
-      // optional string stderr = 4;
+      // optional string team_stderr = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_stderr:
+         parse_team_stderr:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_stderr()));
+                input, this->mutable_team_stderr()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->stderr().data(), this->stderr().length(),
+            this->team_stderr().data(), this->team_stderr().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_run_time;
+        break;
+      }
+      
+      // optional uint64 run_time = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_run_time:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &run_time_)));
+          _set_bit(4);
         } else {
           goto handle_uninterpreted;
         }
@@ -1542,22 +1761,27 @@ void RunResult::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->result(), output);
   }
   
-  // optional string stdout = 3;
+  // optional string team_stdout = 3;
   if (_has_bit(2)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->stdout().data(), this->stdout().length(),
+      this->team_stdout().data(), this->team_stdout().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->stdout(), output);
+      3, this->team_stdout(), output);
   }
   
-  // optional string stderr = 4;
+  // optional string team_stderr = 4;
   if (_has_bit(3)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->stderr().data(), this->stderr().length(),
+      this->team_stderr().data(), this->team_stderr().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->stderr(), output);
+      4, this->team_stderr(), output);
+  }
+  
+  // optional uint64 run_time = 5;
+  if (_has_bit(4)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(5, this->run_time(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1578,24 +1802,29 @@ void RunResult::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->result(), target);
   }
   
-  // optional string stdout = 3;
+  // optional string team_stdout = 3;
   if (_has_bit(2)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->stdout().data(), this->stdout().length(),
+      this->team_stdout().data(), this->team_stdout().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->stdout(), target);
+        3, this->team_stdout(), target);
   }
   
-  // optional string stderr = 4;
+  // optional string team_stderr = 4;
   if (_has_bit(3)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->stderr().data(), this->stderr().length(),
+      this->team_stderr().data(), this->team_stderr().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->stderr(), target);
+        4, this->team_stderr(), target);
+  }
+  
+  // optional uint64 run_time = 5;
+  if (_has_bit(4)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(5, this->run_time(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1623,18 +1852,25 @@ int RunResult::ByteSize() const {
           this->result());
     }
     
-    // optional string stdout = 3;
-    if (has_stdout()) {
+    // optional string team_stdout = 3;
+    if (has_team_stdout()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->stdout());
+          this->team_stdout());
     }
     
-    // optional string stderr = 4;
-    if (has_stderr()) {
+    // optional string team_stderr = 4;
+    if (has_team_stderr()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->stderr());
+          this->team_stderr());
+    }
+    
+    // optional uint64 run_time = 5;
+    if (has_run_time()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->run_time());
     }
     
   }
@@ -1671,10 +1907,13 @@ void RunResult::MergeFrom(const RunResult& from) {
       set_result(from.result());
     }
     if (from._has_bit(2)) {
-      set_stdout(from.stdout());
+      set_team_stdout(from.team_stdout());
     }
     if (from._has_bit(3)) {
-      set_stderr(from.stderr());
+      set_team_stderr(from.team_stderr());
+    }
+    if (from._has_bit(4)) {
+      set_run_time(from.run_time());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1702,8 +1941,9 @@ void RunResult::Swap(RunResult* other) {
   if (other != this) {
     std::swap(run_id_, other->run_id_);
     std::swap(result_, other->result_);
-    std::swap(stdout_, other->stdout_);
-    std::swap(stderr_, other->stderr_);
+    std::swap(team_stdout_, other->team_stdout_);
+    std::swap(team_stderr_, other->team_stderr_);
+    std::swap(run_time_, other->run_time_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1721,9 +1961,11 @@ void RunResult::Swap(RunResult* other) {
 
 // ===================================================================
 
+const ::std::string Language::_default_language_hash_;
 const ::std::string Language::_default_attachment_;
 #ifndef _MSC_VER
 const int Language::kLanguageIdFieldNumber;
+const int Language::kLanguageHashFieldNumber;
 const int Language::kAttachmentFieldNumber;
 #endif  // !_MSC_VER
 
@@ -1744,6 +1986,7 @@ Language::Language(const Language& from)
 void Language::SharedCtor() {
   _cached_size_ = 0;
   language_id_ = 0u;
+  language_hash_ = const_cast< ::std::string*>(&_default_language_hash_);
   attachment_ = const_cast< ::std::string*>(&_default_attachment_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1753,6 +1996,9 @@ Language::~Language() {
 }
 
 void Language::SharedDtor() {
+  if (language_hash_ != &_default_language_hash_) {
+    delete language_hash_;
+  }
   if (attachment_ != &_default_attachment_) {
     delete attachment_;
   }
@@ -1784,6 +2030,11 @@ void Language::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     language_id_ = 0u;
     if (_has_bit(1)) {
+      if (language_hash_ != &_default_language_hash_) {
+        language_hash_->clear();
+      }
+    }
+    if (_has_bit(2)) {
       if (attachment_ != &_default_attachment_) {
         attachment_->clear();
       }
@@ -1810,12 +2061,29 @@ bool Language::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_attachment;
+        if (input->ExpectTag(18)) goto parse_language_hash;
         break;
       }
       
-      // required bytes attachment = 2;
+      // required string language_hash = 2;
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_language_hash:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_language_hash()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->language_hash().data(), this->language_hash().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_attachment;
+        break;
+      }
+      
+      // required bytes attachment = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_attachment:
@@ -1851,10 +2119,19 @@ void Language::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->language_id(), output);
   }
   
-  // required bytes attachment = 2;
+  // required string language_hash = 2;
   if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->language_hash().data(), this->language_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->language_hash(), output);
+  }
+  
+  // required bytes attachment = 3;
+  if (_has_bit(2)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->attachment(), output);
+      3, this->attachment(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1870,11 +2147,21 @@ void Language::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->language_id(), target);
   }
   
-  // required bytes attachment = 2;
+  // required string language_hash = 2;
   if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->language_hash().data(), this->language_hash().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->language_hash(), target);
+  }
+  
+  // required bytes attachment = 3;
+  if (_has_bit(2)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->attachment(), target);
+        3, this->attachment(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1895,7 +2182,14 @@ int Language::ByteSize() const {
           this->language_id());
     }
     
-    // required bytes attachment = 2;
+    // required string language_hash = 2;
+    if (has_language_hash()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->language_hash());
+    }
+    
+    // required bytes attachment = 3;
     if (has_attachment()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -1933,6 +2227,9 @@ void Language::MergeFrom(const Language& from) {
       set_language_id(from.language_id());
     }
     if (from._has_bit(1)) {
+      set_language_hash(from.language_hash());
+    }
+    if (from._has_bit(2)) {
       set_attachment(from.attachment());
     }
   }
@@ -1952,7 +2249,7 @@ void Language::CopyFrom(const Language& from) {
 }
 
 bool Language::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
   return true;
 }
@@ -1960,6 +2257,7 @@ bool Language::IsInitialized() const {
 void Language::Swap(Language* other) {
   if (other != this) {
     std::swap(language_id_, other->language_id_);
+    std::swap(language_hash_, other->language_hash_);
     std::swap(attachment_, other->attachment_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
