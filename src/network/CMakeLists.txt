@@ -5,4 +5,4 @@ set(NETWORK_HDR Message.pb.h Connection.h RunnerConnection.h ServerNetwork.h Run
 
 add_library(network ${NETWORK_SRC})
 
-target_link_libraries(network polarssl pthread protobuf ${Boost_system_LIBRARY} ${Boost_regex_LIBRARY} ${Boost_program_options_LIBRARY} ${APR_LIBRARIES})
+target_link_libraries(network polarssl pthread ${PROTOBUF_LIBRARY} ${Boost_system_LIBRARY} ${Boost_regex_LIBRARY} ${Boost_date_time_LIBRARY} ${Boost_program_options_LIBRARY} ${APR_LIBRARIES})
