@@ -11,8 +11,9 @@
 class RunnerConnectionListener
 {
 public:
+  virtual void authenticated() {}
   virtual void disconnected() {}
-  virtual void receiveProblemSetRequest(boost::uint32_t pid) = 0;
+  virtual void receiveProblemSetRequest(std::string pid) = 0;
   virtual void receiveLanguageRequest(boost::uint32_t lid) = 0;
   virtual void receiveRunResult(RunResult) = 0;
 };
@@ -25,7 +26,7 @@ public:
   boost::asio::ip::tcp::socket& socket();
   void start();
   void sendMessage();
-  void sendRunOrder(boost::uint32_t run_id, boost::uint32_t problem_id, boost::uint32_t language_id, std::string attachment);  
+  void sendRunOrder(uint32_t run_id, std::string problem_id, std::string problem_hash, uint32_t language_id, std::string language_hash, std::string attachment);  
   void sendProblemSet(std::string problem_id, std::string problem_hash, std::string attachment);  
   void sendLanguage(boost::uint32_t language_id, std::string language_hash, std::string attachment);
   void addListener(RunnerConnectionListener& rcl);
@@ -47,7 +48,7 @@ private:
   bool authenticated_;
   std::string challenge_; 
   
-  boost::ptr_vector<RunnerConnectionListener> listeners_;
+  std::vector<RunnerConnectionListener*> listeners_;
 };
 
 #endif // RUNNERCONNECTION_H

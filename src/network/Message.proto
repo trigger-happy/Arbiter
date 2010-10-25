@@ -15,7 +15,7 @@ message NetworkMessage {
   }
   
   required MessageType type = 1;
-  optional string text = 2;
+  optional bytes text = 2;
   optional uint32 requested_item_id = 3;
   optional RunOrder run_order = 4;
   optional ProblemSet problem_set = 5;
@@ -24,17 +24,17 @@ message NetworkMessage {
 }
 
 message RunOrder {
-  required uint32 problem_id = 1;
-  required string problem_hash = 2;
+  required bytes problem_id = 1;
+  required bytes problem_hash = 2;
   required uint32 language_id = 3;
-  required string language_hash = 4;
+  required bytes language_hash = 4;
   required uint32 run_id = 5;
   required bytes attachment = 6;
 }
 
 message ProblemSet {
-  required string problem_id = 1;
-  required string problem_hash = 2;
+  required bytes problem_id = 1;
+  required bytes problem_hash = 2;
   required bytes attachment = 3;
 }
 
@@ -48,6 +48,6 @@ message RunResult {
 
 message Language {
   required uint32 language_id = 1;
-  required string language_hash = 2;
+  required bytes language_hash = 2;
   required bytes attachment = 3;
 }

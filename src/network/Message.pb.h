@@ -162,14 +162,14 @@ class NetworkMessage : public ::google::protobuf::Message {
   inline ::NetworkMessage_MessageType type() const;
   inline void set_type(::NetworkMessage_MessageType value);
   
-  // optional string text = 2;
+  // optional bytes text = 2;
   inline bool has_text() const;
   inline void clear_text();
   static const int kTextFieldNumber = 2;
   inline const ::std::string& text() const;
   inline void set_text(const ::std::string& value);
   inline void set_text(const char* value);
-  inline void set_text(const char* value, size_t size);
+  inline void set_text(const void* value, size_t size);
   inline ::std::string* mutable_text();
   
   // optional uint32 requested_item_id = 3;
@@ -296,21 +296,24 @@ class RunOrder : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 problem_id = 1;
+  // required bytes problem_id = 1;
   inline bool has_problem_id() const;
   inline void clear_problem_id();
   static const int kProblemIdFieldNumber = 1;
-  inline ::google::protobuf::uint32 problem_id() const;
-  inline void set_problem_id(::google::protobuf::uint32 value);
+  inline const ::std::string& problem_id() const;
+  inline void set_problem_id(const ::std::string& value);
+  inline void set_problem_id(const char* value);
+  inline void set_problem_id(const void* value, size_t size);
+  inline ::std::string* mutable_problem_id();
   
-  // required string problem_hash = 2;
+  // required bytes problem_hash = 2;
   inline bool has_problem_hash() const;
   inline void clear_problem_hash();
   static const int kProblemHashFieldNumber = 2;
   inline const ::std::string& problem_hash() const;
   inline void set_problem_hash(const ::std::string& value);
   inline void set_problem_hash(const char* value);
-  inline void set_problem_hash(const char* value, size_t size);
+  inline void set_problem_hash(const void* value, size_t size);
   inline ::std::string* mutable_problem_hash();
   
   // required uint32 language_id = 3;
@@ -320,14 +323,14 @@ class RunOrder : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 language_id() const;
   inline void set_language_id(::google::protobuf::uint32 value);
   
-  // required string language_hash = 4;
+  // required bytes language_hash = 4;
   inline bool has_language_hash() const;
   inline void clear_language_hash();
   static const int kLanguageHashFieldNumber = 4;
   inline const ::std::string& language_hash() const;
   inline void set_language_hash(const ::std::string& value);
   inline void set_language_hash(const char* value);
-  inline void set_language_hash(const char* value, size_t size);
+  inline void set_language_hash(const void* value, size_t size);
   inline ::std::string* mutable_language_hash();
   
   // required uint32 run_id = 5;
@@ -352,7 +355,8 @@ class RunOrder : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::uint32 problem_id_;
+  ::std::string* problem_id_;
+  static const ::std::string _default_problem_id_;
   ::std::string* problem_hash_;
   static const ::std::string _default_problem_hash_;
   ::google::protobuf::uint32 language_id_;
@@ -437,24 +441,24 @@ class ProblemSet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string problem_id = 1;
+  // required bytes problem_id = 1;
   inline bool has_problem_id() const;
   inline void clear_problem_id();
   static const int kProblemIdFieldNumber = 1;
   inline const ::std::string& problem_id() const;
   inline void set_problem_id(const ::std::string& value);
   inline void set_problem_id(const char* value);
-  inline void set_problem_id(const char* value, size_t size);
+  inline void set_problem_id(const void* value, size_t size);
   inline ::std::string* mutable_problem_id();
   
-  // required string problem_hash = 2;
+  // required bytes problem_hash = 2;
   inline bool has_problem_hash() const;
   inline void clear_problem_hash();
   static const int kProblemHashFieldNumber = 2;
   inline const ::std::string& problem_hash() const;
   inline void set_problem_hash(const ::std::string& value);
   inline void set_problem_hash(const char* value);
-  inline void set_problem_hash(const char* value, size_t size);
+  inline void set_problem_hash(const void* value, size_t size);
   inline ::std::string* mutable_problem_hash();
   
   // required bytes attachment = 3;
@@ -690,14 +694,14 @@ class Language : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 language_id() const;
   inline void set_language_id(::google::protobuf::uint32 value);
   
-  // required string language_hash = 2;
+  // required bytes language_hash = 2;
   inline bool has_language_hash() const;
   inline void clear_language_hash();
   static const int kLanguageHashFieldNumber = 2;
   inline const ::std::string& language_hash() const;
   inline void set_language_hash(const ::std::string& value);
   inline void set_language_hash(const char* value);
-  inline void set_language_hash(const char* value, size_t size);
+  inline void set_language_hash(const void* value, size_t size);
   inline ::std::string* mutable_language_hash();
   
   // required bytes attachment = 3;
@@ -764,7 +768,7 @@ inline void NetworkMessage::set_type(::NetworkMessage_MessageType value) {
   type_ = value;
 }
 
-// optional string text = 2;
+// optional bytes text = 2;
 inline bool NetworkMessage::has_text() const {
   return _has_bit(1);
 }
@@ -791,7 +795,7 @@ inline void NetworkMessage::set_text(const char* value) {
   }
   text_->assign(value);
 }
-inline void NetworkMessage::set_text(const char* value, size_t size) {
+inline void NetworkMessage::set_text(const void* value, size_t size) {
   _set_bit(1);
   if (text_ == &_default_text_) {
     text_ = new ::std::string;
@@ -894,23 +898,49 @@ inline ::Language* NetworkMessage::mutable_language() {
 
 // RunOrder
 
-// required uint32 problem_id = 1;
+// required bytes problem_id = 1;
 inline bool RunOrder::has_problem_id() const {
   return _has_bit(0);
 }
 inline void RunOrder::clear_problem_id() {
-  problem_id_ = 0u;
+  if (problem_id_ != &_default_problem_id_) {
+    problem_id_->clear();
+  }
   _clear_bit(0);
 }
-inline ::google::protobuf::uint32 RunOrder::problem_id() const {
+inline const ::std::string& RunOrder::problem_id() const {
+  return *problem_id_;
+}
+inline void RunOrder::set_problem_id(const ::std::string& value) {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
+  problem_id_->assign(value);
+}
+inline void RunOrder::set_problem_id(const char* value) {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
+  problem_id_->assign(value);
+}
+inline void RunOrder::set_problem_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
+  problem_id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* RunOrder::mutable_problem_id() {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
   return problem_id_;
 }
-inline void RunOrder::set_problem_id(::google::protobuf::uint32 value) {
-  _set_bit(0);
-  problem_id_ = value;
-}
 
-// required string problem_hash = 2;
+// required bytes problem_hash = 2;
 inline bool RunOrder::has_problem_hash() const {
   return _has_bit(1);
 }
@@ -937,7 +967,7 @@ inline void RunOrder::set_problem_hash(const char* value) {
   }
   problem_hash_->assign(value);
 }
-inline void RunOrder::set_problem_hash(const char* value, size_t size) {
+inline void RunOrder::set_problem_hash(const void* value, size_t size) {
   _set_bit(1);
   if (problem_hash_ == &_default_problem_hash_) {
     problem_hash_ = new ::std::string;
@@ -968,7 +998,7 @@ inline void RunOrder::set_language_id(::google::protobuf::uint32 value) {
   language_id_ = value;
 }
 
-// required string language_hash = 4;
+// required bytes language_hash = 4;
 inline bool RunOrder::has_language_hash() const {
   return _has_bit(3);
 }
@@ -995,7 +1025,7 @@ inline void RunOrder::set_language_hash(const char* value) {
   }
   language_hash_->assign(value);
 }
-inline void RunOrder::set_language_hash(const char* value, size_t size) {
+inline void RunOrder::set_language_hash(const void* value, size_t size) {
   _set_bit(3);
   if (language_hash_ == &_default_language_hash_) {
     language_hash_ = new ::std::string;
@@ -1072,7 +1102,7 @@ inline ::std::string* RunOrder::mutable_attachment() {
 
 // ProblemSet
 
-// required string problem_id = 1;
+// required bytes problem_id = 1;
 inline bool ProblemSet::has_problem_id() const {
   return _has_bit(0);
 }
@@ -1099,7 +1129,7 @@ inline void ProblemSet::set_problem_id(const char* value) {
   }
   problem_id_->assign(value);
 }
-inline void ProblemSet::set_problem_id(const char* value, size_t size) {
+inline void ProblemSet::set_problem_id(const void* value, size_t size) {
   _set_bit(0);
   if (problem_id_ == &_default_problem_id_) {
     problem_id_ = new ::std::string;
@@ -1114,7 +1144,7 @@ inline ::std::string* ProblemSet::mutable_problem_id() {
   return problem_id_;
 }
 
-// required string problem_hash = 2;
+// required bytes problem_hash = 2;
 inline bool ProblemSet::has_problem_hash() const {
   return _has_bit(1);
 }
@@ -1141,7 +1171,7 @@ inline void ProblemSet::set_problem_hash(const char* value) {
   }
   problem_hash_->assign(value);
 }
-inline void ProblemSet::set_problem_hash(const char* value, size_t size) {
+inline void ProblemSet::set_problem_hash(const void* value, size_t size) {
   _set_bit(1);
   if (problem_hash_ == &_default_problem_hash_) {
     problem_hash_ = new ::std::string;
@@ -1354,7 +1384,7 @@ inline void Language::set_language_id(::google::protobuf::uint32 value) {
   language_id_ = value;
 }
 
-// required string language_hash = 2;
+// required bytes language_hash = 2;
 inline bool Language::has_language_hash() const {
   return _has_bit(1);
 }
@@ -1381,7 +1411,7 @@ inline void Language::set_language_hash(const char* value) {
   }
   language_hash_->assign(value);
 }
-inline void Language::set_language_hash(const char* value, size_t size) {
+inline void Language::set_language_hash(const void* value, size_t size) {
   _set_bit(1);
   if (language_hash_ == &_default_language_hash_) {
     language_hash_ = new ::std::string;

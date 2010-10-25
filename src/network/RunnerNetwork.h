@@ -11,6 +11,7 @@ class RunnerNetworkListener
 {
 public:
   virtual void connected() {}
+  virtual void authenticated() {}
   virtual void disconnected() {}  
   virtual void connectionFailed() = 0;
   virtual void receiveRunOrder(RunOrder) = 0;
@@ -47,7 +48,7 @@ private:
   
   bool authenticated_;
   
-  boost::ptr_vector<RunnerNetworkListener> listeners_;
+  std::vector<RunnerNetworkListener*> listeners_;
 };
 
 #endif // RUNNER_NETWORK_H

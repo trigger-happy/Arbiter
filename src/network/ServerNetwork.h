@@ -26,7 +26,7 @@ private:
   
   boost::asio::ip::tcp::acceptor acceptor_;
   
-  boost::ptr_vector<ServerNetworkListener> listeners_;
+  std::vector<ServerNetworkListener*> listeners_;
 };
 
 
