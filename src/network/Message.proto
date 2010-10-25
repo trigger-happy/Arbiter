@@ -1,0 +1,48 @@
+message Message {
+  enum MessageType {
+    CONNECT = 0;
+    CHALLENGE = 1;
+    CHALLENGE_RESPONSE = 2;
+    ACKNOWLEDGE = 3;
+    PING = 4;
+    PING_RESPONSE = 5;
+    RUN_ORDER = 6;
+    PROBLEM_SET_REQUEST = 7;
+    PROBLEM_SET = 8;
+    RUN_RESULT = 9;
+    LANGUAGE_REQUEST = 10;
+    LANGUAGE = 11;
+  }
+  
+  required MessageType type = 1;
+  optional string text = 2;
+  optional uint32 requested_item_id = 3;
+  optional RunOrder run_order = 4;
+  optional ProblemSet problem_set = 5;
+  optional RunResult run_result = 6;
+  optional Language language = 7;
+}
+
+message RunOrder {
+  required uint32 problem_id = 1;
+  required uint32 language_id = 2;
+  required uint32 run_id = 3;
+  required bytes attachment = 4;
+}
+
+message ProblemSet {
+  required uint32 problem_id = 1;
+  required bytes attachment = 2;
+}
+
+message RunResult {
+  required uint32 run_id = 1;
+  required uint32 result = 2;  
+  optional string stdout = 3;
+  optional string stderr = 4;
+}
+
+message Language {
+  required uint32 language_id = 1;
+  required bytes attachment = 2;
+}
