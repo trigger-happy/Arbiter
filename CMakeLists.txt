@@ -7,7 +7,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 SET(Boost_USE_MULTITHREAD ON)
 SET(Boost_USE_STATIC_LIBS ON)
 #SET(Boost_ADDITIONAL_VERSIONS "1.43.0")
-FIND_PACKAGE(Boost 1.44.0 COMPONENTS program_options 
+FIND_PACKAGE(Boost 1.43.0 COMPONENTS program_options 
 					system
 					thread
 					regex
