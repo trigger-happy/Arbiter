@@ -1,7 +1,7 @@
 #include "ServerNetwork.h"
 
-ServerNetwork::ServerNetwork(boost::asio::io_service& io_service, std::string secret, uint64_t pingTime)
-  : acceptor_(io_service)
+ServerNetwork::ServerNetwork(boost::asio::io_service& io_service, uint16_t port, std::string secret, uint64_t pingTime)
+  : acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
 {
   secret_ = secret;
   pingTime_ = pingTime;

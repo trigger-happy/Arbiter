@@ -1,7 +1,14 @@
 #include "RunnerNetwork.h"
 #include <polarssl/sha2.h>
+#include <sstream>
 
-RunnerNetwork::RunnerNetwork(boost::asio::io_service& io_service, std::string address, std::string port, uint64_t pingTime)
+std::string itoa(uint16_t num) {
+  std::stringstream s;
+  s << num;
+  return s.str();  
+}
+
+RunnerNetwork::RunnerNetwork(boost::asio::io_service& io_service, std::string address, uint16_t port, uint64_t pingTime)
   : connection_(new Connection(io_service)), timer_(io_service), pingTimer_(io_service)
 {
   pingTime_ = pingTime;
@@ -9,7 +16,7 @@ RunnerNetwork::RunnerNetwork(boost::asio::io_service& io_service, std::string ad
   
   // Resolve the host name into an IP address.
   boost::asio::ip::tcp::resolver resolver(io_service);
-  boost::asio::ip::tcp::resolver::query query(address, port);
+  boost::asio::ip::tcp::resolver::query query(address, itoa(port));
   boost::asio::ip::tcp::resolver::iterator endpoint_iterator =
     resolver.resolve(query);
   boost::asio::ip::tcp::endpoint endpoint = *endpoint_iterator;
