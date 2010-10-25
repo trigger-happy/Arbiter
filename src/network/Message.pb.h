@@ -30,51 +30,51 @@ void  protobuf_AddDesc_Message_2eproto();
 void protobuf_AssignDesc_Message_2eproto();
 void protobuf_ShutdownFile_Message_2eproto();
 
-class Message;
+class NetworkMessage;
 class RunOrder;
 class ProblemSet;
 class RunResult;
 class Language;
 
-enum Message_MessageType {
-  Message_MessageType_CONNECT = 0,
-  Message_MessageType_CHALLENGE = 1,
-  Message_MessageType_CHALLENGE_RESPONSE = 2,
-  Message_MessageType_ACKNOWLEDGE = 3,
-  Message_MessageType_PING = 4,
-  Message_MessageType_PING_RESPONSE = 5,
-  Message_MessageType_RUN_ORDER = 6,
-  Message_MessageType_PROBLEM_SET_REQUEST = 7,
-  Message_MessageType_PROBLEM_SET = 8,
-  Message_MessageType_RUN_RESULT = 9,
-  Message_MessageType_LANGUAGE_REQUEST = 10,
-  Message_MessageType_LANGUAGE = 11
+enum NetworkMessage_MessageType {
+  NetworkMessage_MessageType_CONNECT = 0,
+  NetworkMessage_MessageType_CHALLENGE = 1,
+  NetworkMessage_MessageType_CHALLENGE_RESPONSE = 2,
+  NetworkMessage_MessageType_ACKNOWLEDGE = 3,
+  NetworkMessage_MessageType_PING = 4,
+  NetworkMessage_MessageType_PING_RESPONSE = 5,
+  NetworkMessage_MessageType_RUN_ORDER = 6,
+  NetworkMessage_MessageType_PROBLEM_SET_REQUEST = 7,
+  NetworkMessage_MessageType_PROBLEM_SET = 8,
+  NetworkMessage_MessageType_RUN_RESULT = 9,
+  NetworkMessage_MessageType_LANGUAGE_REQUEST = 10,
+  NetworkMessage_MessageType_LANGUAGE = 11
 };
-bool Message_MessageType_IsValid(int value);
-const Message_MessageType Message_MessageType_MessageType_MIN = Message_MessageType_CONNECT;
-const Message_MessageType Message_MessageType_MessageType_MAX = Message_MessageType_LANGUAGE;
-const int Message_MessageType_MessageType_ARRAYSIZE = Message_MessageType_MessageType_MAX + 1;
+bool NetworkMessage_MessageType_IsValid(int value);
+const NetworkMessage_MessageType NetworkMessage_MessageType_MessageType_MIN = NetworkMessage_MessageType_CONNECT;
+const NetworkMessage_MessageType NetworkMessage_MessageType_MessageType_MAX = NetworkMessage_MessageType_LANGUAGE;
+const int NetworkMessage_MessageType_MessageType_ARRAYSIZE = NetworkMessage_MessageType_MessageType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* Message_MessageType_descriptor();
-inline const ::std::string& Message_MessageType_Name(Message_MessageType value) {
+const ::google::protobuf::EnumDescriptor* NetworkMessage_MessageType_descriptor();
+inline const ::std::string& NetworkMessage_MessageType_Name(NetworkMessage_MessageType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    Message_MessageType_descriptor(), value);
+    NetworkMessage_MessageType_descriptor(), value);
 }
-inline bool Message_MessageType_Parse(
-    const ::std::string& name, Message_MessageType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<Message_MessageType>(
-    Message_MessageType_descriptor(), name, value);
+inline bool NetworkMessage_MessageType_Parse(
+    const ::std::string& name, NetworkMessage_MessageType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<NetworkMessage_MessageType>(
+    NetworkMessage_MessageType_descriptor(), name, value);
 }
 // ===================================================================
 
-class Message : public ::google::protobuf::Message {
+class NetworkMessage : public ::google::protobuf::Message {
  public:
-  Message();
-  virtual ~Message();
+  NetworkMessage();
+  virtual ~NetworkMessage();
   
-  Message(const Message& from);
+  NetworkMessage(const NetworkMessage& from);
   
-  inline Message& operator=(const Message& from) {
+  inline NetworkMessage& operator=(const NetworkMessage& from) {
     CopyFrom(from);
     return *this;
   }
@@ -88,17 +88,17 @@ class Message : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Message& default_instance();
+  static const NetworkMessage& default_instance();
   
-  void Swap(Message* other);
+  void Swap(NetworkMessage* other);
   
   // implements Message ----------------------------------------------
   
-  Message* New() const;
+  NetworkMessage* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Message& from);
-  void MergeFrom(const Message& from);
+  void CopyFrom(const NetworkMessage& from);
+  void MergeFrom(const NetworkMessage& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -119,48 +119,48 @@ class Message : public ::google::protobuf::Message {
   
   // nested types ----------------------------------------------------
   
-  typedef Message_MessageType MessageType;
-  static const MessageType CONNECT = Message_MessageType_CONNECT;
-  static const MessageType CHALLENGE = Message_MessageType_CHALLENGE;
-  static const MessageType CHALLENGE_RESPONSE = Message_MessageType_CHALLENGE_RESPONSE;
-  static const MessageType ACKNOWLEDGE = Message_MessageType_ACKNOWLEDGE;
-  static const MessageType PING = Message_MessageType_PING;
-  static const MessageType PING_RESPONSE = Message_MessageType_PING_RESPONSE;
-  static const MessageType RUN_ORDER = Message_MessageType_RUN_ORDER;
-  static const MessageType PROBLEM_SET_REQUEST = Message_MessageType_PROBLEM_SET_REQUEST;
-  static const MessageType PROBLEM_SET = Message_MessageType_PROBLEM_SET;
-  static const MessageType RUN_RESULT = Message_MessageType_RUN_RESULT;
-  static const MessageType LANGUAGE_REQUEST = Message_MessageType_LANGUAGE_REQUEST;
-  static const MessageType LANGUAGE = Message_MessageType_LANGUAGE;
+  typedef NetworkMessage_MessageType MessageType;
+  static const MessageType CONNECT = NetworkMessage_MessageType_CONNECT;
+  static const MessageType CHALLENGE = NetworkMessage_MessageType_CHALLENGE;
+  static const MessageType CHALLENGE_RESPONSE = NetworkMessage_MessageType_CHALLENGE_RESPONSE;
+  static const MessageType ACKNOWLEDGE = NetworkMessage_MessageType_ACKNOWLEDGE;
+  static const MessageType PING = NetworkMessage_MessageType_PING;
+  static const MessageType PING_RESPONSE = NetworkMessage_MessageType_PING_RESPONSE;
+  static const MessageType RUN_ORDER = NetworkMessage_MessageType_RUN_ORDER;
+  static const MessageType PROBLEM_SET_REQUEST = NetworkMessage_MessageType_PROBLEM_SET_REQUEST;
+  static const MessageType PROBLEM_SET = NetworkMessage_MessageType_PROBLEM_SET;
+  static const MessageType RUN_RESULT = NetworkMessage_MessageType_RUN_RESULT;
+  static const MessageType LANGUAGE_REQUEST = NetworkMessage_MessageType_LANGUAGE_REQUEST;
+  static const MessageType LANGUAGE = NetworkMessage_MessageType_LANGUAGE;
   static inline bool MessageType_IsValid(int value) {
-    return Message_MessageType_IsValid(value);
+    return NetworkMessage_MessageType_IsValid(value);
   }
   static const MessageType MessageType_MIN =
-    Message_MessageType_MessageType_MIN;
+    NetworkMessage_MessageType_MessageType_MIN;
   static const MessageType MessageType_MAX =
-    Message_MessageType_MessageType_MAX;
+    NetworkMessage_MessageType_MessageType_MAX;
   static const int MessageType_ARRAYSIZE =
-    Message_MessageType_MessageType_ARRAYSIZE;
+    NetworkMessage_MessageType_MessageType_ARRAYSIZE;
   static inline const ::google::protobuf::EnumDescriptor*
   MessageType_descriptor() {
-    return Message_MessageType_descriptor();
+    return NetworkMessage_MessageType_descriptor();
   }
   static inline const ::std::string& MessageType_Name(MessageType value) {
-    return Message_MessageType_Name(value);
+    return NetworkMessage_MessageType_Name(value);
   }
   static inline bool MessageType_Parse(const ::std::string& name,
       MessageType* value) {
-    return Message_MessageType_Parse(name, value);
+    return NetworkMessage_MessageType_Parse(name, value);
   }
   
   // accessors -------------------------------------------------------
   
-  // required .Message.MessageType type = 1;
+  // required .NetworkMessage.MessageType type = 1;
   inline bool has_type() const;
   inline void clear_type();
   static const int kTypeFieldNumber = 1;
-  inline ::Message_MessageType type() const;
-  inline void set_type(::Message_MessageType value);
+  inline ::NetworkMessage_MessageType type() const;
+  inline void set_type(::NetworkMessage_MessageType value);
   
   // optional string text = 2;
   inline bool has_text() const;
@@ -207,7 +207,7 @@ class Message : public ::google::protobuf::Message {
   inline const ::Language& language() const;
   inline ::Language* mutable_language();
   
-  // @@protoc_insertion_point(class_scope:Message)
+  // @@protoc_insertion_point(class_scope:NetworkMessage)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -238,7 +238,7 @@ class Message : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static Message* default_instance_;
+  static NetworkMessage* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -303,24 +303,44 @@ class RunOrder : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 problem_id() const;
   inline void set_problem_id(::google::protobuf::uint32 value);
   
-  // required uint32 language_id = 2;
+  // required string problem_hash = 2;
+  inline bool has_problem_hash() const;
+  inline void clear_problem_hash();
+  static const int kProblemHashFieldNumber = 2;
+  inline const ::std::string& problem_hash() const;
+  inline void set_problem_hash(const ::std::string& value);
+  inline void set_problem_hash(const char* value);
+  inline void set_problem_hash(const char* value, size_t size);
+  inline ::std::string* mutable_problem_hash();
+  
+  // required uint32 language_id = 3;
   inline bool has_language_id() const;
   inline void clear_language_id();
-  static const int kLanguageIdFieldNumber = 2;
+  static const int kLanguageIdFieldNumber = 3;
   inline ::google::protobuf::uint32 language_id() const;
   inline void set_language_id(::google::protobuf::uint32 value);
   
-  // required uint32 run_id = 3;
+  // required string language_hash = 4;
+  inline bool has_language_hash() const;
+  inline void clear_language_hash();
+  static const int kLanguageHashFieldNumber = 4;
+  inline const ::std::string& language_hash() const;
+  inline void set_language_hash(const ::std::string& value);
+  inline void set_language_hash(const char* value);
+  inline void set_language_hash(const char* value, size_t size);
+  inline ::std::string* mutable_language_hash();
+  
+  // required uint32 run_id = 5;
   inline bool has_run_id() const;
   inline void clear_run_id();
-  static const int kRunIdFieldNumber = 3;
+  static const int kRunIdFieldNumber = 5;
   inline ::google::protobuf::uint32 run_id() const;
   inline void set_run_id(::google::protobuf::uint32 value);
   
-  // required bytes attachment = 4;
+  // required bytes attachment = 6;
   inline bool has_attachment() const;
   inline void clear_attachment();
-  static const int kAttachmentFieldNumber = 4;
+  static const int kAttachmentFieldNumber = 6;
   inline const ::std::string& attachment() const;
   inline void set_attachment(const ::std::string& value);
   inline void set_attachment(const char* value);
@@ -333,7 +353,11 @@ class RunOrder : public ::google::protobuf::Message {
   mutable int _cached_size_;
   
   ::google::protobuf::uint32 problem_id_;
+  ::std::string* problem_hash_;
+  static const ::std::string _default_problem_hash_;
   ::google::protobuf::uint32 language_id_;
+  ::std::string* language_hash_;
+  static const ::std::string _default_language_hash_;
   ::google::protobuf::uint32 run_id_;
   ::std::string* attachment_;
   static const ::std::string _default_attachment_;
@@ -341,7 +365,7 @@ class RunOrder : public ::google::protobuf::Message {
   friend void protobuf_AssignDesc_Message_2eproto();
   friend void protobuf_ShutdownFile_Message_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -413,17 +437,30 @@ class ProblemSet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 problem_id = 1;
+  // required string problem_id = 1;
   inline bool has_problem_id() const;
   inline void clear_problem_id();
   static const int kProblemIdFieldNumber = 1;
-  inline ::google::protobuf::uint32 problem_id() const;
-  inline void set_problem_id(::google::protobuf::uint32 value);
+  inline const ::std::string& problem_id() const;
+  inline void set_problem_id(const ::std::string& value);
+  inline void set_problem_id(const char* value);
+  inline void set_problem_id(const char* value, size_t size);
+  inline ::std::string* mutable_problem_id();
   
-  // required bytes attachment = 2;
+  // required string problem_hash = 2;
+  inline bool has_problem_hash() const;
+  inline void clear_problem_hash();
+  static const int kProblemHashFieldNumber = 2;
+  inline const ::std::string& problem_hash() const;
+  inline void set_problem_hash(const ::std::string& value);
+  inline void set_problem_hash(const char* value);
+  inline void set_problem_hash(const char* value, size_t size);
+  inline ::std::string* mutable_problem_hash();
+  
+  // required bytes attachment = 3;
   inline bool has_attachment() const;
   inline void clear_attachment();
-  static const int kAttachmentFieldNumber = 2;
+  static const int kAttachmentFieldNumber = 3;
   inline const ::std::string& attachment() const;
   inline void set_attachment(const ::std::string& value);
   inline void set_attachment(const char* value);
@@ -435,14 +472,17 @@ class ProblemSet : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::uint32 problem_id_;
+  ::std::string* problem_id_;
+  static const ::std::string _default_problem_id_;
+  ::std::string* problem_hash_;
+  static const ::std::string _default_problem_hash_;
   ::std::string* attachment_;
   static const ::std::string _default_attachment_;
   friend void  protobuf_AddDesc_Message_2eproto();
   friend void protobuf_AssignDesc_Message_2eproto();
   friend void protobuf_ShutdownFile_Message_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -528,25 +568,32 @@ class RunResult : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 result() const;
   inline void set_result(::google::protobuf::uint32 value);
   
-  // optional string stdout = 3;
-  inline bool has_stdout() const;
-  inline void clear_stdout();
-  static const int kStdoutFieldNumber = 3;
-  inline const ::std::string& stdout() const;
-  inline void set_stdout(const ::std::string& value);
-  inline void set_stdout(const char* value);
-  inline void set_stdout(const char* value, size_t size);
-  inline ::std::string* mutable_stdout();
+  // optional string team_stdout = 3;
+  inline bool has_team_stdout() const;
+  inline void clear_team_stdout();
+  static const int kTeamStdoutFieldNumber = 3;
+  inline const ::std::string& team_stdout() const;
+  inline void set_team_stdout(const ::std::string& value);
+  inline void set_team_stdout(const char* value);
+  inline void set_team_stdout(const char* value, size_t size);
+  inline ::std::string* mutable_team_stdout();
   
-  // optional string stderr = 4;
-  inline bool has_stderr() const;
-  inline void clear_stderr();
-  static const int kStderrFieldNumber = 4;
-  inline const ::std::string& stderr() const;
-  inline void set_stderr(const ::std::string& value);
-  inline void set_stderr(const char* value);
-  inline void set_stderr(const char* value, size_t size);
-  inline ::std::string* mutable_stderr();
+  // optional string team_stderr = 4;
+  inline bool has_team_stderr() const;
+  inline void clear_team_stderr();
+  static const int kTeamStderrFieldNumber = 4;
+  inline const ::std::string& team_stderr() const;
+  inline void set_team_stderr(const ::std::string& value);
+  inline void set_team_stderr(const char* value);
+  inline void set_team_stderr(const char* value, size_t size);
+  inline ::std::string* mutable_team_stderr();
+  
+  // optional uint64 run_time = 5;
+  inline bool has_run_time() const;
+  inline void clear_run_time();
+  static const int kRunTimeFieldNumber = 5;
+  inline ::google::protobuf::uint64 run_time() const;
+  inline void set_run_time(::google::protobuf::uint64 value);
   
   // @@protoc_insertion_point(class_scope:RunResult)
  private:
@@ -555,15 +602,16 @@ class RunResult : public ::google::protobuf::Message {
   
   ::google::protobuf::uint32 run_id_;
   ::google::protobuf::uint32 result_;
-  ::std::string* stdout_;
-  static const ::std::string _default_stdout_;
-  ::std::string* stderr_;
-  static const ::std::string _default_stderr_;
+  ::std::string* team_stdout_;
+  static const ::std::string _default_team_stdout_;
+  ::std::string* team_stderr_;
+  static const ::std::string _default_team_stderr_;
+  ::google::protobuf::uint64 run_time_;
   friend void  protobuf_AddDesc_Message_2eproto();
   friend void protobuf_AssignDesc_Message_2eproto();
   friend void protobuf_ShutdownFile_Message_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -642,10 +690,20 @@ class Language : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 language_id() const;
   inline void set_language_id(::google::protobuf::uint32 value);
   
-  // required bytes attachment = 2;
+  // required string language_hash = 2;
+  inline bool has_language_hash() const;
+  inline void clear_language_hash();
+  static const int kLanguageHashFieldNumber = 2;
+  inline const ::std::string& language_hash() const;
+  inline void set_language_hash(const ::std::string& value);
+  inline void set_language_hash(const char* value);
+  inline void set_language_hash(const char* value, size_t size);
+  inline ::std::string* mutable_language_hash();
+  
+  // required bytes attachment = 3;
   inline bool has_attachment() const;
   inline void clear_attachment();
-  static const int kAttachmentFieldNumber = 2;
+  static const int kAttachmentFieldNumber = 3;
   inline const ::std::string& attachment() const;
   inline void set_attachment(const ::std::string& value);
   inline void set_attachment(const char* value);
@@ -658,13 +716,15 @@ class Language : public ::google::protobuf::Message {
   mutable int _cached_size_;
   
   ::google::protobuf::uint32 language_id_;
+  ::std::string* language_hash_;
+  static const ::std::string _default_language_hash_;
   ::std::string* attachment_;
   static const ::std::string _default_attachment_;
   friend void  protobuf_AddDesc_Message_2eproto();
   friend void protobuf_AssignDesc_Message_2eproto();
   friend void protobuf_ShutdownFile_Message_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -685,60 +745,60 @@ class Language : public ::google::protobuf::Message {
 
 // ===================================================================
 
-// Message
+// NetworkMessage
 
-// required .Message.MessageType type = 1;
-inline bool Message::has_type() const {
+// required .NetworkMessage.MessageType type = 1;
+inline bool NetworkMessage::has_type() const {
   return _has_bit(0);
 }
-inline void Message::clear_type() {
+inline void NetworkMessage::clear_type() {
   type_ = 0;
   _clear_bit(0);
 }
-inline ::Message_MessageType Message::type() const {
-  return static_cast< ::Message_MessageType >(type_);
+inline ::NetworkMessage_MessageType NetworkMessage::type() const {
+  return static_cast< ::NetworkMessage_MessageType >(type_);
 }
-inline void Message::set_type(::Message_MessageType value) {
-  GOOGLE_DCHECK(::Message_MessageType_IsValid(value));
+inline void NetworkMessage::set_type(::NetworkMessage_MessageType value) {
+  GOOGLE_DCHECK(::NetworkMessage_MessageType_IsValid(value));
   _set_bit(0);
   type_ = value;
 }
 
 // optional string text = 2;
-inline bool Message::has_text() const {
+inline bool NetworkMessage::has_text() const {
   return _has_bit(1);
 }
-inline void Message::clear_text() {
+inline void NetworkMessage::clear_text() {
   if (text_ != &_default_text_) {
     text_->clear();
   }
   _clear_bit(1);
 }
-inline const ::std::string& Message::text() const {
+inline const ::std::string& NetworkMessage::text() const {
   return *text_;
 }
-inline void Message::set_text(const ::std::string& value) {
+inline void NetworkMessage::set_text(const ::std::string& value) {
   _set_bit(1);
   if (text_ == &_default_text_) {
     text_ = new ::std::string;
   }
   text_->assign(value);
 }
-inline void Message::set_text(const char* value) {
+inline void NetworkMessage::set_text(const char* value) {
   _set_bit(1);
   if (text_ == &_default_text_) {
     text_ = new ::std::string;
   }
   text_->assign(value);
 }
-inline void Message::set_text(const char* value, size_t size) {
+inline void NetworkMessage::set_text(const char* value, size_t size) {
   _set_bit(1);
   if (text_ == &_default_text_) {
     text_ = new ::std::string;
   }
   text_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Message::mutable_text() {
+inline ::std::string* NetworkMessage::mutable_text() {
   _set_bit(1);
   if (text_ == &_default_text_) {
     text_ = new ::std::string;
@@ -747,84 +807,84 @@ inline ::std::string* Message::mutable_text() {
 }
 
 // optional uint32 requested_item_id = 3;
-inline bool Message::has_requested_item_id() const {
+inline bool NetworkMessage::has_requested_item_id() const {
   return _has_bit(2);
 }
-inline void Message::clear_requested_item_id() {
+inline void NetworkMessage::clear_requested_item_id() {
   requested_item_id_ = 0u;
   _clear_bit(2);
 }
-inline ::google::protobuf::uint32 Message::requested_item_id() const {
+inline ::google::protobuf::uint32 NetworkMessage::requested_item_id() const {
   return requested_item_id_;
 }
-inline void Message::set_requested_item_id(::google::protobuf::uint32 value) {
+inline void NetworkMessage::set_requested_item_id(::google::protobuf::uint32 value) {
   _set_bit(2);
   requested_item_id_ = value;
 }
 
 // optional .RunOrder run_order = 4;
-inline bool Message::has_run_order() const {
+inline bool NetworkMessage::has_run_order() const {
   return _has_bit(3);
 }
-inline void Message::clear_run_order() {
+inline void NetworkMessage::clear_run_order() {
   if (run_order_ != NULL) run_order_->::RunOrder::Clear();
   _clear_bit(3);
 }
-inline const ::RunOrder& Message::run_order() const {
+inline const ::RunOrder& NetworkMessage::run_order() const {
   return run_order_ != NULL ? *run_order_ : *default_instance_->run_order_;
 }
-inline ::RunOrder* Message::mutable_run_order() {
+inline ::RunOrder* NetworkMessage::mutable_run_order() {
   _set_bit(3);
   if (run_order_ == NULL) run_order_ = new ::RunOrder;
   return run_order_;
 }
 
 // optional .ProblemSet problem_set = 5;
-inline bool Message::has_problem_set() const {
+inline bool NetworkMessage::has_problem_set() const {
   return _has_bit(4);
 }
-inline void Message::clear_problem_set() {
+inline void NetworkMessage::clear_problem_set() {
   if (problem_set_ != NULL) problem_set_->::ProblemSet::Clear();
   _clear_bit(4);
 }
-inline const ::ProblemSet& Message::problem_set() const {
+inline const ::ProblemSet& NetworkMessage::problem_set() const {
   return problem_set_ != NULL ? *problem_set_ : *default_instance_->problem_set_;
 }
-inline ::ProblemSet* Message::mutable_problem_set() {
+inline ::ProblemSet* NetworkMessage::mutable_problem_set() {
   _set_bit(4);
   if (problem_set_ == NULL) problem_set_ = new ::ProblemSet;
   return problem_set_;
 }
 
 // optional .RunResult run_result = 6;
-inline bool Message::has_run_result() const {
+inline bool NetworkMessage::has_run_result() const {
   return _has_bit(5);
 }
-inline void Message::clear_run_result() {
+inline void NetworkMessage::clear_run_result() {
   if (run_result_ != NULL) run_result_->::RunResult::Clear();
   _clear_bit(5);
 }
-inline const ::RunResult& Message::run_result() const {
+inline const ::RunResult& NetworkMessage::run_result() const {
   return run_result_ != NULL ? *run_result_ : *default_instance_->run_result_;
 }
-inline ::RunResult* Message::mutable_run_result() {
+inline ::RunResult* NetworkMessage::mutable_run_result() {
   _set_bit(5);
   if (run_result_ == NULL) run_result_ = new ::RunResult;
   return run_result_;
 }
 
 // optional .Language language = 7;
-inline bool Message::has_language() const {
+inline bool NetworkMessage::has_language() const {
   return _has_bit(6);
 }
-inline void Message::clear_language() {
+inline void NetworkMessage::clear_language() {
   if (language_ != NULL) language_->::Language::Clear();
   _clear_bit(6);
 }
-inline const ::Language& Message::language() const {
+inline const ::Language& NetworkMessage::language() const {
   return language_ != NULL ? *language_ : *default_instance_->language_;
 }
-inline ::Language* Message::mutable_language() {
+inline ::Language* NetworkMessage::mutable_language() {
   _set_bit(6);
   if (language_ == NULL) language_ = new ::Language;
   return language_;
@@ -850,74 +910,158 @@ inline void RunOrder::set_problem_id(::google::protobuf::uint32 value) {
   problem_id_ = value;
 }
 
-// required uint32 language_id = 2;
-inline bool RunOrder::has_language_id() const {
+// required string problem_hash = 2;
+inline bool RunOrder::has_problem_hash() const {
   return _has_bit(1);
+}
+inline void RunOrder::clear_problem_hash() {
+  if (problem_hash_ != &_default_problem_hash_) {
+    problem_hash_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& RunOrder::problem_hash() const {
+  return *problem_hash_;
+}
+inline void RunOrder::set_problem_hash(const ::std::string& value) {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  problem_hash_->assign(value);
+}
+inline void RunOrder::set_problem_hash(const char* value) {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  problem_hash_->assign(value);
+}
+inline void RunOrder::set_problem_hash(const char* value, size_t size) {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  problem_hash_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* RunOrder::mutable_problem_hash() {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  return problem_hash_;
+}
+
+// required uint32 language_id = 3;
+inline bool RunOrder::has_language_id() const {
+  return _has_bit(2);
 }
 inline void RunOrder::clear_language_id() {
   language_id_ = 0u;
-  _clear_bit(1);
+  _clear_bit(2);
 }
 inline ::google::protobuf::uint32 RunOrder::language_id() const {
   return language_id_;
 }
 inline void RunOrder::set_language_id(::google::protobuf::uint32 value) {
-  _set_bit(1);
+  _set_bit(2);
   language_id_ = value;
 }
 
-// required uint32 run_id = 3;
+// required string language_hash = 4;
+inline bool RunOrder::has_language_hash() const {
+  return _has_bit(3);
+}
+inline void RunOrder::clear_language_hash() {
+  if (language_hash_ != &_default_language_hash_) {
+    language_hash_->clear();
+  }
+  _clear_bit(3);
+}
+inline const ::std::string& RunOrder::language_hash() const {
+  return *language_hash_;
+}
+inline void RunOrder::set_language_hash(const ::std::string& value) {
+  _set_bit(3);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  language_hash_->assign(value);
+}
+inline void RunOrder::set_language_hash(const char* value) {
+  _set_bit(3);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  language_hash_->assign(value);
+}
+inline void RunOrder::set_language_hash(const char* value, size_t size) {
+  _set_bit(3);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  language_hash_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* RunOrder::mutable_language_hash() {
+  _set_bit(3);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  return language_hash_;
+}
+
+// required uint32 run_id = 5;
 inline bool RunOrder::has_run_id() const {
-  return _has_bit(2);
+  return _has_bit(4);
 }
 inline void RunOrder::clear_run_id() {
   run_id_ = 0u;
-  _clear_bit(2);
+  _clear_bit(4);
 }
 inline ::google::protobuf::uint32 RunOrder::run_id() const {
   return run_id_;
 }
 inline void RunOrder::set_run_id(::google::protobuf::uint32 value) {
-  _set_bit(2);
+  _set_bit(4);
   run_id_ = value;
 }
 
-// required bytes attachment = 4;
+// required bytes attachment = 6;
 inline bool RunOrder::has_attachment() const {
-  return _has_bit(3);
+  return _has_bit(5);
 }
 inline void RunOrder::clear_attachment() {
   if (attachment_ != &_default_attachment_) {
     attachment_->clear();
   }
-  _clear_bit(3);
+  _clear_bit(5);
 }
 inline const ::std::string& RunOrder::attachment() const {
   return *attachment_;
 }
 inline void RunOrder::set_attachment(const ::std::string& value) {
-  _set_bit(3);
+  _set_bit(5);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(value);
 }
 inline void RunOrder::set_attachment(const char* value) {
-  _set_bit(3);
+  _set_bit(5);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(value);
 }
 inline void RunOrder::set_attachment(const void* value, size_t size) {
-  _set_bit(3);
+  _set_bit(5);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* RunOrder::mutable_attachment() {
-  _set_bit(3);
+  _set_bit(5);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
@@ -928,58 +1072,126 @@ inline ::std::string* RunOrder::mutable_attachment() {
 
 // ProblemSet
 
-// required uint32 problem_id = 1;
+// required string problem_id = 1;
 inline bool ProblemSet::has_problem_id() const {
   return _has_bit(0);
 }
 inline void ProblemSet::clear_problem_id() {
-  problem_id_ = 0u;
+  if (problem_id_ != &_default_problem_id_) {
+    problem_id_->clear();
+  }
   _clear_bit(0);
 }
-inline ::google::protobuf::uint32 ProblemSet::problem_id() const {
+inline const ::std::string& ProblemSet::problem_id() const {
+  return *problem_id_;
+}
+inline void ProblemSet::set_problem_id(const ::std::string& value) {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
+  problem_id_->assign(value);
+}
+inline void ProblemSet::set_problem_id(const char* value) {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
+  problem_id_->assign(value);
+}
+inline void ProblemSet::set_problem_id(const char* value, size_t size) {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
+  problem_id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ProblemSet::mutable_problem_id() {
+  _set_bit(0);
+  if (problem_id_ == &_default_problem_id_) {
+    problem_id_ = new ::std::string;
+  }
   return problem_id_;
 }
-inline void ProblemSet::set_problem_id(::google::protobuf::uint32 value) {
-  _set_bit(0);
-  problem_id_ = value;
+
+// required string problem_hash = 2;
+inline bool ProblemSet::has_problem_hash() const {
+  return _has_bit(1);
+}
+inline void ProblemSet::clear_problem_hash() {
+  if (problem_hash_ != &_default_problem_hash_) {
+    problem_hash_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& ProblemSet::problem_hash() const {
+  return *problem_hash_;
+}
+inline void ProblemSet::set_problem_hash(const ::std::string& value) {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  problem_hash_->assign(value);
+}
+inline void ProblemSet::set_problem_hash(const char* value) {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  problem_hash_->assign(value);
+}
+inline void ProblemSet::set_problem_hash(const char* value, size_t size) {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  problem_hash_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ProblemSet::mutable_problem_hash() {
+  _set_bit(1);
+  if (problem_hash_ == &_default_problem_hash_) {
+    problem_hash_ = new ::std::string;
+  }
+  return problem_hash_;
 }
 
-// required bytes attachment = 2;
+// required bytes attachment = 3;
 inline bool ProblemSet::has_attachment() const {
-  return _has_bit(1);
+  return _has_bit(2);
 }
 inline void ProblemSet::clear_attachment() {
   if (attachment_ != &_default_attachment_) {
     attachment_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(2);
 }
 inline const ::std::string& ProblemSet::attachment() const {
   return *attachment_;
 }
 inline void ProblemSet::set_attachment(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(value);
 }
 inline void ProblemSet::set_attachment(const char* value) {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(value);
 }
 inline void ProblemSet::set_attachment(const void* value, size_t size) {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* ProblemSet::mutable_attachment() {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
@@ -1022,88 +1234,104 @@ inline void RunResult::set_result(::google::protobuf::uint32 value) {
   result_ = value;
 }
 
-// optional string stdout = 3;
-inline bool RunResult::has_stdout() const {
+// optional string team_stdout = 3;
+inline bool RunResult::has_team_stdout() const {
   return _has_bit(2);
 }
-inline void RunResult::clear_stdout() {
-  if (stdout_ != &_default_stdout_) {
-    stdout_->clear();
+inline void RunResult::clear_team_stdout() {
+  if (team_stdout_ != &_default_team_stdout_) {
+    team_stdout_->clear();
   }
   _clear_bit(2);
 }
-inline const ::std::string& RunResult::stdout() const {
-  return *stdout_;
+inline const ::std::string& RunResult::team_stdout() const {
+  return *team_stdout_;
 }
-inline void RunResult::set_stdout(const ::std::string& value) {
+inline void RunResult::set_team_stdout(const ::std::string& value) {
   _set_bit(2);
-  if (stdout_ == &_default_stdout_) {
-    stdout_ = new ::std::string;
+  if (team_stdout_ == &_default_team_stdout_) {
+    team_stdout_ = new ::std::string;
   }
-  stdout_->assign(value);
+  team_stdout_->assign(value);
 }
-inline void RunResult::set_stdout(const char* value) {
+inline void RunResult::set_team_stdout(const char* value) {
   _set_bit(2);
-  if (stdout_ == &_default_stdout_) {
-    stdout_ = new ::std::string;
+  if (team_stdout_ == &_default_team_stdout_) {
+    team_stdout_ = new ::std::string;
   }
-  stdout_->assign(value);
+  team_stdout_->assign(value);
 }
-inline void RunResult::set_stdout(const char* value, size_t size) {
+inline void RunResult::set_team_stdout(const char* value, size_t size) {
   _set_bit(2);
-  if (stdout_ == &_default_stdout_) {
-    stdout_ = new ::std::string;
+  if (team_stdout_ == &_default_team_stdout_) {
+    team_stdout_ = new ::std::string;
   }
-  stdout_->assign(reinterpret_cast<const char*>(value), size);
+  team_stdout_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* RunResult::mutable_stdout() {
+inline ::std::string* RunResult::mutable_team_stdout() {
   _set_bit(2);
-  if (stdout_ == &_default_stdout_) {
-    stdout_ = new ::std::string;
+  if (team_stdout_ == &_default_team_stdout_) {
+    team_stdout_ = new ::std::string;
   }
-  return stdout_;
+  return team_stdout_;
 }
 
-// optional string stderr = 4;
-inline bool RunResult::has_stderr() const {
+// optional string team_stderr = 4;
+inline bool RunResult::has_team_stderr() const {
   return _has_bit(3);
 }
-inline void RunResult::clear_stderr() {
-  if (stderr_ != &_default_stderr_) {
-    stderr_->clear();
+inline void RunResult::clear_team_stderr() {
+  if (team_stderr_ != &_default_team_stderr_) {
+    team_stderr_->clear();
   }
   _clear_bit(3);
 }
-inline const ::std::string& RunResult::stderr() const {
-  return *stderr_;
+inline const ::std::string& RunResult::team_stderr() const {
+  return *team_stderr_;
 }
-inline void RunResult::set_stderr(const ::std::string& value) {
+inline void RunResult::set_team_stderr(const ::std::string& value) {
   _set_bit(3);
-  if (stderr_ == &_default_stderr_) {
-    stderr_ = new ::std::string;
+  if (team_stderr_ == &_default_team_stderr_) {
+    team_stderr_ = new ::std::string;
   }
-  stderr_->assign(value);
+  team_stderr_->assign(value);
 }
-inline void RunResult::set_stderr(const char* value) {
+inline void RunResult::set_team_stderr(const char* value) {
   _set_bit(3);
-  if (stderr_ == &_default_stderr_) {
-    stderr_ = new ::std::string;
+  if (team_stderr_ == &_default_team_stderr_) {
+    team_stderr_ = new ::std::string;
   }
-  stderr_->assign(value);
+  team_stderr_->assign(value);
 }
-inline void RunResult::set_stderr(const char* value, size_t size) {
+inline void RunResult::set_team_stderr(const char* value, size_t size) {
   _set_bit(3);
-  if (stderr_ == &_default_stderr_) {
-    stderr_ = new ::std::string;
+  if (team_stderr_ == &_default_team_stderr_) {
+    team_stderr_ = new ::std::string;
   }
-  stderr_->assign(reinterpret_cast<const char*>(value), size);
+  team_stderr_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* RunResult::mutable_stderr() {
+inline ::std::string* RunResult::mutable_team_stderr() {
   _set_bit(3);
-  if (stderr_ == &_default_stderr_) {
-    stderr_ = new ::std::string;
+  if (team_stderr_ == &_default_team_stderr_) {
+    team_stderr_ = new ::std::string;
   }
-  return stderr_;
+  return team_stderr_;
+}
+
+// optional uint64 run_time = 5;
+inline bool RunResult::has_run_time() const {
+  return _has_bit(4);
+}
+inline void RunResult::clear_run_time() {
+  run_time_ = GOOGLE_ULONGLONG(0);
+  _clear_bit(4);
+}
+inline ::google::protobuf::uint64 RunResult::run_time() const {
+  return run_time_;
+}
+inline void RunResult::set_run_time(::google::protobuf::uint64 value) {
+  _set_bit(4);
+  run_time_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1126,42 +1354,84 @@ inline void Language::set_language_id(::google::protobuf::uint32 value) {
   language_id_ = value;
 }
 
-// required bytes attachment = 2;
-inline bool Language::has_attachment() const {
+// required string language_hash = 2;
+inline bool Language::has_language_hash() const {
   return _has_bit(1);
+}
+inline void Language::clear_language_hash() {
+  if (language_hash_ != &_default_language_hash_) {
+    language_hash_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& Language::language_hash() const {
+  return *language_hash_;
+}
+inline void Language::set_language_hash(const ::std::string& value) {
+  _set_bit(1);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  language_hash_->assign(value);
+}
+inline void Language::set_language_hash(const char* value) {
+  _set_bit(1);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  language_hash_->assign(value);
+}
+inline void Language::set_language_hash(const char* value, size_t size) {
+  _set_bit(1);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  language_hash_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Language::mutable_language_hash() {
+  _set_bit(1);
+  if (language_hash_ == &_default_language_hash_) {
+    language_hash_ = new ::std::string;
+  }
+  return language_hash_;
+}
+
+// required bytes attachment = 3;
+inline bool Language::has_attachment() const {
+  return _has_bit(2);
 }
 inline void Language::clear_attachment() {
   if (attachment_ != &_default_attachment_) {
     attachment_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(2);
 }
 inline const ::std::string& Language::attachment() const {
   return *attachment_;
 }
 inline void Language::set_attachment(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(value);
 }
 inline void Language::set_attachment(const char* value) {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(value);
 }
 inline void Language::set_attachment(const void* value, size_t size) {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
   attachment_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* Language::mutable_attachment() {
-  _set_bit(1);
+  _set_bit(2);
   if (attachment_ == &_default_attachment_) {
     attachment_ = new ::std::string;
   }
@@ -1176,8 +1446,8 @@ namespace google {
 namespace protobuf {
 
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::Message_MessageType>() {
-  return ::Message_MessageType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::NetworkMessage_MessageType>() {
+  return ::NetworkMessage_MessageType_descriptor();
 }
 
 }  // namespace google
