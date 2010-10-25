@@ -14,7 +14,7 @@ public:
 class ServerNetwork
 {
 public:
-  ServerNetwork(boost::asio::io_service& io_service, std::string secret, uint64_t pingTime);
+  ServerNetwork(boost::asio::io_service& io_service, uint16_t port, std::string secret, uint64_t pingTime);
   virtual ~ServerNetwork();
   void addListener(ServerNetworkListener&);
   
