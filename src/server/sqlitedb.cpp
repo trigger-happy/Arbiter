@@ -106,3 +106,46 @@ Wt::Dbo::ptr<User> SqliteDB::find_user(const string& user){
 	return m_session.find<User>().where("username = ?").bind(user);
 }
 
+void SqliteDB::get_users(vector<User>& users){
+	users.clear();
+	Transaction t(m_session);
+	typedef collection<ptr<User> > usr_col;
+	usr_col uc = m_session.find<User>();
+	for(usr_col::const_iterator i = uc.begin(); i != uc.end(); ++i){
+		users.push_back(User(**i));
+	}
+}
+
+void SqliteDB::add_language(Language& lang){
+	Transaction t(m_session);
+	ptr<Language> qry = m_session.find<Language>().where("name = ?").bind(lang.name);
+	if(!qry){
+		// language not found, we add a new one
+		m_session.add(new Language(lang));
+	}else{
+		qry.modify()->compile_cmd = lang.compile_cmd;
+		qry.modify()->link_cmd = lang.link_cmd;
+		qry.modify()->run_cmd = lang.run_cmd;
+	}
+	t.commit();
+}
+
+void SqliteDB::delete_language(const string& lname){
+	Transaction t(m_session);
+	ptr<Language> qry = m_session.find<Language>().where("name = ?").bind(lname);
+	if(!qry){
+		throw db_error() << err_info("Languge "+lname+" not found");
+	}
+	qry.remove();
+	t.commit();
+}
+
+void SqliteDB::get_languages(vector<Language>& lv){
+	lv.clear();
+	Transaction t(m_session);
+	typedef collection<ptr<Language> > lang_col;
+	lang_col lc = m_session.find<Language>();
+	for(lang_col::const_iterator i = lc.begin(); i != lc.end(); ++i){
+		lv.push_back(Language(**i));
+	}
+}

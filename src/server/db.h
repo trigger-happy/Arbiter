@@ -1,6 +1,7 @@
 #ifndef DB_H
 #define DB_H
 #include <string>
+#include <vector>
 #include <boost/exception/all.hpp>
 #include "../common/datatypes.h"
 
@@ -77,6 +78,33 @@ public:
 	\exception db_error is thrown when the user does not exist
 	*/
 	virtual void update_user(User& user) = 0;
+
+	/*!
+	Get all the users in the DB
+	\param users A reference to a vector to fill up with users
+	*/
+	virtual void get_users(std::vector<User>& users) = 0;
+
+	/*!
+	Add a language to the database
+	\param lang The language to add
+	\note Unlike the user functions, this one updates existing languages
+	*/
+	virtual void add_language(Language& lang) = 0;
+
+	/*!
+	Delete a langauage from the database
+	\param lname The name of the language to delete
+	\exception db_error is thrown if the language doesn't exist
+	*/
+	virtual void delete_language(const std::string& lname) = 0;
+
+	/*!
+	Get all the languages in the database
+	\param lv A reference to a vector to fill up with languages
+	*/
+	virtual void get_languages(std::vector<Language>& lv) = 0;
+	
 protected:
 	bool m_connected;
 };

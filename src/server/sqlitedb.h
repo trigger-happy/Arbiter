@@ -21,7 +21,11 @@ public:
 	virtual void add_user(User& user);
 	virtual void delete_user(const std::string& username);
 	virtual void update_user(User& user);
-
+	virtual void get_users(std::vector<User>& users);
+	virtual void add_language(Language& lang);
+	virtual void delete_language(const std::string& lname);
+	virtual void get_languages(std::vector<Language>& lv);
+	
 private:
 	Wt::Dbo::ptr<User> find_user(const std::string& user);
 
