@@ -1,7 +1,12 @@
 #ifndef DB_H
 #define DB_H
 #include <string>
+#include <boost/exception/all.hpp>
 #include "../common/datatypes.h"
+
+typedef boost::error_info<struct tag_db_error_info, std::string> err_info;
+
+struct db_error : virtual boost::exception, virtual std::exception{};
 
 class DB{
 public:
@@ -16,7 +21,7 @@ public:
 	\param username The username to use to connect to the DB (if applicable)
 	\param password The password to use to connect to the DB (if applicable)
 	\param dbname The name of the database (if applicable)
-	\exception std::exception is thrown when an error occurs
+	\exception db_error is thrown when an error occurs
 	*/
 	virtual void open(const std::string& location,
 					  const std::string& username = "",
@@ -25,7 +30,7 @@ public:
 
 	/*!
 	Close the database connection
-	\exception std::exception if the close fails
+	\note Does nothing other than set a flag at the moment
 	*/
 	virtual void close() = 0;
 
@@ -34,7 +39,6 @@ public:
 	\param username The username
 	\param password The password
 	\return If the username and password matches the one in the datbase
-	\exception std::exception is thrown when an error occurs
 	*/
 	virtual bool authenticate(const std::string& username,
 							  const std::string& password) = 0;
@@ -57,10 +61,22 @@ public:
 	/*!
 	Add a new user to the database
 	\param user The user to add
-	\exception std::exception on error
+	\exception db_error is thrown when the user exists
 	*/
 	virtual void add_user(User& user) = 0;
 
+	/*!
+	Delete the user with the specified username
+	\param username The user to delete
+	*/
+	virtual void delete_user(const std::string& username) = 0;
+
+	/*!
+	Update the information of user (DB is searched using the username)
+	\param user The user information to update into the DB
+	\exception db_error is thrown when the user does not exist
+	*/
+	virtual void update_user(User& user) = 0;
 protected:
 	bool m_connected;
 };

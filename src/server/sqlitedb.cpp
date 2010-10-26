@@ -1,3 +1,4 @@
+#include <exception>
 #include "sqlitedb.h"
 #include "../common/datatypes.h"
 
@@ -20,7 +21,7 @@ string SqliteDB::get_acl(const string& username){
 bool SqliteDB::authenticate(const string& username,
 							const string& password){
 	Transaction t(m_session);
-	ptr<User> qry = m_session.find<User>().where("username = ?").bind(username.c_str());
+	ptr<User> qry = find_user(username);
 	if(!qry){
 		return false;
 	}
@@ -59,19 +60,49 @@ void SqliteDB::open(const string& location,
 
 		// we're connected
 		m_connected = true;
+	}else{
+		throw db_error() << err_info("Database already open");
 	}
 }
 
 void SqliteDB::add_user(User& user){
 	Transaction t(m_session);
-	ptr<User> qry = m_session.find<User>().where("username = ?").bind(user.username);
+	ptr<User> qry = find_user(user.username);
 	if(!qry){
 		m_session.add(new User(user));
+		t.commit();
 	}else{
-		qry.modify()->password = user.password;
-		qry.modify()->acl = user.acl;
-		qry.modify()->teamname = user.teamname;
+// 		qry.modify()->password = user.password;
+// 		qry.modify()->acl = user.acl;
+// 		qry.modify()->teamname = user.teamname;
+		throw db_error() << err_info("User already exists!");
 	}
+}
+
+void SqliteDB::delete_user(const string& username){
+	Transaction t(m_session);
+	ptr<User> qry = find_user(username);
+	if(!qry){
+		throw db_error() << err_info("User not found");
+	}
+	qry.remove();
 	t.commit();
+}
+
+void SqliteDB::update_user(User& user){
+	Transaction t(m_session);
+	ptr<User> qry = find_user(user.username);
+	if(!qry){
+		throw db_error() << err_info("User not found");
+	}
+	qry.modify()->acl = user.acl;
+	qry.modify()->password = user.password;
+	qry.modify()->teamname = user.teamname;
+	t.commit();
+}
+
+Wt::Dbo::ptr<User> SqliteDB::find_user(const string& user){
+// 	Transaction t(m_session);
+	return m_session.find<User>().where("username = ?").bind(user);
 }
 

@@ -19,6 +19,12 @@ public:
 					  const std::string& password = "",
 					  const std::string& dbname = "");
 	virtual void add_user(User& user);
+	virtual void delete_user(const std::string& username);
+	virtual void update_user(User& user);
+
+private:
+	Wt::Dbo::ptr<User> find_user(const std::string& user);
+
 private:
 	boost::scoped_ptr<Wt::Dbo::backend::Sqlite3> m_db;
 	Wt::Dbo::Session m_session;
