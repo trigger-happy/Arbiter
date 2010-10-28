@@ -31,12 +31,15 @@ class ContestantClient: public WApplication
 				WComboBox *languageSet;
 
 			WContainerWidget *clars;
+				WPushButton *clarsMarkAll;
+				WPushButton *clarsSortUnread;
 			WContainerWidget *runs;
 			WContainerWidget *settings;
 				WLineEdit *oldPassword;
 				WLineEdit *newPassword;
 				WLineEdit *confirmPassword;
 				WLabel *settingsMessage;
+				WPushButton *confirmChangePassword;
 	
 		ContestantClient(const WEnvironment& env);
 		~ContestantClient(){}
@@ -117,6 +120,39 @@ void ContestantClient::buildSubmitTab()
 void ContestantClient::buildClarsTab()
 {
 	clars = new WContainerWidget();
+	WContainerWidget *lineOne = new WContainerWidget(clars);
+	WGridLayout *gLayout = new WGridLayout(lineOne);
+
+	lineOne->setLayout(gLayout);
+	clarsMarkAll = new WPushButton("Mark All As Read");
+	clarsSortUnread = new WPushButton("Sort Unread Messages");
+
+	gLayout->addWidget( new WLabel(WString("Resolved Clars")), 0, 0 );
+	gLayout->addWidget(clarsMarkAll, 0, 2);
+	gLayout->addWidget(clarsSortUnread, 0, 3);
+
+	
+	clars->addWidget(lineOne);
+	clars->addWidget( new WBreak());
+
+	Wt::WTable *clarsTable = new Wt::WTable(clars);
+	clarsTable->setHeaderCount(1);
+
+	WLabel *categoryLabel = new WLabel( WString("Category") );
+	WLabel *idLabel = new WLabel( WString("Clar ID") );
+	WLabel *clarLabel = new WLabel( WString("Clarification") );
+
+	for(int i = 0; i < 1; i++)
+		for(int j = 0; j < 3; j++)
+			clarsTable->elementAt(i, j)->resize(WLength(100), WLength::Auto);
+
+	clarsTable->elementAt(0,0)->addWidget(categoryLabel);
+	clarsTable->elementAt(0,1)->addWidget(idLabel);
+	clarsTable->elementAt(0,2)->addWidget(clarLabel);
+
+	
+
+	clars->addWidget(clarsTable);
 }
 
 void ContestantClient::buildRunsTab()
@@ -151,6 +187,7 @@ void ContestantClient::buildSettingsTab()
 	newPassword = new WLineEdit(WString(""));
 	confirmPassword = new WLineEdit(WString(""));
 	settingsMessage = new WLabel(WString("Error Messages here"));
+	confirmChangePassword = new WPushButton( WString("Change Password"));
 
 	WGridLayout *glayout = new WGridLayout();
 
@@ -166,10 +203,14 @@ void ContestantClient::buildSettingsTab()
 	glayout->addWidget(settingsMessage, 3, 0);
 
 	mid->setLayout(glayout);
-
+	
 	settings->addWidget(mid);
 	settings->addWidget(new WBreak());
-	settings->addWidget( new WPushButton( WString("Change Password")));
+	
+	WContainerWidget *pushButtonContainer = new WContainerWidget(settings);
+	pushButtonContainer->setContentAlignment(Wt::AlignCenter);
+	pushButtonContainer->addWidget( confirmChangePassword );
+	settings->addWidget( pushButtonContainer );
 }
 
 WApplication *createApplication(const WEnvironment& env) 
