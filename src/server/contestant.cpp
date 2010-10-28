@@ -14,6 +14,7 @@
 #include <Wt/WComboBox>
 #include <Wt/WFileUpload>
 #include <Wt/WTable>
+#include <Wt/WHBoxLayout>
 #include <string>
 
 using namespace Wt;
@@ -121,19 +122,22 @@ void ContestantClient::buildClarsTab()
 {
 	clars = new WContainerWidget();
 	WContainerWidget *lineOne = new WContainerWidget(clars);
-	WGridLayout *gLayout = new WGridLayout(lineOne);
-
-	lineOne->setLayout(gLayout);
+	WHBoxLayout *boxLayout = new WHBoxLayout();
+	
+	lineOne->setContentAlignment(Wt::AlignRight);
 	clarsMarkAll = new WPushButton("Mark All As Read");
 	clarsSortUnread = new WPushButton("Sort Unread Messages");
 
-	gLayout->addWidget( new WLabel(WString("Resolved Clars")), 0, 0 );
-	gLayout->addWidget(clarsMarkAll, 0, 2);
-	gLayout->addWidget(clarsSortUnread, 0, 3);
-
+	lineOne->addWidget(clarsMarkAll);
+	lineOne->addWidget(clarsSortUnread);
 	
-	clars->addWidget(lineOne);
-	clars->addWidget( new WBreak());
+	boxLayout->addWidget(new WLabel(WString("Resolved Clars")));
+	boxLayout->addWidget(lineOne);
+
+	WContainerWidget *tempContainer = new WContainerWidget(clars);
+	tempContainer->setLayout(boxLayout);
+	clars->addWidget(tempContainer);
+	clars->addWidget(new WBreak());
 
 	Wt::WTable *clarsTable = new Wt::WTable(clars);
 	clarsTable->setHeaderCount(1);
