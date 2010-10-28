@@ -11,6 +11,9 @@
 #include <Wt/WLineEdit>
 #include <Wt/WGridLayout>
 #include <Wt/WPushButton>
+#include <Wt/WComboBox>
+#include <Wt/WFileUpload>
+#include <Wt/WTable>
 #include <string>
 
 using namespace Wt;
@@ -24,6 +27,9 @@ class ContestantClient: public WApplication
 			WPushButton *logoutButton;
 		WTabWidget *tabs;
 			WContainerWidget *submit;
+				WComboBox *problemSet;
+				WComboBox *languageSet;
+
 			WContainerWidget *clars;
 			WContainerWidget *runs;
 			WContainerWidget *settings;
@@ -47,7 +53,7 @@ ContestantClient::ContestantClient(const WEnvironment& env) : WApplication(env)
 	topContainer = new WContainerWidget(root());
 	title = new WLabel("Arbiter Contestant Client");
 	logoutButton = new WPushButton("Log out");
-	tabs = new WTabWidget();
+	tabs = new WTabWidget(root());
 
 	root()->addWidget(topContainer);
 	root()->addWidget(tabs);
@@ -77,6 +83,35 @@ ContestantClient::ContestantClient(const WEnvironment& env) : WApplication(env)
 void ContestantClient::buildSubmitTab()
 {
 	submit = new WContainerWidget();
+
+	WLabel *selectProblem = new WLabel("Select a Problem:");
+	problemSet = new WComboBox(submit);
+	selectProblem->setBuddy(problemSet);
+
+	WLabel *selectLanguage = new WLabel("Select a Language:");
+	languageSet = new WComboBox(submit);
+	selectLanguage->setBuddy(languageSet);
+	WLabel *errorMessage = new WLabel("!");
+
+	WLabel *selectFile = new WLabel("Select File:");
+	WFileUpload *browseFile = new WFileUpload(submit);
+	WPushButton *submitFile = new WPushButton(WString("Submit"), submit);
+	submitFile->clicked().connect(browseFile, &Wt::WFileUpload::upload);
+
+	WGridLayout *glayout = new WGridLayout(submit);
+	glayout->setVerticalSpacing(35);
+	glayout->setHorizontalSpacing(300);
+
+	glayout->addWidget(selectProblem, 0, 0);
+	glayout->addWidget(problemSet, 0, 1);
+	glayout->addWidget(selectLanguage, 1, 0);
+	glayout->addWidget(languageSet, 1, 1);
+	glayout->addWidget(errorMessage, 2, 0);
+	glayout->addWidget(selectFile, 3, 0);
+	glayout->addWidget(browseFile, 3, 1);
+
+	submit->setLayout(glayout);	
+	submit->addWidget(submitFile);
 }
 
 void ContestantClient::buildClarsTab()
@@ -87,6 +122,24 @@ void ContestantClient::buildClarsTab()
 void ContestantClient::buildRunsTab()
 {
 	runs = new WContainerWidget();
+	WPushButton *markAllAsRead = new WPushButton(WString("Mark All As Read"), runs);
+	
+	WTable *runsTable = new WTable(runs);
+	runsTable->setHeaderCount(1);
+
+	WLabel *problem = new WLabel(WString("Problem"));
+	WLabel *runID = new WLabel(WString("Run ID"));
+	WLabel *judgeResponse = new WLabel(WString("Judge's Response"));
+	for(int i = 0; i < 1; i++)
+		for(int j = 0; j < 3; j++)
+			runsTable->elementAt(i, j)->resize(WLength(100), WLength::Auto);
+
+	runsTable->elementAt(0, 0)->addWidget(problem);
+	runsTable->elementAt(0, 1)->addWidget(runID);
+	runsTable->elementAt(0, 2)->addWidget(judgeResponse);
+
+	runs->addWidget(markAllAsRead);
+	runs->addWidget(runsTable);
 }
 
 void ContestantClient::buildSettingsTab()
