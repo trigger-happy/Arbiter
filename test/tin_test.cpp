@@ -54,8 +54,8 @@ App::App(const WEnvironment& env): WApplication(env)
     WContainerWidget *w = new WContainerWidget(root());
     w->resize(400, 200);
 
-    b->clicked().connect(this, &App::add);
-    c->clicked().connect(this, &App::del);
+    //b->clicked().connect(this, &App::add);
+    //c->clicked().connect(this, &App::del);
 
     WGridLayout *layout = new WGridLayout();
     layout->addWidget(b, 0, 0);
@@ -73,7 +73,12 @@ App::App(const WEnvironment& env): WApplication(env)
 App::~App()
 {
 }
-
+void App::add()
+{
+}
+void App::del()
+{
+}
 int main(int argc, char **argv)
 {
         return WRun(argc, argv, &createApplication);
