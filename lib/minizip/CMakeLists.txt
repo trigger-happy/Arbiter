@@ -1,0 +1,5 @@
+set(MINIZIP_SRC ioapi.c mztools.c unzip.c zip.c)
+if (WIN32)
+	set(MINIZIP_SRC ${MINIZIP_SRC} iowin32.c)
+endif(WIN32)
+add_library(minizip STATIC ${MINIZIP_SRC})

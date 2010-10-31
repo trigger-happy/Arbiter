@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 project("Arbiter")
 
-set(CMAKE_CXX_FLAGS -std=c++0x)
+INCLUDE(CheckCXXCompilerFlag)
+
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" "STD0X")
+if(${STD0X} EQUAL 1)
+	set(CMAKE_CXX_FLAGS -std=c++0x)
+endif(${STD0X} EQUAL 1)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 SET(Boost_USE_MULTITHREAD ON)
