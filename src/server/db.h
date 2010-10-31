@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <boost/exception/all.hpp>
-#include "../common/datatypes.h"
+#include "../common/datatypes_orm.h"
 
 typedef boost::error_info<struct tag_db_error_info, std::string> err_info;
 

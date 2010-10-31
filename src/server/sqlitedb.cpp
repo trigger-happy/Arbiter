@@ -1,6 +1,6 @@
 #include <exception>
 #include "sqlitedb.h"
-#include "../common/datatypes.h"
+#include "../common/datatypes_orm.h"
 
 using namespace Wt::Dbo;
 using namespace std;
