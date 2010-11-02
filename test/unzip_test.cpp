@@ -8,14 +8,11 @@ using namespace std;
 
 int main(int argc, char** argv) {
   apr_initialize();
-  easy_unzip("test.zip", "testdir2");
-  /*/
-  ManifestData manifest = get_manifest("test.zip");
-  cout << manifest.type << endl;
+  easy_unzip("test/test.zip", "test/unzip_test");
   
-  ofstream myfile("test2.zip");
-  ostream_iterator<uint8_t> iter(myfile, "");
+  ManifestData manifest = get_manifest("test/test.zip");
+  cout << manifest.type << endl;
+  ostream_iterator<uint8_t> iter(cout, "");
   copy(manifest.data.begin(), manifest.data.end(), iter);
-  myfile.close();/**/
   return 0;
 }
