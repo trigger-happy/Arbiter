@@ -11,7 +11,7 @@
 #include <vector>
 #include <stdint.h>
 
-#define MANIFEST_FILENAME_XML "mainfest.xml"
+#define MANIFEST_FILENAME_XML "manifest.xml"
 
 struct UnzipException : public std::exception {
 	char info[1024];

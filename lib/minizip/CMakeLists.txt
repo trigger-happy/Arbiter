@@ -9,3 +9,4 @@ add_definitions(-DUSE_FILE32API)
 endif(APPLE)
 
 add_library(minizip STATIC ${MINIZIP_SRC})
+target_link_libraries(minizip ${ZLIB_LIBRARIES})

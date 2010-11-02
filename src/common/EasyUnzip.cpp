@@ -1,5 +1,5 @@
 #include "EasyUnzip.h"
-#include <minizip/unzip.h>
+#include "../../lib/minizip/unzip.h"
 #include <apr_file_io.h>
 #include <apr_strings.h>
 #include <string>
@@ -65,7 +65,7 @@ std::string getCommonDirectory(unzFile f) {
 		} else {
 			if ( common_directory.empty() ) break;
 
-			const size_t sz = std::min(fInfo.size_filename, common_directory.length());
+			const size_t sz = std::min((size_t)fInfo.size_filename, (size_t)common_directory.length());
 			size_t lastSeparator = -1;
 			for ( size_t i = 0; i < sz; ++i ) {
 				if ( tmp_filename[i] != common_directory[i] ) {
@@ -127,82 +127,91 @@ UnzipManifestNotFoundException::UnzipManifestNotFoundException(const char *archi
 }
 
 void easy_unzip(const char *archive, const char *destination) {
+  int casd = 0;
+  
 	UnzFileGuard f(unzOpen(archive));
-
+  
 	if (f.f == 0 )
 		throw UnzipIoException(archive, UnzipIoException::READ | UnzipIoException::OPEN);
-
+  
 	unz_global_info zInfo;
 
 	if ( unzGetGlobalInfo(f.f, &zInfo) != UNZ_OK ) {
 		throw UnzipArchiveException(archive);
 	}
-
+  
 	//detect common directory prefix and strip them out
 	const std::string &common_directory = getCommonDirectory(f.f);
 	unzGoToFirstFile(f.f);
-
+  
 	AprPoolGuard pool;
+  
 	//set the extraction buffer to 8KB
 	std::vector<uint8_t> extract_buffer(1024 * 8);
 	char tmp_filename[1024];
-
+  
 	for ( int i = 0; i < zInfo.number_entry; ++i ) {
 		unz_file_info fInfo;
 		unzGetCurrentFileInfo(f.f, &fInfo, tmp_filename, sizeof(tmp_filename), 0, 0, 0, 0);
 
 		assert(common_directory.length() <= fInfo.size_filename);
+    
+    //if the file is a folder just skip it
+    char lastChar = tmp_filename[strlen(tmp_filename)-1];
+    if(lastChar != '/' && lastChar != '\\') {
+      
+      //skip to the "uncommon" segment. (this is one character after the directory separator)
+      char *strippedPath = tmp_filename + common_directory.length();
+      const char *dirname = strippedPath;
+      //start scanning from the end of the string.
+      char *filename = tmp_filename + fInfo.size_filename - 1;
+      
+      //find the last directory separator
+      while(*filename != '\\' && *filename != '/' && *filename != ':' && filename > dirname)
+        --filename;
 
-		//skip to the "uncommon" segment. (this is one character after the directory separator)
-		char *strippedPath = tmp_filename + common_directory.length();
-		const char *dirname = strippedPath;
-		//start scanning from the end of the string.
-		char *filename = tmp_filename + fInfo.size_filename - 1;
+      //if the file is not in root...
+      if ( filename > dirname ) {
+        //change the last directory separator into a null terminator so that dirname will end.
+        *filename = 0;
+        ++filename;
+      } else {
+        //the file is at the root so assign dirname to an empty string
+        dirname = "";
+      }
+      
+      char *absolutePath;
+      apr_filepath_merge(&absolutePath, destination, dirname, APR_FILEPATH_NATIVE | APR_FILEPATH_TRUENAME, pool.pool);
+      apr_dir_make_recursive(absolutePath, 0x0755, pool.pool);
+      
+      if ( unzOpenCurrentFile(f.f) != UNZ_OK )
+        throw UnzipArchiveException(archive);
+      
+      char *absoluteFilePath;
+      apr_filepath_merge(&absoluteFilePath, absolutePath, filename, APR_FILEPATH_NATIVE | APR_FILEPATH_TRUENAME, pool.pool);
 
-		//find the last directory separator
-		while(*filename != '\\' && *filename != '/' && *filename != ':' && filename > dirname)
-			--filename;
+      {
+        
+        std::ofstream out(absoluteFilePath, std::ios::binary | std::ios::out);
+        if ( !out )
+          throw UnzipIoException(absoluteFilePath, UnzipIoException::WRITE | UnzipIoException::OPEN);
 
-		//if the file is not in root...
-		if ( filename > dirname ) {
-			//change the last directory separator into a null terminator so that dirname will end.
-			*filename = 0;
-			++filename;
-		} else {
-			//the file is at the root so assign dirname to an empty string
-			dirname = "";
-		}
+        int extractedSize;
+        do {
+          extractedSize = unzReadCurrentFile(f.f, &extract_buffer[0], extract_buffer.size());
+          if ( extractedSize < 0 ) {
+            unzCloseCurrentFile(f.f);
+            if ( extractedSize == UNZ_ERRNO )
+              throw UnzipIoException(archive, UnzipIoException::READ);
+            else
+              throw UnzipArchiveException(archive);
+          }
+          out.write((const char *)&extract_buffer[0], extractedSize);
 
-		char *absolutePath;
-		apr_filepath_merge(&absolutePath, destination, dirname, APR_FILEPATH_NATIVE | APR_FILEPATH_TRUENAME, pool.pool);
-		apr_dir_make_recursive(absolutePath, 0755, pool.pool);
-\
-		if ( unzOpenCurrentFile(f.f) != UNZ_OK )
-			throw UnzipArchiveException(archive);
-
-		char *absoluteFilePath;
-		apr_filepath_merge(&absoluteFilePath, absolutePath, filename, APR_FILEPATH_NATIVE | APR_FILEPATH_TRUENAME, pool.pool);
-
-		{
-			std::ofstream out(absoluteFilePath, std::ios::binary | std::ios::out);
-			if ( !out )
-				throw UnzipIoException(absoluteFilePath, UnzipIoException::WRITE | UnzipIoException::OPEN);
-
-			int extractedSize;
-			do {
-				extractedSize = unzReadCurrentFile(f.f, &extract_buffer[0], extract_buffer.size());
-				if ( extractedSize < 0 ) {
-					unzCloseCurrentFile(f.f);
-					if ( extractedSize == UNZ_ERRNO )
-						throw UnzipIoException(archive, UnzipIoException::READ);
-					else
-						throw UnzipArchiveException(archive);
-				}
-				out.write((const char *)&extract_buffer[0], extractedSize);
-
-			} while (extractedSize > 0);
-		}
-
+        } while (extractedSize > 0);
+      }
+    }
+    
 		unzCloseCurrentFile(f.f);
 
 		if ( (i+1) < zInfo.number_entry ) {
