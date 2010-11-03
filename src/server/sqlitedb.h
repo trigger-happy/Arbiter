@@ -18,19 +18,18 @@ public:
 					  const std::string& username = "",
 					  const std::string& password = "",
 					  const std::string& dbname = "");
-	virtual void add_user(User& user);
+	virtual void add_user(plain::User& user);
 	virtual void delete_user(const std::string& username);
-	virtual void update_user(User& user);
-	virtual void get_users(std::vector<User>& users);
-	virtual void add_language(Language& lang);
+	virtual void update_user(plain::User& user);
+	virtual void get_users(std::vector<plain::User>& users);
+	virtual void add_language(plain::Language& lang);
 	virtual void delete_language(const std::string& lname);
-	virtual void get_languages(std::vector<Language>& lv);
-	virtual void add_clarification(const std::string& asker,
-								   const Clarification& clar);
-	virtual void get_clarifications(std::vector<Clarification>& clars);
+	virtual void get_languages(std::vector<plain::Language>& lv);
+	virtual void add_clarification(const plain::Clarification& clar);
+	virtual void get_clarifications(std::vector<plain::Clarification>& clars);
 	
 private:
-	Wt::Dbo::ptr<User> find_user(const std::string& user);
+	Wt::Dbo::ptr<orm::User> find_user(const std::string& user);
 
 private:
 	boost::scoped_ptr<Wt::Dbo::backend::Sqlite3> m_db;

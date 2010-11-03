@@ -6,6 +6,8 @@
 #include <Wt/Dbo/Dbo>
 #include <Wt/Dbo/SqlTraits>
 
+namespace plain{
+
 struct Contest{
 	std::string name;
 	std::vector<std::string> problems;
@@ -59,8 +61,8 @@ struct Language{
 struct User;
 
 struct Clarification{
-	User* asker;
-	User* answerer;
+	std::string asker;
+	std::string answerer;
 	boost::uint64_t ask_time; // in milliseconds since the contest start
 	std::string question;
 	std::string answer;
@@ -89,5 +91,7 @@ struct Run{
 		JUDGED
 	} status;
 };
+
+}
 
 #endif // DATATYPES_H

@@ -6,6 +6,7 @@
 
 using namespace Wt::Dbo;
 using namespace std;
+using namespace orm;
 
 int test_main(int argc, char* argv[]){
 	backend::Sqlite3 sql3("test.db");

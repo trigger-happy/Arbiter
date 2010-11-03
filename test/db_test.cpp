@@ -7,6 +7,7 @@
 #include "../src/server/sqlitedb.h"
 
 using namespace std;
+using namespace plain;
 
 static SqliteDB* g_db = NULL;
 
@@ -42,6 +43,42 @@ BOOST_GLOBAL_FIXTURE(fixture);
 BOOST_AUTO_TEST_CASE(open_test){
 	g_db->open("test.db");
 	BOOST_REQUIRE(g_db->is_open());
+}
+
+BOOST_AUTO_TEST_CASE(clar_test){
+	// again, got too lazy so just making a single test for all clar
+	// functions here
+	Clarification c;
+	c.asker = "Test";
+	c.ask_time = 0;
+	c.category = 0;
+	c.question = "This is a test question";
+	c.answer = "This is the answer to the question";
+	
+	bool no_exceptions = true;
+	try{
+		g_db->add_clarification(c);
+	}catch(db_error& e){
+		no_exceptions = false;
+	}
+	BOOST_CHECK(no_exceptions);
+	
+	bool has_thrown = false;
+	c.asker = "non_existent";
+	try{
+		g_db->add_clarification(c);
+	}catch(db_error& e){
+		has_thrown = true;
+	}
+	BOOST_CHECK(has_thrown);
+	
+	// check to make sure that there is only 1 clar
+	vector<Clarification> vc;
+	g_db->get_clarifications(vc);
+	BOOST_CHECK(vc.size() == 1);
+	
+	// check that the user got added in properly
+	BOOST_CHECK(vc[0].asker == "Test");
 }
 
 BOOST_AUTO_TEST_CASE(auth_test){

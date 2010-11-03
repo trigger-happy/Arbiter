@@ -11,7 +11,7 @@ SqliteDB::SqliteDB(){
 
 string SqliteDB::get_acl(const string& username){
 	Transaction t(m_session);
-	ptr<User> qry = m_session.find<User>().where("username = ?").bind(username);
+	ptr<orm::User> qry = m_session.find<orm::User>().where("username = ?").bind(username);
 	if(!qry){
 		return "";
 	}
@@ -21,7 +21,7 @@ string SqliteDB::get_acl(const string& username){
 bool SqliteDB::authenticate(const string& username,
 							const string& password){
 	Transaction t(m_session);
-	ptr<User> qry = find_user(username);
+	ptr<orm::User> qry = find_user(username);
 	if(!qry){
 		return false;
 	}
@@ -44,12 +44,12 @@ void SqliteDB::open(const string& location,
 		m_session.setConnection(*m_db);
 
 		// perform the mappings
-		m_session.mapClass<User>("users");
-		m_session.mapClass<Language>("languages");
-		m_session.mapClass<Clarification>("clars");
-		m_session.mapClass<Run>("runs");
-		m_session.mapClass<Problem>("problems");
-		m_session.mapClass<File>("files");
+		m_session.mapClass<orm::User>("users");
+		m_session.mapClass<orm::Language>("languages");
+		m_session.mapClass<orm::Clarification>("clars");
+		m_session.mapClass<orm::Run>("runs");
+		m_session.mapClass<orm::Problem>("problems");
+		m_session.mapClass<orm::File>("files");
 
 		// attempt to create the tables if they don't exist yet
 		try{
@@ -65,11 +65,16 @@ void SqliteDB::open(const string& location,
 	}
 }
 
-void SqliteDB::add_user(User& user){
+void SqliteDB::add_user(plain::User& user){
 	Transaction t(m_session);
-	ptr<User> qry = find_user(user.username);
+	ptr<orm::User> qry = find_user(user.username);
 	if(!qry){
-		m_session.add(new User(user));
+		orm::User* u = new orm::User();
+		u->acl = user.acl;
+		u->password = user.password;
+		u->username = user.username;
+		u->teamname = user.teamname;
+		m_session.add(u);
 		t.commit();
 	}else{
 // 		qry.modify()->password = user.password;
@@ -81,7 +86,7 @@ void SqliteDB::add_user(User& user){
 
 void SqliteDB::delete_user(const string& username){
 	Transaction t(m_session);
-	ptr<User> qry = find_user(username);
+	ptr<orm::User> qry = find_user(username);
 	if(!qry){
 		throw db_error() << err_info("User not found");
 	}
@@ -89,9 +94,9 @@ void SqliteDB::delete_user(const string& username){
 	t.commit();
 }
 
-void SqliteDB::update_user(User& user){
+void SqliteDB::update_user(plain::User& user){
 	Transaction t(m_session);
-	ptr<User> qry = find_user(user.username);
+	ptr<orm::User> qry = find_user(user.username);
 	if(!qry){
 		throw db_error() << err_info("User not found");
 	}
@@ -101,27 +106,37 @@ void SqliteDB::update_user(User& user){
 	t.commit();
 }
 
-Wt::Dbo::ptr<User> SqliteDB::find_user(const string& user){
+Wt::Dbo::ptr<orm::User> SqliteDB::find_user(const string& user){
 // 	Transaction t(m_session);
-	return m_session.find<User>().where("username = ?").bind(user);
+	return m_session.find<orm::User>().where("username = ?").bind(user);
 }
 
-void SqliteDB::get_users(vector<User>& users){
+void SqliteDB::get_users(vector<plain::User>& users){
 	users.clear();
 	Transaction t(m_session);
-	typedef collection<ptr<User> > usr_col;
-	usr_col uc = m_session.find<User>();
+	typedef collection<ptr<orm::User> > usr_col;
+	usr_col uc = m_session.find<orm::User>();
 	for(usr_col::const_iterator i = uc.begin(); i != uc.end(); ++i){
-		users.push_back(User(**i));
+		plain::User temp;
+		temp.acl = (*i)->acl;
+		temp.password = (*i)->password;
+		temp.teamname = (*i)->teamname;
+		temp.username = (*i)->username;
+		users.push_back(temp);
 	}
 }
 
-void SqliteDB::add_language(Language& lang){
+void SqliteDB::add_language(plain::Language& lang){
 	Transaction t(m_session);
-	ptr<Language> qry = m_session.find<Language>().where("name = ?").bind(lang.name);
+	ptr<orm::Language> qry = m_session.find<orm::Language>().where("name = ?").bind(lang.name);
 	if(!qry){
 		// language not found, we add a new one
-		m_session.add(new Language(lang));
+		orm::Language* l = new orm::Language();
+		l->compile_cmd = lang.compile_cmd;
+		l->link_cmd = lang.link_cmd;
+		l->name = lang.name;
+		l->run_cmd = lang.run_cmd;
+		m_session.add(l);
 	}else{
 		qry.modify()->compile_cmd = lang.compile_cmd;
 		qry.modify()->link_cmd = lang.link_cmd;
@@ -132,7 +147,7 @@ void SqliteDB::add_language(Language& lang){
 
 void SqliteDB::delete_language(const string& lname){
 	Transaction t(m_session);
-	ptr<Language> qry = m_session.find<Language>().where("name = ?").bind(lname);
+	ptr<orm::Language> qry = m_session.find<orm::Language>().where("name = ?").bind(lname);
 	if(!qry){
 		throw db_error() << err_info("Languge "+lname+" not found");
 	}
@@ -140,36 +155,57 @@ void SqliteDB::delete_language(const string& lname){
 	t.commit();
 }
 
-void SqliteDB::get_languages(vector<Language>& lv){
+void SqliteDB::get_languages(vector<plain::Language>& lv){
 	lv.clear();
 	Transaction t(m_session);
-	typedef collection<ptr<Language> > lang_col;
-	lang_col lc = m_session.find<Language>();
+	typedef collection<ptr<orm::Language> > lang_col;
+	lang_col lc = m_session.find<orm::Language>();
 	for(lang_col::const_iterator i = lc.begin(); i != lc.end(); ++i){
-		lv.push_back(Language(**i));
+		plain::Language temp;
+		temp.compile_cmd = (*i)->compile_cmd;
+		temp.link_cmd = (*i)->link_cmd;
+		temp.name = (*i)->name;
+		temp.run_cmd = (*i)->run_cmd;
+		lv.push_back(temp);
 	}
 }
 
-void SqliteDB::add_clarification(const string& asker,
-								 const Clarification& clar){
+void SqliteDB::add_clarification(const plain::Clarification& clar){
 	Transaction t(m_session);
-	ptr<User> usr = m_session.find<User>().where("name = ?").bind(asker);
-	if(!usr){
-		Clarification* c = new Clarification(clar);
+	ptr<orm::User> usr = find_user(clar.asker);
+	ptr<orm::User> ans = find_user(clar.answerer);
+	if(usr){
+		orm::Clarification* c = new orm::Clarification();
 		c->asker = usr;
+		c->answerer = ans;
+		c->answer = clar.answer;
+		c->ask_time = clar.ask_time;
+		c->category = clar.category;
+		c->question = clar.question;
 		m_session.add(c);
 	}else{
-		throw db_error() << err_info("Asker: "+asker+" not found");
+		throw db_error() << err_info("Asker: "+clar.asker+" not found");
 	}
 	t.commit();
 }
 
-void SqliteDB::get_clarifications(vector<Clarification>& clars){
+void SqliteDB::get_clarifications(vector<plain::Clarification>& clars){
 	clars.clear();
 	Transaction t(m_session);
-	typedef collection<ptr<Clarification> > clar_col;
-	clar_col cc = m_session.find<Clarification>();
+	typedef collection<ptr<orm::Clarification> > clar_col;
+	clar_col cc = m_session.find<orm::Clarification>();
 	for(clar_col::const_iterator i = cc.begin(); i != cc.end(); ++i){
-		clars.push_back(Clarification(**i));
+		plain::Clarification temp;
+		temp.answer = (*i)->answer;
+		if((*i)->answerer){
+			temp.answerer = (*i)->answerer->username;
+		}
+		if((*i)->asker){
+			temp.asker = (*i)->asker->username;
+		}
+		temp.ask_time = (*i)->ask_time;
+		temp.category = (*i)->category;
+		temp.question = (*i)->question;
+		clars.push_back(temp);
 	}
 }

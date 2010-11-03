@@ -6,6 +6,8 @@
 #include <Wt/Dbo/Dbo>
 #include <Wt/Dbo/SqlTraits>
 
+namespace orm{
+
 struct Contest{
 	std::string name;
 	std::vector<std::string> problems;
@@ -146,5 +148,7 @@ struct Run{
 		Wt::Dbo::field(a, reinterpret_cast<boost::int32_t&>(status), "status");
 	}
 };
+
+}
 
 #endif // DATATYPES_ORM_H

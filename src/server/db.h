@@ -4,6 +4,7 @@
 #include <vector>
 #include <boost/exception/all.hpp>
 #include "../common/datatypes_orm.h"
+#include "../common/datatypes.h"
 
 typedef boost::error_info<struct tag_db_error_info, std::string> err_info;
 
@@ -64,7 +65,7 @@ public:
 	\param user The user to add
 	\exception db_error is thrown when the user exists
 	*/
-	virtual void add_user(User& user) = 0;
+	virtual void add_user(plain::User& user) = 0;
 
 	/*!
 	Delete the user with the specified username
@@ -77,20 +78,20 @@ public:
 	\param user The user information to update into the DB
 	\exception db_error is thrown when the user does not exist
 	*/
-	virtual void update_user(User& user) = 0;
+	virtual void update_user(plain::User& user) = 0;
 
 	/*!
 	Get all the users in the DB
 	\param users A reference to a vector to fill up with users
 	*/
-	virtual void get_users(std::vector<User>& users) = 0;
+	virtual void get_users(std::vector<plain::User>& users) = 0;
 
 	/*!
 	Add a language to the database
 	\param lang The language to add
 	\note Unlike the user functions, this one updates existing languages
 	*/
-	virtual void add_language(Language& lang) = 0;
+	virtual void add_language(plain::Language& lang) = 0;
 
 	/*!
 	Delete a langauage from the database
@@ -103,23 +104,20 @@ public:
 	Get all the languages in the database
 	\param lv A reference to a vector to fill up with languages
 	*/
-	virtual void get_languages(std::vector<Language>& lv) = 0;
+	virtual void get_languages(std::vector<plain::Language>& lv) = 0;
 	
 	/*!
 	Add a new clarification to the database
-	\param asker The username of the asker
 	\param clar The clarification to add.
-	\note Set the asker and answerer fields of clar to null.
 	\exception db_error is thrown if the askwer can't be found in the database.
 	*/
-	virtual void add_clarification(const std::string& asker,
-								   const Clarification& clar) = 0;
+	virtual void add_clarification(const plain::Clarification& clar) = 0;
 								   
 	/*!
 	Get all the clarifications in the database
 	\param clars A reference to a vector to fill up with clarifications
 	*/
-	virtual void get_clarifications(std::vector<Clarification>& clars) = 0;
+	virtual void get_clarifications(std::vector<plain::Clarification>& clars) = 0;
 	
 protected:
 	bool m_connected;
