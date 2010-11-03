@@ -27,6 +27,8 @@ public:
 	virtual void get_languages(std::vector<plain::Language>& lv);
 	virtual void add_clarification(const plain::Clarification& clar);
 	virtual void get_clarifications(std::vector<plain::Clarification>& clars);
+	virtual void add_run(const plain::Run& run);
+	virtual void get_runs(std::vector<plain::Run>& rv);
 	
 private:
 	Wt::Dbo::ptr<orm::User> find_user(const std::string& user);

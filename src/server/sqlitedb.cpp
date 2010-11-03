@@ -209,3 +209,43 @@ void SqliteDB::get_clarifications(vector<plain::Clarification>& clars){
 		clars.push_back(temp);
 	}
 }
+
+void SqliteDB::add_run(const plain::Run& run){
+	Transaction t(m_session);
+	ptr<orm::User> usr = m_session.find<orm::User>().where("username = ?").bind(run.contestant);
+	if(!usr){
+		throw db_error() << err_info("Contestant: "+run.contestant+" not found");
+	}else{
+		orm::Run* r = new orm::Run();
+		r->contestant = usr;
+		r->lang = m_session.find<orm::Language>().where("name = ?").bind(run.lang);
+		r->problem = m_session.find<orm::Problem>().where("title = ?").bind(run.problem);
+		r->submit_time = run.submit_time;
+		m_session.add(r);
+	}
+	t.commit();
+}
+
+void SqliteDB::get_runs(vector<plain::Run>& rv){
+	rv.clear();
+	Transaction t(m_session);
+	typedef collection<ptr<orm::Run> > run_col;
+	run_col rc = m_session.find<orm::Run>();
+	for(run_col::const_iterator i = rc.begin(); i != rc.end(); ++i){
+		plain::Run temp;
+		if((*i)->contestant){
+			temp.contestant = (*i)->contestant->username;
+		}
+		if((*i)->judge){
+			temp.judge = (*i)->judge->username;
+		}
+		if((*i)->lang){
+			temp.lang = (*i)->lang->name;
+		}
+		if((*i)->problem){
+			temp.problem = (*i)->problem->title;
+		}
+		temp.submit_time = (*i)->submit_time;
+		rv.push_back(temp);
+	}
+}

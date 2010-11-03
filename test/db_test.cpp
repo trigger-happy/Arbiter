@@ -188,6 +188,57 @@ BOOST_AUTO_TEST_CASE(language_test){
 	BOOST_CHECK(exception_thrown);
 }
 
+BOOST_AUTO_TEST_CASE(run_test){
+	// test case for using the run related functions
+	// add a test user for now
+	User u;
+	u.username = u.teamname = "SomeGuy";
+	g_db->add_user(u);
+	
+	// add a language for now
+	Language l;
+	l.name = "LOLCode";
+	g_db->add_language(l);
+	
+	//TODO: add a problem here
+	
+	// now we add a run
+	Run r;
+	r.contestant = u.username;
+	r.lang = l.name;
+	r.submit_time = 30;
+	//TODO: add a problem to the run
+	
+	bool no_exceptions = true;
+	try{
+		g_db->add_run(r);
+	}catch(db_error& e){
+		no_exceptions = false;
+	}
+	BOOST_CHECK(no_exceptions);
+	
+	r.contestant = "non_existent";
+	
+	no_exceptions = true;
+	try{
+		g_db->add_run(r);
+	}catch(db_error& e){
+		no_exceptions = false;
+	}
+	BOOST_CHECK(!no_exceptions);
+	
+	// get the runs
+	vector<Run> rv;
+	g_db->get_runs(rv);
+	
+	BOOST_CHECK(rv.size() == 1);
+	
+	//TODO: test here for deleting a run
+	
+	// delete the user we threw in earlier
+	g_db->delete_user(u.username);
+}
+
 BOOST_AUTO_TEST_CASE(close_test){
 	g_db->close();
 	BOOST_REQUIRE(!g_db->is_open());

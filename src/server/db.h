@@ -109,7 +109,7 @@ public:
 	/*!
 	Add a new clarification to the database
 	\param clar The clarification to add.
-	\exception db_error is thrown if the askwer can't be found in the database.
+	\exception db_error is thrown if the asker can't be found in the database.
 	*/
 	virtual void add_clarification(const plain::Clarification& clar) = 0;
 								   
@@ -118,6 +118,19 @@ public:
 	\param clars A reference to a vector to fill up with clarifications
 	*/
 	virtual void get_clarifications(std::vector<plain::Clarification>& clars) = 0;
+	
+	/*!
+	 * Add a new run
+	 * \param run The run data
+	 * \exception db_error is thrown if the contestant is not found in the DB.
+	 */
+	virtual void add_run(const plain::Run& run) = 0;
+						 
+	/*!
+	 * Get all the runs in the DB
+	 * \param rv The vector that will contain the run data
+	 */
+	virtual void get_runs(std::vector<plain::Run>& rv) = 0;
 	
 protected:
 	bool m_connected;
