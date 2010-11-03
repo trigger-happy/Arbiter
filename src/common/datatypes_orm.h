@@ -120,7 +120,7 @@ struct Run{
 	Wt::Dbo::ptr<User> judge;
 	Wt::Dbo::ptr<Language> lang;
 	boost::uint64_t submit_time; // in milliseconds since the contest start
-	boost::uint32_t problem_id;
+	Wt::Dbo::ptr<Problem> problem;
 	
 	enum class RESPONSE : boost::uint8_t{
 		YES = 0,
@@ -142,8 +142,8 @@ struct Run{
 		Wt::Dbo::belongsTo(a, contestant, "contestant");
 		Wt::Dbo::belongsTo(a, judge, "judge");
 		Wt::Dbo::belongsTo(a, lang, "lang");
+		Wt::Dbo::belongsTo(a, problem, "problem");
 		Wt::Dbo::field(a, reinterpret_cast<double&>(submit_time), "submit_time");
-		Wt::Dbo::field(a, reinterpret_cast<boost::int32_t&>(problem_id), "problem_id");
 		Wt::Dbo::field(a, reinterpret_cast<boost::int32_t&>(response), "response");
 		Wt::Dbo::field(a, reinterpret_cast<boost::int32_t&>(status), "status");
 	}

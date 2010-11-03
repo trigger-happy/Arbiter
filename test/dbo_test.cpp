@@ -72,9 +72,8 @@ int test_main(int argc, char* argv[]){
 	
 	Run* r = new Run();
 	r->contestant = uptr;
-	//r->judge = j_ptr;
+	r->judge = j_ptr;
 	r->lang = lang_ptr;
-	r->problem_id = 1;
 	r->submit_time = 0;
 	auto r_ptr = s.add(r);
 	
@@ -83,6 +82,7 @@ int test_main(int argc, char* argv[]){
 	prob->time_limit = 1000;
 	prob->title = "Stacking Cylinders";
 	ptr<Problem> p_ptr = s.add(prob);
+	r->problem = p_ptr;
 	
 	File* in_file = new File();
 	File* out_file = new File();

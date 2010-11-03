@@ -74,7 +74,7 @@ struct Run{
 	std::string judge;
 	std::string lang;
 	boost::uint64_t submit_time; // in milliseconds since the contest start
-	boost::uint32_t problem_id;
+	std::string problem;
 	
 	enum class RESPONSE : boost::uint8_t{
 		YES = 0,
