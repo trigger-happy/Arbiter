@@ -149,3 +149,27 @@ void SqliteDB::get_languages(vector<Language>& lv){
 		lv.push_back(Language(**i));
 	}
 }
+
+void SqliteDB::add_clarification(const string& asker,
+								 const Clarification& clar){
+	Transaction t(m_session);
+	ptr<User> usr = m_session.find<User>().where("name = ?").bind(asker);
+	if(!usr){
+		Clarification* c = new Clarification(clar);
+		c->asker = usr;
+		m_session.add(c);
+	}else{
+		throw db_error() << err_info("Asker: "+asker+" not found");
+	}
+	t.commit();
+}
+
+void SqliteDB::get_clarifications(vector<Clarification>& clars){
+	clars.clear();
+	Transaction t(m_session);
+	typedef collection<ptr<Clarification> > clar_col;
+	clar_col cc = m_session.find<Clarification>();
+	for(clar_col::const_iterator i = cc.begin(); i != cc.end(); ++i){
+		clars.push_back(Clarification(**i));
+	}
+}

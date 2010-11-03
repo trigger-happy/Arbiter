@@ -105,6 +105,22 @@ public:
 	*/
 	virtual void get_languages(std::vector<Language>& lv) = 0;
 	
+	/*!
+	Add a new clarification to the database
+	\param asker The username of the asker
+	\param clar The clarification to add.
+	\note Set the asker and answerer fields of clar to null.
+	\exception db_error is thrown if the askwer can't be found in the database.
+	*/
+	virtual void add_clarification(const std::string& asker,
+								   const Clarification& clar) = 0;
+								   
+	/*!
+	Get all the clarifications in the database
+	\param clars A reference to a vector to fill up with clarifications
+	*/
+	virtual void get_clarifications(std::vector<Clarification>& clars) = 0;
+	
 protected:
 	bool m_connected;
 };

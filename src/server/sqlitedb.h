@@ -25,6 +25,9 @@ public:
 	virtual void add_language(Language& lang);
 	virtual void delete_language(const std::string& lname);
 	virtual void get_languages(std::vector<Language>& lv);
+	virtual void add_clarification(const std::string& asker,
+								   const Clarification& clar);
+	virtual void get_clarifications(std::vector<Clarification>& clars);
 	
 private:
 	Wt::Dbo::ptr<User> find_user(const std::string& user);
