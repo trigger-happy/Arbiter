@@ -70,9 +70,9 @@ struct Clarification{
 };
 
 struct Run{
-	User* contestant;
-	User* judge;
-	Language* lang;
+	std::string contestant;
+	std::string judge;
+	std::string lang;
 	boost::uint64_t submit_time; // in milliseconds since the contest start
 	boost::uint32_t problem_id;
 	
