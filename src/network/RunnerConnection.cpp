@@ -54,10 +54,12 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
       sendMessage();
     }
     else if(inboundMessage_.type() == NetworkMessage::CHALLENGE_RESPONSE) {
-      std::string expected = address_ + challenge_;
       unsigned char hash[32];
-      sha2(reinterpret_cast<const unsigned char*>(expected.c_str()), expected.length(), &hash[0], false);
-      if(inboundMessage_.text().compare((char*)(hash))) {
+      sha2_hmac((unsigned char*)challenge_.c_str(), challenge_.length(),
+		(unsigned char*)address_.c_str(), address_.length(),
+		hash, false);
+      std::string hashstr((char*)hash, 32);
+      if(inboundMessage_.text() == hashstr) {
 	authenticated_ = true;
 	outboundMessage_.set_type(NetworkMessage::ACKNOWLEDGE);
 	sendMessage();

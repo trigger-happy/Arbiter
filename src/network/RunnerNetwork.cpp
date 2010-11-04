@@ -69,10 +69,12 @@ void RunnerNetwork::handleReceive(const boost::system::error_code& e)
   if(!e) {
     timer_.cancel();
     if(inboundMessage_.type() == NetworkMessage::CHALLENGE) {
-      std::string original = connection_->socket().local_endpoint().address().to_string() + inboundMessage_.text();
+      std::string address = connection_->socket().local_endpoint().address().to_string();
       unsigned char hash[32];
-      sha2(reinterpret_cast<const unsigned char*>(original.c_str()), original.length(), &hash[0], false);
-      std::string response(reinterpret_cast<char*>(hash));
+      sha2_hmac((unsigned char*)inboundMessage_.text().c_str(), inboundMessage_.text().length(),
+		(unsigned char*)address.c_str(), address.length(),
+		hash, false);
+      std::string response((char*)hash, 32);
       outboundMessage_.set_type(NetworkMessage::CHALLENGE_RESPONSE);
       outboundMessage_.set_text(response);
       sendMessage();
