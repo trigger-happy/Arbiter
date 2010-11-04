@@ -239,6 +239,33 @@ BOOST_AUTO_TEST_CASE(run_test){
 	g_db->delete_user(u.username);
 }
 
+BOOST_AUTO_TEST_CASE(problem_test){
+	Problem p;
+	p.author = "Mr. Shires";
+	p.time_limit = 120;
+	// this is going to be immortalized XD
+	p.title = "Stacking Cylinders";
+	p.ctype = Problem::CHECKING_TYPE::DIFF;
+
+	File f;
+	f.file = "cylinders.in";
+	f.problem = p.title;
+	p.files.push_back(f);
+	f.file = "cylinders.out";
+	p.files.push_back(f);
+	g_db->add_problem(p);
+
+	vector<Problem> vp;
+	g_db->get_problems(vp);
+
+	BOOST_CHECK(vp.size() == 1);
+
+	BOOST_CHECK(vp[0].time_limit == p.time_limit);
+	BOOST_CHECK(vp[0].title == p.title);
+	BOOST_CHECK(vp[0].files.size() == p.files.size());
+	BOOST_CHECK(vp[0].files[0].problem == p.files[0].problem);
+}
+
 BOOST_AUTO_TEST_CASE(close_test){
 	g_db->close();
 	BOOST_REQUIRE(!g_db->is_open());
