@@ -11,26 +11,9 @@
 
 using namespace Wt;
 
-class TreeViewExample : public Wt::WContainerWidget
-{
-public:
-  TreeViewExample(Wt::WStandardItemModel *model, const Wt::WString& titleText);
-  Wt::WTreeView *treeView() const { return treeView_; }
-  static Wt::WStandardItemModel *createModel(bool useInternalPath, WObject *parent);
-
-private:
-  WStandardItem      *belgium_;
-  WStandardItemModel *model_;
-  WTreeView          *treeView_;
-
-  static WStandardItem *adminItem(const std::string& admin);
-  static WStandardItem *taskItem(const std::string& task);
-
-};
-
 TreeViewExample::TreeViewExample(WStandardItemModel *model,const WString& titleText): model_(model)
 {
-  belgium_ = model_->item(0, 0)->child(0, 0);
+  item_ = model_->item(0, 0)->child(0, 0);
 
   new WText(titleText, this);
 
