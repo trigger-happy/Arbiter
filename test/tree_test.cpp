@@ -8,6 +8,7 @@
 #include <Wt/WText>
 #include <Wt/WTreeView>
 #include <Wt/WString>
+#include "tree_test.h"
 
 using namespace Wt;
 
