@@ -1,5 +1,5 @@
-#ifndef TREEVIEWEXAMPLE_H_
-#define TREEVIEWEXAMPLE_H_
+#ifndef TREETEST_H_
+#define TREETEST_H_
 
 #include <Wt/WContainerWidget>
 #include <Wt/WString>
@@ -17,12 +17,12 @@ public:
   static Wt::WStandardItemModel *createModel(bool useInternalPath, WObject *parent);
 
 private:
-  WStandardItem      *item_;
-  WStandardItemModel *model_;
-  WTreeView          *treeView_;
+  Wt::WStandardItem      *item_;
+  Wt::WStandardItemModel *model_;
+  Wt::WTreeView          *treeView_;
 
-  static WStandardItem *adminItem(const std::string& admin);
-  static WStandardItem *taskItem(const std::string& task);
+  static Wt::WStandardItem *adminItem(const std::string& admin);
+  static Wt::WStandardItem *taskItem(const std::string& task);
 
 };
 

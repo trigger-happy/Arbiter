@@ -1,5 +1,6 @@
 #include <Wt/WApplication>
 #include <Wt/WText>
+#include "tree_test.h"
 
 using namespace Wt;
 
