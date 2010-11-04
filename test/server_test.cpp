@@ -1,16 +1,15 @@
-#ifndef TESTSERVER_H
-#define TESTSERVER_H
-
-#include "ServerNetwork.h"
+#include "../src/network/ServerNetwork.h"
 #include <iostream>
 
-class testserver : public ServerNetworkListener, public RunnerConnectionListener
+class ListenerImpl : public ServerNetworkListener, public RunnerConnectionListener
 {
 public:
   ServerNetwork& sn_;
   boost::shared_ptr<RunnerConnection> runner_;
   
-  testserver(ServerNetwork& sn) : sn_(sn) {}
+  ListenerImpl(ServerNetwork& sn) : sn_(sn) {
+    sn.addListener(*this);
+  }
   
   virtual void runnerConnected(boost::shared_ptr<RunnerConnection> runner) {
     runner_ = runner;
@@ -41,4 +40,10 @@ public:
   }
 };
 
-#endif // TESTSERVER_H
+int main() {
+  boost::asio::io_service io_service;
+  ServerNetwork sn(io_service, 9999, "asdf", 10);
+  ListenerImpl ts(sn);
+  io_service.run();
+  return 0;
+}

@@ -1,14 +1,14 @@
-#ifndef TESTCLIENT_H
-#define TESTCLIENT_H
-#include "RunnerNetwork.h"
+#include "../src/network/RunnerNetwork.h"
 #include <iostream>
 
-class testclient : public RunnerNetworkListener
+class ListenerImpl : public RunnerNetworkListener
 {
 public:
   RunnerNetwork& rn_;
   
-  testclient(RunnerNetwork& rn) : rn_(rn) {}
+  ListenerImpl(RunnerNetwork& rn) : rn_(rn) {
+    rn.addListener(*this);
+  }
   
   virtual void connected() {
     std::cout << "Connected" << std::endl;
@@ -51,4 +51,10 @@ public:
   }
 };
 
-#endif // TESTCLIENT_H
+int main() {
+  boost::asio::io_service io_service;
+  RunnerNetwork rn(io_service, "localhost", 9999, 10);
+  ListenerImpl ts(rn);
+  io_service.run();
+  return 0;
+}
