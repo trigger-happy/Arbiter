@@ -46,7 +46,7 @@ struct Problem{
 	std::string title;
 	Wt::Dbo::collection<Wt::Dbo::ptr<File> > files;
 	
-	enum class checking_type : boost::uint8_t{
+	enum class CHECKING_TYPE : boost::uint8_t{
 		DIFF = 0,
 		CHECKER = 1
 	} ctype;

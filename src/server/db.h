@@ -131,6 +131,31 @@ public:
 	 * \param rv The vector that will contain the run data
 	 */
 	virtual void get_runs(std::vector<plain::Run>& rv) = 0;
+
+	/*!
+	 * Add a file to the database
+	 * \param f The file to add to the database.
+	 */
+	virtual void add_file(const plain::File& f) = 0;
+
+	/*!
+	 * Get all the files in the database
+	 * \param vf A reference to a vector to fill up with file information.
+	 */
+	virtual void get_files(std::vector<plain::File>& vf) = 0;
+
+	/*!
+	 * Add a problem definition to the database, just make sure they're not personal ;)
+	 * \param p The problem to add in the database
+	 * \note p.files is automatically added to the database as well
+	 */
+	virtual void add_problem(const plain::Problem& p) = 0;
+
+	/*!
+	 * Get all the problem definitions in the database
+	 * \param vp A reference to a vector that will contain the problems
+	 */
+	virtual void get_problems(std::vector<plain::Problem>& vp) = 0;
 	
 protected:
 	bool m_connected;

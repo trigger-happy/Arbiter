@@ -29,6 +29,10 @@ public:
 	virtual void get_clarifications(std::vector<plain::Clarification>& clars);
 	virtual void add_run(const plain::Run& run);
 	virtual void get_runs(std::vector<plain::Run>& rv);
+	virtual void add_file(const plain::File& f);
+	virtual void get_files(std::vector<plain::File>& vf);
+	virtual void add_problem(const plain::Problem& p);
+	virtual void get_problems(std::vector<plain::Problem>& vp);
 	
 private:
 	Wt::Dbo::ptr<orm::User> find_user(const std::string& user);

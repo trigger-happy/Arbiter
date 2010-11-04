@@ -221,6 +221,8 @@ void SqliteDB::add_run(const plain::Run& run){
 		r->lang = m_session.find<orm::Language>().where("name = ?").bind(run.lang);
 		r->problem = m_session.find<orm::Problem>().where("title = ?").bind(run.problem);
 		r->submit_time = run.submit_time;
+		r->response = static_cast<orm::Run::RESPONSE>(run.response);
+		r->status = static_cast<orm::Run::STATUS>(run.status);
 		m_session.add(r);
 	}
 	t.commit();
@@ -245,7 +247,112 @@ void SqliteDB::get_runs(vector<plain::Run>& rv){
 		if((*i)->problem){
 			temp.problem = (*i)->problem->title;
 		}
+		temp.response = static_cast<plain::Run::RESPONSE>((*i)->response);
+		temp.status = static_cast<plain::Run::STATUS>((*i)->status);
 		temp.submit_time = (*i)->submit_time;
 		rv.push_back(temp);
 	}
 }
+
+void SqliteDB::add_file(const plain::File& f){
+	Transaction t(m_session);
+	ptr<orm::Problem> prob = m_session.find<orm::Problem>().where("title = ?").bind(f.problem);
+	orm::File* of = new orm::File();
+	of->file = f.file;
+	of->problem = prob;
+	of->file_type = static_cast<orm::File::FILE_TYPE>(f.file_type);
+	m_session.add(of);
+	t.commit();
+}
+
+void SqliteDB::get_files(vector<plain::File>& vf){
+	vf.clear();
+	Transaction t(m_session);
+	typedef collection<ptr<orm::File> > file_col;
+	file_col fc = m_session.find<orm::File>();
+	for(file_col::const_iterator i = fc.begin(); i != fc.end(); ++i){
+		plain::File temp;
+		temp.file = (*i)->file;
+		if((*i)->problem){
+			temp.problem = (*i)->problem->title;
+		}
+		temp.file_type = static_cast<plain::File::FILE_TYPE>((*i)->file_type);
+		vf.push_back(temp);
+	}
+}
+
+void SqliteDB::add_problem(const plain::Problem& p){
+	typedef vector<plain::File> file_vec;
+	Transaction t(m_session);
+	// 1st we check to see if the problem has already been added
+	ptr<orm::Problem> prob = m_session.find<orm::Problem>().where("title = ?").bind(p.title);
+	if(!prob){
+		// not in the db, we add a new one
+		orm::Problem* op = new orm::Problem();
+		op->author = p.author;
+		op->time_limit = p.time_limit;
+		op->title = p.title;
+		op->ctype = static_cast<orm::Problem::CHECKING_TYPE>(p.ctype);
+		prob = m_session.add(op);
+	}else{
+		// it's in the DB, we modify it instead
+		prob.modify()->author = p.author;
+		prob.modify()->time_limit = p.time_limit;
+		prob.modify()->ctype = static_cast<orm::Problem::CHECKING_TYPE>(p.ctype);
+
+		// clear out the files
+		typedef collection<ptr<orm::File> > file_col;
+		for(file_col::iterator i = prob.modify()->files.begin(); i != prob.modify()->files.end(); ++i){
+			i->remove();
+		}
+
+		// darn thing doesn't have a clear function and i'm not sure if
+		// the iterator is still sane after erasing in a loop, so...
+		while(prob->files.size() > 0){
+			prob.modify()->files.erase(*(prob->files.begin()));
+		}
+	}
+
+	// add the files
+	for(file_vec::const_iterator i = p.files.begin(); i != p.files.end(); ++i){
+		orm::File* temp = new orm::File();
+		temp->file = i->file;
+		temp->problem = prob;
+		temp->file_type = static_cast<orm::File::FILE_TYPE>(i->file_type);
+		auto file_ptr = m_session.add(temp);
+		prob.modify()->files.insert(file_ptr);
+	}
+	
+	// commit the changes
+	t.commit();
+}
+
+void SqliteDB::get_problems(vector<plain::Problem>& vp){
+	vp.clear();
+	Transaction t(m_session);
+	
+	// grab all the problems in the database
+	typedef collection<ptr<orm::Problem> > prob_col;
+	prob_col pc = m_session.find<orm::Problem>();
+
+	// for each orm::Problem, place it into a plain::Problem
+	for(prob_col::const_iterator i = pc.begin(); i != pc.end(); ++i){
+		plain::Problem ptemp;
+		ptemp.author = (*i)->author;
+		ptemp.title = (*i)->title;
+		ptemp.time_limit = (*i)->time_limit;
+		ptemp.ctype = static_cast<plain::Problem::CHECKING_TYPE>((*i)->ctype);
+
+		// add the files associated to it
+		typedef collection<ptr<orm::File> > file_col;
+		for(file_col::const_iterator j = (*i)->files.begin(); j != (*i)->files.end(); ++j){
+			plain::File ftemp;
+			ftemp.file = (*j)->file;
+			ftemp.file_type = static_cast<plain::File::FILE_TYPE>((*j)->file_type);
+			ftemp.problem = ptemp.title;
+			ptemp.files.push_back(ftemp);
+		}
+		vp.push_back(ptemp);
+	}
+}
+

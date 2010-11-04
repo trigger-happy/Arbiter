@@ -23,6 +23,7 @@ struct Contest{
 };
 
 struct File{
+	std::string problem;
 	std::string file;
 	
 	enum class FILE_TYPE : boost::uint8_t{
@@ -36,7 +37,7 @@ struct Problem{
 	std::string title;
 	std::vector<File> files;
 	
-	enum class checking_type : boost::uint8_t{
+	enum class CHECKING_TYPE : boost::uint8_t{
 		DIFF = 0,
 		CHECKER = 1
 	} ctype;
