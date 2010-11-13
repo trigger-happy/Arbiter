@@ -9,7 +9,7 @@ The project is under the supervision of the [Computer Society of Ateneo][compsat
 
 Compilation
 ===========
-Arbiter is programmed in C++ using the [Wt framework][Wt]. The system has been developed on GCC 4.2+ but should work on any modern C++ compiler.
+Arbiter is programmed in C++ using the [Wt framework][Wt]. The system has been developed on GCC 4.4+ but should work on any modern C++ compiler that supports C++0x.
 
 [Wt]: http://webtoolkit.eu
 Requirements
