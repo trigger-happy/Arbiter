@@ -33,28 +33,28 @@ string ProblemSetCache::unpackProblemSet(const string &problemId) {
 
 
 namespace {
-	void rm_rf(const char *path, apr_pool_t *pool) {
-		apr_dir_t *dir;
-		apr_dir_open(&dir, path, 0);
-		apr_finfo_t fileInfo;
+void rm_rf(const char *path, apr_pool_t *pool) {
+	apr_dir_t *dir;
+	apr_dir_open(&dir, path, 0);
+	apr_finfo_t fileInfo;
 
-		while (apr_dir_read(&fileInfo, APR_FINFO_TYPE | APR_FINFO_NAME | APR_FINFO_DIRENT, dir) == APR_SUCCESS) {
-			if ( strcmp(fileInfo.name, ".") == 0 || strcmp(fileInfo.name, "..") == 0 ) continue;
+	while (apr_dir_read(&fileInfo, APR_FINFO_TYPE | APR_FINFO_NAME | APR_FINFO_DIRENT, dir) == APR_SUCCESS) {
+		if ( strcmp(fileInfo.name, ".") == 0 || strcmp(fileInfo.name, "..") == 0 ) continue;
 
-			char *newPath;
-			apr_filepath_merge( &newPath, path, fileInfo.name, APR_FILEPATH_NATIVE, pool);
+		char *newPath;
+		apr_filepath_merge( &newPath, path, fileInfo.name, APR_FILEPATH_NATIVE, pool);
 
-			if ( fileInfo.filetype != APR_DIR ) {
-				//if it's not a directory, just unlink it
-				apr_file_remove(newPath, pool);
-			} else {
-				//recurse the deletion
-				rm_rf(newPath, pool);
-			}
+		if ( fileInfo.filetype != APR_DIR ) {
+			//if it's not a directory, just unlink it
+			apr_file_remove(newPath, pool);
+		} else {
+			//recurse the deletion
+			rm_rf(newPath, pool);
 		}
-		apr_dir_close(dir);
-		apr_dir_remove(path, pool);
 	}
+	apr_dir_close(dir);
+	apr_dir_remove(path, pool);
+}
 
 struct AprPoolGuard {
 	apr_pool_t *pool;
