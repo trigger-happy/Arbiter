@@ -3,8 +3,6 @@
 using namespace std;
 using namespace boost::program_options;
 
-namespace oh = boost::program_options;
-
 //helper function specified in the boost library documentation
 template<class T>
 ostream& operator<<(ostream& os, const vector<T>& v){
@@ -37,17 +35,17 @@ OptionsParser::OptionsParser() :
     m_descriptions.add_options()
       ("help","We will do our best to help you")
       ("verbose,v", "Enable verbose mode")
-      ("version",oh::value<string>(&version), "Prints the version id")
+	  ("version",value<string>(&version), "Prints the version id")
       ("options,o", "Lists all options in [name,value] pairs")
-      ("passcode,p",oh::value<string>(&passcode)->default_value("12345") , 
+	  ("passcode,p",value<string>(&passcode)->default_value("12345") ,
 	  "Sets the passcode")
-      ("server,s",oh::value<string>(&server)->default_value("127.0.0.1") , 
+	  ("server,s",value<string>(&server)->default_value("127.0.0.1") ,
 	  "Sets the server address")
-      ("port,p", oh::value<string>(&port)->default_value("127.0.0.1"),
+	  ("port,p", value<string>(&port)->default_value("127.0.0.1"),
 	  "Sets the port's address")
-      ("input-path,I", oh::value<string>(&pwd)->default_value("LOCAL/SUBDIRECTORY/PROBLEM/path"),
+	  ("input-path,I", value<string>(&pwd)->default_value("LOCAL/SUBDIRECTORY/PROBLEM/path"),
 	  "Sets the current working directory")
-      ("input-file", oh::value<string>(&input)->default_value("a.cpp"),
+	  ("input-file", value<string>(&input)->default_value("a.cpp"),
 	  "Sets the file(s) to be sent");
     
     //filling up positional information
@@ -108,7 +106,7 @@ void OptionsParser::setOptions(int elements, char** options){
 
 /*lists in stdout the options available. This is called when --help*/
 void OptionsParser::listOptions(){
-  cout << "Usage: options_description [options]\n";
+  cout << "Usage: runner [options]\n";
   cout << m_descriptions;
 }
 
@@ -124,7 +122,7 @@ void OptionsParser::printOptions(){
 }
 
 /*gets the actual variable map that may be used by any other module ;)*/
-oh::variables_map OptionsParser::getOptions(){
+variables_map OptionsParser::getOptions(){
   return m_variablemap;
 }
 
