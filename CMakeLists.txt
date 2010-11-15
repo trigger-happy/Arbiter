@@ -19,6 +19,8 @@ FIND_PACKAGE(Boost 1.43.0 COMPONENTS program_options
 					unit_test_framework
 					signals
 					iostreams
+					date_time
+					thread
 					REQUIRED)
 
 FIND_PACKAGE(Wt REQUIRED)
