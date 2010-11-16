@@ -29,7 +29,7 @@ OptionsParser::OptionsParser() :
 				 "Sets the server address.")
 				("port,p", value<uint16_t>(&m_port)->default_value(9999),
 				 "Sets the port's address.")
-				("directory,D", value<string>(&m_pwd),
+				("directory,D", value<string>(&m_pwd)->default_value("."),
 				 "Sets the current working directory.");
 	} catch(std::exception& e) {
 		cout << e.what() << endl;
@@ -66,11 +66,11 @@ void OptionsParser::listOptions(){
 /*prints the [name,value] pairs that the program is running on using 
 boost/program_options/variable_map*/
 void OptionsParser::printOptions(){
-  cout << "Here are the current [name,value] pairs\n";
-  cout << "Server: " << m_variablemap["server"].as<string>() << endl;
-  cout << "Passcode: " << m_variablemap["passcode"].as<string>() << endl;
-  cout << "Port: " << m_variablemap["port"].as<uint16_t>() << endl;
-  cout << "Directory: " << m_variablemap["directory"].as<string>() << endl;
+	cout << "Here are the current [name,value] pairs\n";
+	cout << "Server: " << m_variablemap["server"].as<string>() << endl;
+	cout << "Passcode: " << m_variablemap["passcode"].as<string>() << endl;
+	cout << "Port: " << m_variablemap["port"].as<uint16_t>() << endl;
+	cout << "Directory: " << m_variablemap["directory"].as<string>() << endl;
 }
 
 /*gets the actual variable map that may be used by any other module ;)*/
