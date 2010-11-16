@@ -5,4 +5,4 @@ set(RUNNER_HDR Executor.h ProblemSetCache.h OptionsParser.h)
 
 add_executable(runner ${RUNNER_SRC} "${COMMON_DIR}/EasyUnzip.cpp")
 
-target_link_libraries(runner polarssl minizip ${ZLIB_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_THREAD_LIBRARY} ${APR_LIBRARIES})
+target_link_libraries(runner polarssl minizip network ${ZLIB_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_THREAD_LIBRARY} ${APR_LIBRARIES})
