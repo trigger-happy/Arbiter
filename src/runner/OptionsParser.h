@@ -13,8 +13,12 @@
   * Parses command-line options.
   */
 class OptionsParser {
+public:
+	enum LogLevel { Verbose, Normal, Warnings, Errors, Quiet };
+private:
   //flag for verbose mode
 	bool m_verbose;
+	LogLevel m_loglevel;
 
   //security string; some sort of passcode set at the beginning
   //of the main program

@@ -4,8 +4,6 @@
 #include <polarssl/sha2.h>
 #include <string>
 #include <vector>
-#include <tr1/unordered_map>
-#include <tr1/memory>
 
 
 /**
@@ -16,6 +14,7 @@
 class ProblemSetCache {
 private:
 	const std::string working_directory;
+	std::string cache_directory;
 public:
 	ProblemSetCache(const std::string &working_directory);
 
@@ -38,6 +37,11 @@ public:
 	  * to save the recieved problem set.
 	  */
 	std::string getProblemSetPath(const std::string &problemId);
+
+	/**
+	  * Write the problem set to the directory.
+	  */
+	bool saveProblemSet(const std::string &data, const std::string &problemId);
 };
 
 #endif

@@ -19,5 +19,4 @@ public:
 	Executor(const std::string &source, const Problem &ps);
 	void start();
 };
-
 #endif
