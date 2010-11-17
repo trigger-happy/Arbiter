@@ -1,7 +1,7 @@
 include_directories(${Boost_INCLUDE_DIRS} ${APR_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${LIB_PATH} ${COMMON_DIR})
 
-set(RUNNER_SRC runner.cpp Executor.cpp ProblemSetCache.cpp OptionsParser.cpp)
-set(RUNNER_HDR Executor.h ProblemSetCache.h OptionsParser.h)
+set(RUNNER_SRC runner.cpp Executor.cpp ProblemSetCache.cpp OptionsParser.cpp LanguageCache.cpp)
+set(RUNNER_HDR Executor.h ProblemSetCache.h OptionsParser.h LanguageCache.h)
 
 add_executable(runner ${RUNNER_SRC} "${COMMON_DIR}/EasyUnzip.cpp")
 

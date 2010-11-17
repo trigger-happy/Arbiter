@@ -7,9 +7,10 @@
 #include <boost/asio.hpp>
 #include <boost/system/error_code.hpp>
 #include "Executor.h"
+#include "LanguageCache.h"
 
 #define VERSION_STRING "0.0.1"
-#define LANGUAGE_DIR "languages"
+
 
 using namespace std;
 using namespace boost::asio;
@@ -23,6 +24,7 @@ public:
 	ProblemSetCache &cache;
 	RunOrder *currentRun;
 	Executor *currentExecution;
+	LanguageCache languageCache;
 
 	NetworkResponder(RunnerNetwork& rn, ProblemSetCache &cache) :
 			rn(rn), cache(cache), currentRun(0), currentExecution(0) {
@@ -38,15 +40,10 @@ public:
 		return std::vector<uint8_t>(hash.begin(), hash.end());
 	}
 
-	bool hasLanguage(uint32_t language_id, const vector<uint8_t> &language_hash) {
-		//TODO: Implement this.
-		return false;
-	}
-
 	void launchRunOrder() {
 		//Check ALL requirements to make extra sure we have what we need.
 
-		if ( !hasLanguage(currentRun->language_id(), convertToVector(currentRun->language_hash())) ) {
+		if ( !languageCache.hasLanguage(currentRun->language_id(), convertToVector(currentRun->language_hash())) ) {
 			//TODO: Wail and complain
 			//for the moment, just re-request the language
 			rn.requestLanguage(currentRun->language_id());
@@ -127,7 +124,7 @@ public:
 		//if we have a run pending, check if we have the proper language then execute the run
 		//else, request the language from the server.
 		if ( isPending() ) {
-			if ( !hasLanguage(currentRun->language_id(), convertToVector(currentRun->language_hash())) ) {
+			if ( !languageCache.hasLanguage(currentRun->language_id(), convertToVector(currentRun->language_hash())) ) {
 				rn.requestLanguage(currentRun->language_id());
 			} else {
 				launchRunOrder();
@@ -141,6 +138,12 @@ public:
 		std::cout << l.language_id() << std::endl;
 		std::cout << l.language_hash() << std::endl;
 		std::cout << l.attachment() << std::endl;
+
+		languageCache.saveLanguage(l.language_id(), l.attachment());
+		//verify if the hash is correct
+		if ( !languageCache.hasLanguage(l.language_id(), convertToVector(l.language_hash())) ) {
+			//TODO: Wail and cry
+		}
 
 		if ( isPending() ) {
 			launchRunOrder();
