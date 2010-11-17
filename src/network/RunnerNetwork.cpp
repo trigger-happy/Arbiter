@@ -200,8 +200,16 @@ void RunnerNetwork::disconnect()
   }
 }
 
-void RunnerNetwork::addListener(RunnerNetworkListener& listener)
-{
+void RunnerNetwork::addListener(RunnerNetworkListener& listener) {
   listeners_.push_back(&listener);
+}
+
+void RunnerNetwork::removeListener(RunnerNetworkListener& listener) {
+	for ( auto iter = listeners_.begin(); iter != listeners_.end(); ++iter ) {
+		if ( *iter == &listener ) {
+			listeners_.erase(iter);
+			return;
+		}
+	}
 }
 
