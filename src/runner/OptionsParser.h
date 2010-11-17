@@ -14,17 +14,19 @@
   */
 class OptionsParser {
   //flag for verbose mode
-  bool m_verbose;
+	bool m_verbose;
 
   //security string; some sort of passcode set at the beginning
   //of the main program
-  std::string m_passcode;
+  std::string m_key;
 
   //string for the server address; format is something like 127.0.0.1
   std::string m_server;
 
   //string for the server port; format is something like 1971
   uint16_t m_port;
+
+  uint64_t m_pingInterval;
 
   //string for the current working directory
   std::string m_pwd;
@@ -43,9 +45,11 @@ class OptionsParser {
 	OptionsParser(const OptionsParser &options_h);
 
     bool getVerbose();
-    std::string getPasscode();
+	std::string getKey();
     std::string getServer();
 	uint16_t getPort();
+	uint64_t getPingInterval() { return m_pingInterval; }
+
     std::string getDirectory();
 	bool isHelpToggled();
 	bool isVersionToggled();
