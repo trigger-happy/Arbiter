@@ -5,8 +5,9 @@
 #include <sstream>
 #include <unordered_map>
 #include <stdexcept>
+#include <boost/property_tree/detail/rapidxml.hpp>
 
-class LanguageParser {
+class Language {
 public:
 	class SyntaxErrorException : public std::exception {
 		size_t pos;
@@ -49,6 +50,8 @@ public:
 
 	struct Environment {
 		std::unordered_map<std::string, std::string> dictionary;
+
+		static const std::string TOK_FILEPATH, TOK_FILENAME, TOK_FILEDIR, TOK_SEPARATOR, TOK_LANG;
 		std::string getValue(const std::string &token, bool *bFound = 0) const {
 			auto iter = dictionary.find(token);
 			if ( bFound )
@@ -66,8 +69,22 @@ public:
 		std::string make;
 		std::string run;
 
+		Directive() {}
 		Directive(Directive &&rhs) :
 				make(std::move(rhs.make)), run(std::move(rhs.run)) {}
+
+		static Directive parse(rapidxml::xml_node<> *node) {
+			Directive ret;
+			if ( !node ) return ret;
+			do {
+				if ( strcmp(node->name(), "make") == 0 ) {
+					ret.make = node->value();
+				} else if ( strcmp(node->name(), "run") == 0 ) {
+					ret.run = node->value();
+				}
+			} while (node = node->next_sibling());
+			return ret;
+		}
 
 		std::string evaluateMake(const Environment &e) const {
 			return evaluate(e, make);
@@ -78,9 +95,45 @@ public:
 		}
 
 	private:
+		typedef std::string (*Filter)(const std::string &);
+		static std::unordered_map<std::string, Filter> filters;
 
-		static std::string applyFilter(const std::string &target, const std::string &filter) {
-			return target;
+		static std::string base(const std::string &s) {
+			return s.substr(0, s.find_last_of('.'));
+		}
+
+		static std::string ext(const std::string &s) {
+			auto i = s.find_last_of('.');
+			if ( i == std::string::npos )
+				return "";
+			return s.substr(i + 1);
+		}
+
+		static std::string parent(const std::string &s) {
+			if ( s.empty() ) return "";
+			auto i = s.find_last_of("/\\:");
+			if ( i == s.length() - 1 )
+				i = s.find_last_of("/\\:", s.length() - 2);
+			if ( i == std::string::npos )
+				return s;
+			return s.substr(0, i - 1);
+		}
+
+		static std::string applyFilter(const std::string &target, const std::string &filter, bool *bApplied = 0) {
+			bool init = false;
+			if ( !init ) {
+				filters["base"] = base;
+				filters["ext"] = ext;
+				filters["parent"] = parent;
+				init = true;
+			}
+			auto iter = filters.find(filter);
+			if ( bApplied )
+				*bApplied = (iter != filters.end());
+			if ( iter == filters.end() )
+				return target;
+			else
+				return iter->second(target);
 		}
 
 		enum EvalState {Normal, PreEvaluation, Evaluation, Extension};
@@ -145,25 +198,24 @@ public:
 				case Extension:
 					switch (ch) {
 					case '}': {
-						bool bFound;
-						const std::string &val = e.getValue(token, &bFound);
-						if ( !bFound && strict ) {
-							throw TokenException(lastPosToken, token);
-						}
-						try {
-							ret << applyFilter(val, str.substr(lastPosToken, i - lastPosToken));
-						} catch ( ... ) {
-							if ( strict ) throw;
-							ret << val;
-						}
+							bool bFound;
+							const std::string &val = e.getValue(token, &bFound);
+							if ( !bFound && strict ) {
+								throw TokenException(lastPosNormal + 2, token);
+							}
 
-						lastPosNormal = i + 1;
-						state = Normal;
-						break;
-					}
-					}
-					break;
+							const std::string &filterName = str.substr(lastPosToken, i - lastPosToken);
+							ret << applyFilter(val, filterName, &bFound);
+							if ( !bFound && strict )
+								throw TokenException(lastPosToken, filterName, "Filter not found.");
+							}
+
+								lastPosNormal = i + 1;
+								state = Normal;
+								break;
+							}
 				}
+				break;
 			}
 			if ( state != Normal && strict ) {
 				throw SyntaxErrorException(lastPosNormal, '@', "No matching } brace.");
@@ -176,11 +228,52 @@ public:
 private:
 	std::string name;
 	std::unordered_map<std::string,Directive> directives;
-
 public:
-	const Directive& getDirective(const std::string &platform);
+	Directive getDirective(const std::string &platform) {
+		auto iter = directives.find(platform);
+		if ( iter == directives.end() )
+			return iter->second;
+		return directives[""];
+	}
 
-	~LanguageParser() {
+	Language(const std::string &xml) {
+		using namespace rapidxml;
+		xml_document<> doc;
+		std::vector<char> buffer(xml.begin(), xml.end());
+		buffer.push_back(0);
+		doc.parse<0>(&buffer[0]);
+		if ( strcmp(doc.first_node()->name(), "language") != 0 ) {
+			throw std::runtime_error("Root node is not \"language\"");
+		}
+		auto lang = doc.first_node()->first_attribute("name");
+		if ( !lang )
+			throw std::runtime_error("No language name specified in root tag.");
+		name = lang->value();
+
+		auto *node = doc.first_node();
+		if ( !node )
+			throw std::runtime_error("Language definitions cannot have empty directives.");
+
+		do {
+			if ( strcmp(node->name(), "platform") == 0 ) {
+				auto platforms = node->first_attribute("list")->value();
+				const Directive &directive = Directive::parse(node->first_node());
+
+				if ( platforms ) {
+					//TODO: tokenize the list w.r.t to spaces.
+					directives[platforms] = directive;
+				} else {
+					directives[""] = directive;
+				}
+			} else if ( strcmp(node->name(), "make") == 0 ) {
+				directives[""].make = node->value();
+			} else if ( strcmp(node->name(), "run") == 0 ) {
+				directives[""].run = node->value();
+			}
+		} while ( node = node->next_sibling() );
+	}
+
+	~Language() {
 
 	}
 };
