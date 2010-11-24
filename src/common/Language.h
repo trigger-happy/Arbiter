@@ -1,12 +1,42 @@
-#ifndef COMMON_LANGUAGEPARSER_H__
-#define COMMON_LANGUAGEPARSER_H__
+#ifndef COMMON_LANGUAGE_H__
+#define COMMON_LANGUAGE_H__
 
 #include <string>
 #include <sstream>
 #include <unordered_map>
 #include <stdexcept>
+#include <cstring>
 #include <boost/property_tree/detail/rapidxml.hpp>
 
+/**
+  * A class that parses xml language definition files.
+  *
+  * In the directive, the syntax for replacement is @{var(:filter)*}
+  *
+  * Accepted environment variables, assuming that the full path is C:\arbiter\extract\prob1.cpp:
+  * - filename -> prob1.cpp
+  * - fullpath -> C:\arbiter\extract\prob1.cpp
+  * - filedir -> C:\arbiter\extract
+  * - / -> \
+  * - lang -> C++
+  *
+  * Accepted filters are (assuming the input is C:\arbiter\extract\prob1.cpp):
+  * - base -> C:\arbiter\extract\prob1 (extracts the string before the last ".")
+  * - parent -> C:\arbiter\extract (extracts the parent directory of the current path)
+  * - ext -> cpp (extracts the string after the last ".")
+  *
+  * Short xml example:
+  * @code
+  * <language name="C++">
+  * <make>g++ @{filename} -o @{filename:base}</make>
+  * <run>./@{filename:base}</run>
+  * <platform list="win32-msvc win64-msvc">
+  *   <make>cl @{filename}</make>
+  *   <run>@{filename:base}.exe</run>
+  * </platform>
+  * </language>
+  * @endcode
+  */
 class Language {
 public:
 	class SyntaxErrorException : public std::exception {
@@ -48,10 +78,13 @@ public:
 		~TokenException() throw() {}
 	};
 
+	/**
+	  * Stores environment variables that is used by the directive translator to replace directives.
+	  */
 	struct Environment {
 		std::unordered_map<std::string, std::string> dictionary;
 
-		static const std::string TOK_FILEPATH, TOK_FILENAME, TOK_FILEDIR, TOK_SEPARATOR, TOK_LANG;
+		static const std::string TOK_FULLPATH, TOK_FILENAME, TOK_FILEDIR, TOK_SEPARATOR, TOK_LANG;
 		std::string getValue(const std::string &token, bool *bFound = 0) const {
 			auto iter = dictionary.find(token);
 			if ( bFound )
@@ -236,42 +269,7 @@ public:
 		return directives[""];
 	}
 
-	Language(const std::string &xml) {
-		using namespace rapidxml;
-		xml_document<> doc;
-		std::vector<char> buffer(xml.begin(), xml.end());
-		buffer.push_back(0);
-		doc.parse<0>(&buffer[0]);
-		if ( strcmp(doc.first_node()->name(), "language") != 0 ) {
-			throw std::runtime_error("Root node is not \"language\"");
-		}
-		auto lang = doc.first_node()->first_attribute("name");
-		if ( !lang )
-			throw std::runtime_error("No language name specified in root tag.");
-		name = lang->value();
-
-		auto *node = doc.first_node();
-		if ( !node )
-			throw std::runtime_error("Language definitions cannot have empty directives.");
-
-		do {
-			if ( strcmp(node->name(), "platform") == 0 ) {
-				auto platforms = node->first_attribute("list")->value();
-				const Directive &directive = Directive::parse(node->first_node());
-
-				if ( platforms ) {
-					//TODO: tokenize the list w.r.t to spaces.
-					directives[platforms] = directive;
-				} else {
-					directives[""] = directive;
-				}
-			} else if ( strcmp(node->name(), "make") == 0 ) {
-				directives[""].make = node->value();
-			} else if ( strcmp(node->name(), "run") == 0 ) {
-				directives[""].run = node->value();
-			}
-		} while ( node = node->next_sibling() );
-	}
+	Language(const std::string &xml);
 
 	~Language() {
 
