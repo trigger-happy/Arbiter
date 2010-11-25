@@ -38,6 +38,27 @@ inline speed_t cfgetospeed(const struct termios *tp)
 #include <vector>
 #include "Message.pb.h"
 
+class shared_const_buffer
+{
+public:
+  // Construct from a std::string.
+  explicit shared_const_buffer(const std::string& data)
+    : data_(new std::vector<char>(data.begin(), data.end())),
+      buffer_(boost::asio::buffer(*data_))
+  {
+  }
+
+  // Implement the ConstBufferSequence requirements.
+  typedef boost::asio::const_buffer value_type;
+  typedef const boost::asio::const_buffer* const_iterator;
+  const boost::asio::const_buffer* begin() const { return &buffer_; }
+  const boost::asio::const_buffer* end() const { return &buffer_ + 1; }
+
+private:
+  boost::shared_ptr<std::vector<char> > data_;
+  boost::asio::const_buffer buffer_;
+};
+
 class Connection
 {
 public:
@@ -55,27 +76,30 @@ public:
     return socket_;
   }
 
-  std::vector<boost::asio::const_buffer> prepareMessage(const NetworkMessage& message) {
+  shared_const_buffer prepareMessage(const NetworkMessage& message) {
+    std::string outbound_data;
+
     // Serialize the data first so we know how large it is.
-    message.SerializeToString(&outbound_data_);
+    message.SerializeToString(&outbound_data);
 
     // Format the header.
     std::ostringstream header_stream;
     header_stream << std::setw(HEADER_LENGTH)
-      << std::hex << outbound_data_.size();
+      << std::hex << outbound_data.size();
     if (!header_stream || header_stream.str().size() != HEADER_LENGTH)
     {
       // Something went wrong, inform the caller.
       throw boost::system::system_error(boost::asio::error::invalid_argument);
     }
-    outbound_header_ = header_stream.str();
 
     // Write the serialized data to the socket. We use "gather-write" to send
     // both the header and the data in a single write operation.
-    std::vector<boost::asio::const_buffer> buffers;
-    buffers.push_back(boost::asio::buffer(outbound_header_));
-    buffers.push_back(boost::asio::buffer(outbound_data_));
-    return buffers;
+    shared_const_buffer buffer(header_stream.str() + outbound_data);
+    return buffer;
+  }
+
+  void write(const NetworkMessage& message) {
+    boost::asio::write(socket_, prepareMessage(message));
   }
 
   template <typename Handler>
@@ -87,23 +111,6 @@ public:
     catch(boost::system::system_error& e) {
       socket_.io_service().post(boost::bind(handler, e.code()));
     }
-  }
-
-  void write(const NetworkMessage& message) {
-    boost::asio::write(socket_, prepareMessage(message));
-  }
-
-  template <typename Handler>
-  void async_read(NetworkMessage& message, Handler handler)
-  {
-    // Issue a read operation to read exactly the number of bytes in a header.
-    void (Connection::*f) (const boost::system::error_code&, NetworkMessage&, boost::tuple<Handler>)
-      = &Connection::handle_read_header<Handler>;
-    boost::asio::async_read(
-      socket_,
-      boost::asio::buffer(inbound_header_),
-      boost::bind(f, this, boost::asio::placeholders::error, boost::ref(message), boost::make_tuple(handler))
-    );
   }
 
   void read(NetworkMessage& message) {
@@ -131,6 +138,19 @@ public:
   }
 
   template <typename Handler>
+  void async_read(NetworkMessage& message, Handler handler)
+  {
+    // Issue a read operation to read exactly the number of bytes in a header.
+    void (Connection::*f) (const boost::system::error_code&, NetworkMessage&, boost::tuple<Handler>)
+      = &Connection::handle_read_header<Handler>;
+    boost::asio::async_read(
+      socket_,
+      boost::asio::buffer(inbound_header_),
+      boost::bind(f, this, boost::asio::placeholders::error, boost::ref(message), boost::make_tuple(handler))
+    );
+  }
+
+  template <typename Handler>
   void handle_read_header(const boost::system::error_code& e,
       NetworkMessage& message, boost::tuple<Handler> handler)
   {
@@ -154,11 +174,12 @@ public:
       // Start an asynchronous call to receive the data.
       inbound_data_.resize(inbound_data_size);
       void (Connection::*f)(
-      const boost::system::error_code&,
-      NetworkMessage&, boost::tuple<Handler>) = &Connection::handle_read_data<Handler>;
-        boost::asio::async_read(socket_, boost::asio::buffer(inbound_data_),
-      boost::bind(f, this,
-      boost::asio::placeholders::error, boost::ref(message), handler));
+      const boost::system::error_code&, NetworkMessage&, boost::tuple<Handler>) = &Connection::handle_read_data<Handler>;
+      boost::asio::async_read(
+        socket_,
+        boost::asio::buffer(inbound_data_),
+        boost::bind(f, this, boost::asio::placeholders::error, boost::ref(message), handler)
+      );
     }
   }
 
@@ -194,12 +215,6 @@ public:
 private:
   /// The actual socket
   boost::asio::ip::tcp::socket socket_;
-
-  /// Holds an outbound header.
-  std::string outbound_header_;
-
-  /// Holds the outbound data.
-  std::string outbound_data_;
 
   /// Holds an inbound header.
   char inbound_header_[HEADER_LENGTH];

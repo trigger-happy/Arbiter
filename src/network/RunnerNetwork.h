@@ -29,7 +29,6 @@ public:
   void requestLanguage(boost::uint32_t language_id);
   void sendRunResult(boost::uint32_t run_id, boost::uint32_t result, std::string team_stdout, std::string team_stderr, boost::uint64_t run_time);
   void addListener(RunnerNetworkListener& listener);
-  void removeListener(RunnerNetworkListener& listener);
   
 private:
   void handleConnect(const boost::system::error_code& e, boost::asio::ip::tcp::resolver::iterator endpoint_iterator);
