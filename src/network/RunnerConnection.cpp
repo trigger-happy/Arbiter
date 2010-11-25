@@ -63,7 +63,6 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
       if(inboundMessage_.text() == hashstr) {
         authenticated_ = true;
         outboundMessage_.set_type(NetworkMessage::ACKNOWLEDGE);
-        outboundMessage_.set_text("this is gibberish!!!");
         sendMessage();
         if(listener_) listener_->authenticated();
         timer_.expires_from_now(boost::posix_time::seconds(pingTime_*2));
