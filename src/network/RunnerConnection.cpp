@@ -4,6 +4,7 @@
 RunnerConnection::RunnerConnection(boost::asio::io_service& io_service, std::string secret, uint64_t pingTime)
   : connection_(new Connection(io_service)), timer_(io_service)
 {
+  connected_ = false;
   authenticated_ = false;
   secret_ = secret;
   pingTime_ = pingTime;
@@ -12,6 +13,7 @@ RunnerConnection::RunnerConnection(boost::asio::io_service& io_service, std::str
 
 RunnerConnection::~RunnerConnection()
 {
+  stop();
 }
 
 boost::asio::ip::tcp::socket& RunnerConnection::socket()
@@ -22,13 +24,15 @@ boost::asio::ip::tcp::socket& RunnerConnection::socket()
 void RunnerConnection::start()
 {
   address_ = connection_->socket().remote_endpoint().address().to_string();
+  connected_ = true;
   connection_->async_read(inboundMessage_, boost::bind(&RunnerConnection::handleReceive, this, boost::asio::placeholders::error));
 }
 
 void RunnerConnection::handleTimeout(const boost::system::error_code& e)
 {
   if(!e) {
-    disconnect();
+    boost::system::error_code ec(boost::asio::error::timed_out);
+    disconnect(ec);
   }
 }
 
@@ -69,7 +73,8 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
         timer_.async_wait(boost::bind(&RunnerConnection::handleTimeout, this, boost::asio::placeholders::error));
       }
       else {
-        disconnect();
+        boost::system::error_code ec(boost::asio::error::no_permission);
+        disconnect(ec);
         return;
       }
     }
@@ -88,30 +93,40 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
         if(listener_) listener_->receiveRunResult(inboundMessage_.run_result());
       }
       else {
-        disconnect();
+        boost::system::error_code ec(boost::asio::error::invalid_argument);
+        disconnect(ec);
         return;
       }
       timer_.expires_from_now(boost::posix_time::seconds(pingTime_*2));
       timer_.async_wait(boost::bind(&RunnerConnection::handleTimeout, this, boost::asio::placeholders::error));
     }
     else {
-      disconnect();
+      boost::system::error_code ec(boost::asio::error::invalid_argument);
+      disconnect(ec);
       return;
-    }    
+    }
     connection_->async_read(inboundMessage_, boost::bind(&RunnerConnection::handleReceive, this, boost::asio::placeholders::error));
   }
   else if(e != boost::asio::error::operation_aborted) {
-    disconnect();
+    disconnect(e);
   }
 }
 
-void RunnerConnection::disconnect() {
-  timer_.cancel();
-  if(connection_->socket().is_open()) {
-    connection_->socket().shutdown(boost::asio::socket_base::shutdown_both);
-    connection_->socket().close();
+void RunnerConnection::stop() {
+  if(connected_) {
+    timer_.cancel();
+    if(connection_->socket().is_open()) {
+      connection_->socket().shutdown(boost::asio::socket_base::shutdown_both);
+      connection_->socket().close();
+    }
   }
-  if(listener_) listener_->disconnected();
+}
+
+void RunnerConnection::disconnect(const boost::system::error_code& e) {
+  if(connected_) {
+    stop();
+    if(listener_) listener_->disconnected(e);
+  }
 }
 
 void RunnerConnection::sendProblemSet(std::string problem_id, std::string problem_hash, std::string attachment)
@@ -157,7 +172,7 @@ void RunnerConnection::handleSend(const boost::system::error_code& e, connection
 {
   outboundMessage_.Clear();
   if(e && e != boost::asio::error::operation_aborted) {
-    disconnect();
+    disconnect(e);
   }
 }
 

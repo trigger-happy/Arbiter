@@ -5,44 +5,59 @@
 std::string itoa(uint16_t num) {
   std::stringstream s;
   s << num;
-  return s.str();  
+  return s.str();
 }
 
-RunnerNetwork::RunnerNetwork(boost::asio::io_service& io_service, std::string address, uint16_t port, std::string secret, uint64_t pingTime)
-  : connection_(new Connection(io_service)), timer_(io_service), pingTimer_(io_service)
+RunnerNetwork::RunnerNetwork(std::string address, uint16_t port, std::string secret, uint64_t pingTime)
+  : io_service_(), connection_(new Connection(io_service_)), timer_(io_service_), pingTimer_(io_service_)
 {
+  address_ = address;
+  port_ = port;
   secret_ = secret;
   pingTime_ = pingTime;
+  connected_ = false;
   authenticated_ = false;
+  retry_ = false;
   listener_ = 0;
-  
-  // Resolve the host name into an IP address.
-  boost::asio::ip::tcp::resolver resolver(io_service);
-  boost::asio::ip::tcp::resolver::query query(address, itoa(port));
-  boost::asio::ip::tcp::resolver::iterator endpoint_iterator =
-    resolver.resolve(query);
-  boost::asio::ip::tcp::endpoint endpoint = *endpoint_iterator;
-
-  // Start an asynchronous connect operation.
-  connection_->socket().async_connect(endpoint,
-      boost::bind(&RunnerNetwork::handleConnect, this,
-	boost::asio::placeholders::error, ++endpoint_iterator));
 }
 
 RunnerNetwork::~RunnerNetwork()
 {
 }
 
+void RunnerNetwork::start()
+{
+  do {
+    boost::system::error_code e;
+
+    // Resolve
+    boost::asio::ip::tcp::resolver resolver(io_service_);
+    boost::asio::ip::tcp::resolver::query query(address_, itoa(port_));
+    boost::asio::ip::tcp::resolver::iterator endpoint_iterator;
+    do {
+      endpoint_iterator = resolver.resolve(query, e);
+    } while(e);
+    boost::asio::ip::tcp::endpoint endpoint = *endpoint_iterator;
+
+    // Start an asynchronous connect operation.
+    connection_->socket().async_connect(endpoint,
+      boost::bind(&RunnerNetwork::handleConnect, this,
+      boost::asio::placeholders::error, ++endpoint_iterator));
+    io_service_.run();
+    io_service_.reset();
+  } while(retry_);
+}
+
 void RunnerNetwork::handleConnect(const boost::system::error_code& e, boost::asio::ip::basic_resolver_iterator< boost::asio::ip::tcp > endpoint_iterator)
 {
   if (!e)
   {
-    if(listener_) listener_->connected();
+    connected_ = true;
     outboundMessage_.set_type(NetworkMessage::CONNECT);
     sendMessage();
     connection_->async_read(inboundMessage_,
-	boost::bind(&RunnerNetwork::handleReceive, this,
-	  boost::asio::placeholders::error));
+      boost::bind(&RunnerNetwork::handleReceive, this,
+      boost::asio::placeholders::error));
   }
   else if (endpoint_iterator != boost::asio::ip::tcp::resolver::iterator())
   {
@@ -50,12 +65,12 @@ void RunnerNetwork::handleConnect(const boost::system::error_code& e, boost::asi
     connection_->socket().close();
     boost::asio::ip::tcp::endpoint endpoint = *endpoint_iterator;
     connection_->socket().async_connect(endpoint,
-	boost::bind(&RunnerNetwork::handleConnect, this,
-	  boost::asio::placeholders::error, ++endpoint_iterator));
+      boost::bind(&RunnerNetwork::handleConnect, this,
+      boost::asio::placeholders::error, ++endpoint_iterator));
   }
   else
   {
-    if(listener_) listener_->connectionFailed();
+    retry_ = (listener_ && listener_->disconnected(e));
   }
 }
 
@@ -67,7 +82,7 @@ void RunnerNetwork::handleReceive(const boost::system::error_code& e)
       std::string toHash = inboundMessage_.text() + connection_->socket().local_endpoint().address().to_string();
       unsigned char hash[32];
       sha2_hmac((unsigned char*)toHash.c_str(), toHash.length(),
-        (unsigned char*) secret_.c_str(), secret_.length(),
+        (unsigned char*)secret_.c_str(), secret_.length(),
         hash, false);
       std::string response((char*)hash, 32);
       outboundMessage_.set_type(NetworkMessage::CHALLENGE_RESPONSE);
@@ -94,27 +109,30 @@ void RunnerNetwork::handleReceive(const boost::system::error_code& e)
         if(listener_) listener_->receiveRunOrder(inboundMessage_.run_order());
       }
       else {
-        disconnect();
+        boost::system::error_code ec(boost::asio::error::invalid_argument);
+        disconnect(ec);
         return;
       }
       timer_.expires_from_now(boost::posix_time::seconds(pingTime_*2));
       timer_.async_wait(boost::bind(&RunnerNetwork::handleTimeout, this, boost::asio::placeholders::error));
     }
     else {
-      disconnect();
+      boost::system::error_code ec(boost::asio::error::invalid_argument);
+      disconnect(ec);
       return;
     }
     connection_->async_read(inboundMessage_, boost::bind(&RunnerNetwork::handleReceive, this, boost::asio::placeholders::error));
   }
   else if(e != boost::asio::error::operation_aborted) {
-    disconnect();
+    disconnect(e);
   }
 }
 
 void RunnerNetwork::handleTimeout(const boost::system::error_code& e)
 {
   if(!e) {
-    disconnect();
+    boost::system::error_code ec(boost::asio::error::timed_out);
+    disconnect(ec);
   }
 }
 
@@ -155,8 +173,7 @@ void RunnerNetwork::sendRunResult(uint32_t run_id, uint32_t result, std::string 
   sendMessage();
 }
 
-void RunnerNetwork::sendMessage()
-{
+void RunnerNetwork::sendMessage() {
   connection_->async_write(outboundMessage_, boost::bind(&RunnerNetwork::handleSend, this, boost::asio::placeholders::error, connection_));
 }
 
@@ -164,19 +181,30 @@ void RunnerNetwork::handleSend(const boost::system::error_code& e, connection_pt
 {
   outboundMessage_.Clear();
   if(e && e != boost::asio::error::operation_aborted) {
-    disconnect();
+    disconnect(e);
   }
 }
 
-void RunnerNetwork::disconnect()
+void RunnerNetwork::stop()
 {
-  pingTimer_.cancel();
-  timer_.cancel();
-  if(connection_->socket().is_open()) {
-    connection_->socket().shutdown(boost::asio::socket_base::shutdown_both);
-    connection_->socket().close();
+  if(connected_) {
+    pingTimer_.cancel();
+    timer_.cancel();
+    if(connection_->socket().is_open()) {
+      connection_->socket().shutdown(boost::asio::socket_base::shutdown_both);
+      connection_->socket().close();
+    }
+    connected_ = false;
+    retry_ = false;
   }
-  if(listener_) listener_->disconnected();
+}
+
+void RunnerNetwork::disconnect(const boost::system::error_code& e)
+{
+  if(connected_) {
+    stop();
+    retry_ = (listener_ && listener_->disconnected(e));
+  }
 }
 
 void RunnerNetwork::setListener(RunnerNetworkListener& listener)
