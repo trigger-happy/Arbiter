@@ -7,11 +7,11 @@ RunnerConnection::RunnerConnection(boost::asio::io_service& io_service, std::str
   authenticated_ = false;
   secret_ = secret;
   pingTime_ = pingTime;
+  listener_ = 0;
 }
 
 RunnerConnection::~RunnerConnection()
 {
-  listeners_.clear();
 }
 
 boost::asio::ip::tcp::socket& RunnerConnection::socket()
@@ -60,41 +60,32 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
 		hash, false);
       std::string hashstr((char*)hash, 32);
       if(inboundMessage_.text() == hashstr) {
-	authenticated_ = true;
-	outboundMessage_.set_type(NetworkMessage::ACKNOWLEDGE);
-	sendMessage();
-	std::vector<RunnerConnectionListener*>::iterator iter;
-	for(iter = listeners_.begin(); iter != listeners_.end(); iter++) {
-	  (*iter)->authenticated();
-	}
+        authenticated_ = true;
+        outboundMessage_.set_type(NetworkMessage::ACKNOWLEDGE);
+        outboundMessage_.set_text("this is gibberish!!!");
+        sendMessage();
+        if(listener_) listener_->authenticated();
+        timer_.expires_from_now(boost::posix_time::seconds(pingTime_*2));
+        timer_.async_wait(boost::bind(&RunnerConnection::handleTimeout, this, boost::asio::placeholders::error));
       }
     }
     else if(authenticated_) {
       if(inboundMessage_.type() == NetworkMessage::PING) {
-	outboundMessage_.set_type(NetworkMessage::PING_RESPONSE);
-	sendMessage();
+        outboundMessage_.set_type(NetworkMessage::PING_RESPONSE);
+        sendMessage();
       }
       else if(inboundMessage_.type() == NetworkMessage::PROBLEM_SET_REQUEST) {
-	std::vector<RunnerConnectionListener*>::iterator iter;
-	for(iter = listeners_.begin(); iter != listeners_.end(); iter++) {
-	  (*iter)->receiveProblemSetRequest(inboundMessage_.text());
-	}
+        if(listener_) listener_->receiveProblemSetRequest(inboundMessage_.text());
       }
       else if(inboundMessage_.type() == NetworkMessage::LANGUAGE_REQUEST) {
-	std::vector<RunnerConnectionListener*>::iterator iter;
-	for(iter = listeners_.begin(); iter != listeners_.end(); iter++) {
-	  (*iter)->receiveLanguageRequest(inboundMessage_.requested_item_id());
-	}
+        if(listener_) listener_->receiveLanguageRequest(inboundMessage_.requested_item_id());
       }
       else if(inboundMessage_.type() == NetworkMessage::RUN_RESULT) {
-	std::vector<RunnerConnectionListener*>::iterator iter;
-	for(iter = listeners_.begin(); iter != listeners_.end(); iter++) {
-	  (*iter)->receiveRunResult(inboundMessage_.run_result());
-	}
+        if(listener_) listener_->receiveRunResult(inboundMessage_.run_result());
       }
       else {
-	disconnect();
-	return;
+        disconnect();
+        return;
       }
       timer_.expires_from_now(boost::posix_time::seconds(pingTime_*2));
       timer_.async_wait(boost::bind(&RunnerConnection::handleTimeout, this, boost::asio::placeholders::error));
@@ -116,10 +107,7 @@ void RunnerConnection::disconnect() {
     connection_->socket().shutdown(boost::asio::socket_base::shutdown_both);
     connection_->socket().close();
   }
-  std::vector<RunnerConnectionListener*>::iterator iter;
-  for(iter = listeners_.begin(); iter != listeners_.end(); iter++) {
-    (*iter)->disconnected();
-  }
+  if(listener_) listener_->disconnected();
 }
 
 void RunnerConnection::sendProblemSet(std::string problem_id, std::string problem_hash, std::string attachment)
@@ -170,8 +158,12 @@ void RunnerConnection::handleSend(const boost::system::error_code& e, connection
 }
 
 
-void RunnerConnection::addListener(RunnerConnectionListener& rcl)
+void RunnerConnection::setListener(RunnerConnectionListener& rcl)
 {
-  listeners_.push_back(&rcl);
+  listener_ = &rcl;
 }
 
+void RunnerConnection::removeListener()
+{
+  listener_ = 0;
+}

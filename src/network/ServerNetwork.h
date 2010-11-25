@@ -16,7 +16,8 @@ class ServerNetwork
 public:
   ServerNetwork(boost::asio::io_service& io_service, uint16_t port, std::string secret, uint64_t pingTime);
   virtual ~ServerNetwork();
-  void addListener(ServerNetworkListener&);
+  void setListener(ServerNetworkListener&);
+  void removeListener();
   
 private:  
   void handleAccept(const boost::system::error_code& e, boost::shared_ptr<RunnerConnection> conn);
@@ -26,7 +27,7 @@ private:
   
   boost::asio::ip::tcp::acceptor acceptor_;
   
-  std::vector<ServerNetworkListener*> listeners_;
+  ServerNetworkListener* listener_;
 };
 
 

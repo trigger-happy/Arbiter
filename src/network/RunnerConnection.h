@@ -29,7 +29,8 @@ public:
   void sendRunOrder(uint32_t run_id, std::string problem_id, std::string problem_hash, uint32_t language_id, std::string language_hash, std::string attachment);  
   void sendProblemSet(std::string problem_id, std::string problem_hash, std::string attachment);  
   void sendLanguage(boost::uint32_t language_id, std::string language_hash, std::string attachment);
-  void addListener(RunnerConnectionListener& rcl);
+  void setListener(RunnerConnectionListener& rcl);
+  void removeListener();
   
 private:
   void handleSend(const boost::system::error_code& e, connection_ptr conn);
@@ -48,7 +49,7 @@ private:
   bool authenticated_;
   std::string challenge_; 
   
-  std::vector<RunnerConnectionListener*> listeners_;
+  RunnerConnectionListener* listener_;
 };
 
 #endif // RUNNERCONNECTION_H

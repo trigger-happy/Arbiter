@@ -28,7 +28,8 @@ public:
   void requestProblemSet(std::string problem_id);
   void requestLanguage(boost::uint32_t language_id);
   void sendRunResult(boost::uint32_t run_id, boost::uint32_t result, std::string team_stdout, std::string team_stderr, boost::uint64_t run_time);
-  void addListener(RunnerNetworkListener& listener);
+  void setListener(RunnerNetworkListener& listener);
+  void removeListener();
   
 private:
   void handleConnect(const boost::system::error_code& e, boost::asio::ip::tcp::resolver::iterator endpoint_iterator);
@@ -48,7 +49,7 @@ private:
   
   bool authenticated_;
   
-  std::vector<RunnerNetworkListener*> listeners_;
+  RunnerNetworkListener* listener_;
 };
 
 #endif // RUNNER_NETWORK_H
