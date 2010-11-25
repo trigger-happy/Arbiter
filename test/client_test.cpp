@@ -7,20 +7,16 @@ public:
   RunnerNetwork& rn_;
   
   ListenerImpl(RunnerNetwork& rn) : rn_(rn) {
-    rn.addListener(*this);
+    rn.setListener(*this);
   }
   
-  virtual void connected() {
-    std::cout << "Connected" << std::endl;
-  }
   virtual void authenticated() {
     std::cout << "Authenticated" << std::endl;
   }
-  virtual void disconnected() {
+  virtual bool disconnected(const boost::system::error_code& ec) {
+    std::cout << ec.message() << std::endl;
     std::cout << "Disconnected" << std::endl;
-  }  
-  virtual void connectionFailed() {
-    std::cout << "Connection failed" << std::endl;
+    return true;
   }
   virtual void receiveRunOrder(RunOrder ro) {
     std::cout << "Received run order" << std::endl;
@@ -52,9 +48,8 @@ public:
 };
 
 int main() {
-  boost::asio::io_service io_service;
-  RunnerNetwork rn(io_service, "localhost", 9999, 10);
+  RunnerNetwork rn("localhost", 9999, "asdf", 10);
   ListenerImpl ts(rn);
-  io_service.run();
+  rn.start();
   return 0;
 }

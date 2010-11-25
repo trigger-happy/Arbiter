@@ -8,19 +8,21 @@ public:
   boost::shared_ptr<RunnerConnection> runner_;
   
   ListenerImpl(ServerNetwork& sn) : sn_(sn) {
-    sn.addListener(*this);
+    sn.setListener(*this);
   }
   
   virtual void runnerConnected(boost::shared_ptr<RunnerConnection> runner) {
+    std::cout << "A runner has connected" << std::endl;
     runner_ = runner;
-    runner->addListener(*this);
+    runner->setListener(*this);
   }
   virtual void authenticated() {
     std::cout << "Authenticated" << std::endl;
     runner_->sendRunOrder(1, "1", "asdf", 1, "asdf", "stuff");
   }
-  virtual void disconnected() {
-    std::cout << "Something disconnected" << std::endl;
+  virtual void disconnected(const boost::system::error_code& ec) {
+    std::cout << ec.message() << std::endl;
+    std::cout << "A runner disconnected" << std::endl;
   }  
   virtual void receiveProblemSetRequest(std::string pid) {
     std::cout << "Received problem set request " << pid << std::endl;
@@ -41,9 +43,8 @@ public:
 };
 
 int main() {
-  boost::asio::io_service io_service;
-  ServerNetwork sn(io_service, 9999, "asdf", 10);
+  ServerNetwork sn(9999, "asdf", 10);
   ListenerImpl ts(sn);
-  io_service.run();
+  sn.start();
   return 0;
 }
