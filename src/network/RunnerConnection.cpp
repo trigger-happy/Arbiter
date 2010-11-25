@@ -45,7 +45,7 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
 	    "abcdefghijklmnopqrstuvwxyz";
 
       for (int i = 0; i < 63; ++i) {
-	  randomString[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+        randomString[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
       }
       randomString[64] = 0;
       challenge_.assign(randomString);
@@ -54,10 +54,11 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
       sendMessage();
     }
     else if(inboundMessage_.type() == NetworkMessage::CHALLENGE_RESPONSE) {
+      std::string toHash = challenge_ + address_;
       unsigned char hash[32];
-      sha2_hmac((unsigned char*)challenge_.c_str(), challenge_.length(),
-		(unsigned char*)address_.c_str(), address_.length(),
-		hash, false);
+      sha2_hmac((unsigned char*) toHash.c_str(), toHash.length(),
+        (unsigned char*)secret_.c_str(), secret_.length(),
+        hash, false);
       std::string hashstr((char*)hash, 32);
       if(inboundMessage_.text() == hashstr) {
         authenticated_ = true;
@@ -67,6 +68,10 @@ void RunnerConnection::handleReceive(const boost::system::error_code& e)
         if(listener_) listener_->authenticated();
         timer_.expires_from_now(boost::posix_time::seconds(pingTime_*2));
         timer_.async_wait(boost::bind(&RunnerConnection::handleTimeout, this, boost::asio::placeholders::error));
+      }
+      else {
+        disconnect();
+        return;
       }
     }
     else if(authenticated_) {

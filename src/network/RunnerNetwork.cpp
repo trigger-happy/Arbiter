@@ -8,9 +8,10 @@ std::string itoa(uint16_t num) {
   return s.str();  
 }
 
-RunnerNetwork::RunnerNetwork(boost::asio::io_service& io_service, std::string address, uint16_t port, uint64_t pingTime)
+RunnerNetwork::RunnerNetwork(boost::asio::io_service& io_service, std::string address, uint16_t port, std::string secret, uint64_t pingTime)
   : connection_(new Connection(io_service)), timer_(io_service), pingTimer_(io_service)
 {
+  secret_ = secret;
   pingTime_ = pingTime;
   authenticated_ = false;
   listener_ = 0;
@@ -63,11 +64,11 @@ void RunnerNetwork::handleReceive(const boost::system::error_code& e)
   if(!e) {
     timer_.cancel();
     if(inboundMessage_.type() == NetworkMessage::CHALLENGE) {
-      std::string address = connection_->socket().local_endpoint().address().to_string();
+      std::string toHash = inboundMessage_.text() + connection_->socket().local_endpoint().address().to_string();
       unsigned char hash[32];
-      sha2_hmac((unsigned char*)inboundMessage_.text().c_str(), inboundMessage_.text().length(),
-		(unsigned char*)address.c_str(), address.length(),
-		hash, false);
+      sha2_hmac((unsigned char*)toHash.c_str(), toHash.length(),
+        (unsigned char*) secret_.c_str(), secret_.length(),
+        hash, false);
       std::string response((char*)hash, 32);
       outboundMessage_.set_type(NetworkMessage::CHALLENGE_RESPONSE);
       outboundMessage_.set_text(response);

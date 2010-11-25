@@ -22,7 +22,7 @@ public:
 class RunnerNetwork
 {
 public:
-  RunnerNetwork(boost::asio::io_service& io_service, std::string address, uint16_t port, uint64_t pingTime);  
+  RunnerNetwork(boost::asio::io_service& io_service, std::string address, uint16_t port, std::string secret, uint64_t pingTime);  
   virtual ~RunnerNetwork();
   void sendMessage();
   void requestProblemSet(std::string problem_id);
@@ -40,6 +40,7 @@ private:
   void disconnect();
   
   uint64_t pingTime_;
+  std::string secret_;
   
   connection_ptr connection_;
   boost::asio::deadline_timer timer_;
